@@ -1,0 +1,213 @@
+diff --git a/objdiff-core/src/arch/x86.rs b/objdiff-core/src/arch/x86.rs
+index b02bd0e..5c95701 100644
+--- a/objdiff-core/src/arch/x86.rs
++++ b/objdiff-core/src/arch/x86.rs
+@@ -14,6 +14,16 @@ use crate::{
+     obj::{InstructionRef, Relocation, RelocationFlags, ResolvedInstructionRef, Section, Symbol},
+ };
+ 
++/// ELF `e_flags` value marking an EM_386 object as 16-bit real-mode code.
++pub const EF_386_I8086: u32 = 0x8086;
++/// Segment base of the target symbol (numbering follows the ia16-elf toolchain).
++pub const R_386_SEG16: u32 = 45;
++/// 16:16 far pointer to the target symbol (offset word, then segment word).
++pub const R_386_FAR16: u32 = 250;
++
++const PLACEHOLDER16: u64 = 0x3E7D;
++const PLACEHOLDER16_SEL: u64 = 0x3E7C;
++
+ #[derive(Debug)]
+ pub struct ArchX86 {
+     arch: Architecture,
+@@ -23,13 +33,19 @@ pub struct ArchX86 {
+ #[derive(Debug)]
+ enum Architecture {
+     X86,
++    X86_16,
+     X86_64,
+ }
+ 
+ impl ArchX86 {
+     pub fn new(object: &object::File) -> Result<Self> {
+         let arch = match object.architecture() {
+-            object::Architecture::I386 => Architecture::X86,
++            object::Architecture::I386 => match object.flags() {
++                object::FileFlags::Elf { e_flags, .. } if e_flags == EF_386_I8086 => {
++                    Architecture::X86_16
++                }
++                _ => Architecture::X86,
++            },
+             object::Architecture::X86_64 => Architecture::X86_64,
+             _ => bail!("Unsupported architecture for ArchX86: {:?}", object.architecture()),
+         };
+@@ -40,6 +56,7 @@ impl ArchX86 {
+         Decoder::with_ip(
+             match self.arch {
+                 Architecture::X86 => 32,
++                Architecture::X86_16 => 16,
+                 Architecture::X86_64 => 64,
+             },
+             code,
+@@ -61,6 +78,15 @@ impl ArchX86 {
+ 
+     fn reloc_size(&self, flags: RelocationFlags) -> Option<usize> {
+         match self.arch {
++            Architecture::X86_16 => match flags {
++                RelocationFlags::Elf(typ) => match typ {
++                    elf::R_386_8 | elf::R_386_PC8 => Some(1),
++                    elf::R_386_16 | elf::R_386_PC16 | R_386_SEG16 => Some(2),
++                    R_386_FAR16 => Some(4),
++                    _ => None,
++                },
++                _ => None,
++            },
+             Architecture::X86 => match flags {
+                 RelocationFlags::Coff(typ) => match typ {
+                     pe::IMAGE_REL_I386_DIR16 | pe::IMAGE_REL_I386_REL16 => Some(2),
+@@ -234,7 +260,31 @@ impl Arch for ArchX86 {
+             let reloc_offset = reloc.relocation.address - resolved.ins_ref.address;
+             let reloc_size = self.reloc_size(reloc.relocation.flags).unwrap_or(usize::MAX);
+             let offsets = decoder.get_constant_offsets(&instruction);
+-            if reloc_offset == offsets.displacement_offset() as u64
++            let is_far =
++                matches!(instruction.op0_kind(), OpKind::FarBranch16 | OpKind::FarBranch32);
++            if matches!(self.arch, Architecture::X86_16) {
++                if is_far && reloc_offset == offsets.immediate_offset() as u64 {
++                    instruction.set_far_branch16(PLACEHOLDER16 as u16);
++                    instruction.set_far_branch_selector(PLACEHOLDER16_SEL as u16);
++                    reloc_replace = Some((instruction.op0_kind(), 4, PLACEHOLDER16));
++                } else if reloc_offset == offsets.displacement_offset() as u64
++                    && reloc_size == offsets.displacement_size()
++                {
++                    instruction.set_memory_displacement64(PLACEHOLDER16);
++                    reloc_replace = Some((OpKind::Memory, 2, PLACEHOLDER16));
++                } else if reloc_offset == offsets.immediate_offset() as u64
++                    && reloc_size == offsets.immediate_size()
++                {
++                    let op_kind = instruction.op0_kind();
++                    if matches!(op_kind, OpKind::NearBranch16) {
++                        instruction.set_near_branch16(PLACEHOLDER16 as u16);
++                        reloc_replace = Some((op_kind, 2, PLACEHOLDER16));
++                    } else {
++                        instruction.set_immediate16(PLACEHOLDER16 as u16);
++                        reloc_replace = Some((OpKind::Immediate16, 2, PLACEHOLDER16));
++                    }
++                }
++            } else if reloc_offset == offsets.displacement_offset() as u64
+                 && reloc_size == offsets.displacement_size()
+             {
+                 instruction.set_memory_displacement64(PLACEHOLDER);
+@@ -266,8 +316,14 @@ impl Arch for ArchX86 {
+             }
+         }
+ 
+-        let mut output =
+-            InstructionFormatterOutput { cb, reloc_replace, error: None, skip_next: false };
++        let mut output = InstructionFormatterOutput {
++            cb,
++            reloc_replace,
++            error: None,
++            skip_next: false,
++            bits16: matches!(self.arch, Architecture::X86_16),
++            far_state: 0,
++        };
+         formatter.format(&instruction, &mut output);
+         if let Some(error) = output.error.take() {
+             return Err(error);
+@@ -286,6 +342,16 @@ impl Arch for ArchX86 {
+             return Ok(None);
+         }
+         let addend = match self.arch {
++            Architecture::X86_16 => match relocation.flags() {
++                object::RelocationFlags::Elf {
++                    r_type: elf::R_386_16 | elf::R_386_PC16 | R_386_SEG16 | R_386_FAR16,
++                } => {
++                    let data =
++                        section.data()?[address as usize..address as usize + 2].try_into()?;
++                    self.endianness.read_i16(data) as i64
++                }
++                flags => bail!("Unsupported x86-16 implicit relocation {flags:?}"),
++            },
+             Architecture::X86 => match relocation.flags() {
+                 object::RelocationFlags::Coff {
+                     typ: pe::IMAGE_REL_I386_DIR32 | pe::IMAGE_REL_I386_REL32,
+@@ -336,6 +402,18 @@ impl Arch for ArchX86 {
+ 
+     fn reloc_name(&self, flags: RelocationFlags) -> Option<&'static str> {
+         match self.arch {
++            Architecture::X86_16 => match flags {
++                RelocationFlags::Elf(typ) => match typ {
++                    elf::R_386_8 => Some("R_386_8"),
++                    elf::R_386_PC8 => Some("R_386_PC8"),
++                    elf::R_386_16 => Some("R_386_16"),
++                    elf::R_386_PC16 => Some("R_386_PC16"),
++                    R_386_SEG16 => Some("R_386_SEG16"),
++                    R_386_FAR16 => Some("R_386_FAR16"),
++                    _ => None,
++                },
++                _ => None,
++            },
+             Architecture::X86 => match flags {
+                 RelocationFlags::Coff(typ) => match typ {
+                     pe::IMAGE_REL_I386_DIR32 => Some("IMAGE_REL_I386_DIR32"),
+@@ -427,6 +505,10 @@ struct InstructionFormatterOutput<'a> {
+     reloc_replace: Option<(OpKind, usize, u64)>,
+     error: Option<anyhow::Error>,
+     skip_next: bool,
++    /// 16-bit mode: placeholders are compared as 16-bit values
++    bits16: bool,
++    /// Far pointer replacement: 0 = none yet, 1 = reloc emitted (skip separator), 2 = done
++    far_state: u8,
+ }
+ 
+ impl InstructionFormatterOutput<'_> {
+@@ -457,6 +539,11 @@ impl FormatterOutput for InstructionFormatterOutput<'_> {
+                 return;
+             }
+         }
++        // Skip the separator between the two halves of a relocated far pointer
++        if self.far_state == 1 && kind == FormatterTextKind::Punctuation {
++            self.far_state = 2;
++            return;
++        }
+         match kind {
+             FormatterTextKind::Text | FormatterTextKind::Punctuation => {
+                 if let Err(e) = (self.cb)(InstructionPart::basic(text)) {
+@@ -499,7 +586,36 @@ impl FormatterOutput for InstructionFormatterOutput<'_> {
+             return;
+         }
+ 
+-        if let (Some(operand), Some((target_op_kind, reloc_size, target_value))) =
++        if self.bits16
++            && let Some((target_op_kind, _, target_value)) = self.reloc_replace
++        {
++            let is_far = matches!(target_op_kind, OpKind::FarBranch16 | OpKind::FarBranch32);
++            let v = value & 0xFFFF;
++            if is_far && (v == PLACEHOLDER16 || v == PLACEHOLDER16_SEL) {
++                // Emit one relocation for the selector:offset pair
++                if self.far_state == 0 {
++                    self.far_state = 1;
++                    if let Err(e) = (self.cb)(InstructionPart::reloc()) {
++                        self.error = Some(e);
++                    }
++                }
++                return;
++            }
++            if !is_far
++                && v == target_value
++                && instruction_operand.is_some_and(|op| {
++                    let k = instruction.op_kind(op);
++                    k == target_op_kind
++                        || (target_op_kind == OpKind::Immediate16
++                            && matches!(k, OpKind::Immediate16 | OpKind::Immediate8to16))
++                })
++            {
++                if let Err(e) = (self.cb)(InstructionPart::reloc()) {
++                    self.error = Some(e);
++                }
++                return;
++            }
++        } else if let (Some(operand), Some((target_op_kind, reloc_size, target_value))) =
+             (instruction_operand, self.reloc_replace)
+         {
+             #[allow(clippy::match_like_matches_macro)]

@@ -1,0 +1,2510 @@
+# addr    kind   size     name  [flags]
+# addr is the IDA linear address; names are linker names (C names get a
+# leading underscore). Flags: lib, near, noreturn, unused (never referenced)
+
+10000  func   00000F  _sub_10000
+10010  func   000077  _sub_10010
+10088  func   000022  _sub_10088
+100AA  func   000021  _sub_100AA
+100CC  func   0002E1  _sub_100CC
+103AE  func   000318  _sub_103AE
+106C6  func   000184  _sub_106C6
+1084A  func   000044  _sub_1084A
+1088E  func   000050  _sub_1088E
+108DE  func   00005E  _sub_108DE
+1093C  func   00005D  _sub_1093C
+1099A  func   000025  _sub_1099A
+109C0  func   0002D5  _sub_109C0
+10C96  func   000056  _sub_10C96
+10CEC  func   000059  _sub_10CEC
+10D46  func   0000E7  _sub_10D46
+10E2E  func   0001DD  _sub_10E2E
+1100C  func   00017B  _sub_1100C
+11188  func   000081  _sub_11188
+1120A  func   000081  _sub_1120A
+1128C  func   000231  _sub_1128C
+114BE  func   0001B9  _sub_114BE
+11678  func   0001B7  _sub_11678
+11830  func   0000C8  _sub_11830
+118F8  func   000101  _sub_118F8
+119FA  func   000145  _sub_119FA
+11B40  func   0000E0  _sub_11B40
+11C20  func   000011  _sub_11C20
+11C32  func   0000C1  _sub_11C32
+11CF4  func   000035  _sub_11CF4
+11D2A  func   00005A  _sub_11D2A
+11D84  func   000056  _sub_11D84
+11DDA  func   000044  _sub_11DDA
+11E1E  func   00003A  _sub_11E1E
+11E58  func   0000DF  _sub_11E58
+11F38  func   0001BA  _sub_11F38
+120F2  func   000057  _sub_120F2
+1214A  func   000072  _sub_1214A
+121BC  func   00000B  _sub_121BC
+121C8  func   00000B  _sub_121C8
+121D4  func   000069  _sub_121D4
+1223E  func   000056  _sub_1223E
+12294  func   0000FE  _sub_12294
+12392  func   000097  _sub_12392
+1242A  func   0002C6  _sub_1242A
+126F0  func   00006A  _sub_126F0
+1275A  func   00000C  _sub_1275A
+12766  func   0001DD  _sub_12766
+12944  func   00005D  _sub_12944
+129A2  func   000063  _sub_129A2
+12A06  func   000025  _sub_12A06
+12A2C  func   0000F0  _sub_12A2C
+12B1C  func   00000D  _sub_12B1C
+12B2A  func   000252  _sub_12B2A
+12D7C  func   000025  _sub_12D7C
+12DA2  func   0001DB  _sub_12DA2
+12F7E  func   000072  _sub_12F7E
+12FF0  func   000034  _sub_12FF0
+13024  func   000093  _sub_13024
+130B8  func   000011  _sub_130B8
+130CA  func   000063  _sub_130CA
+1312E  func   00003C  _sub_1312E
+1316A  func   000415  _sub_1316A
+13580  func   0000FD  _sub_13580
+1367E  func   000061  _sub_1367E
+136E0  func   0002EE  _sub_136E0
+139CE  func   000089  _sub_139CE
+13A58  func   0001BD  _sub_13A58
+13C16  func   000013  _sub_13C16
+13C2A  func   0003D7  _sub_13C2A
+14002  func   00045E  _sub_14002
+14460  func   000031  _sub_14460
+14492  func   000015  _sub_14492
+144A8  func   00001E  _sub_144A8
+144C6  func   000030  _sub_144C6
+144F6  func   000075  _sub_144F6
+1456C  func   000037  _sub_1456C
+145A4  func   0001CE  _sub_145A4
+14772  func   000032  _sub_14772
+147A4  func   0001A8  _sub_147A4
+1494C  func   000013  _sub_1494C
+14960  func   000114  _sub_14960
+14A74  func   000160  _sub_14A74
+14BD4  func   0000A9  _sub_14BD4
+14C7E  func   000119  _sub_14C7E
+14D98  func   0000D5  _sub_14D98
+14E6E  func   0000A6  _sub_14E6E
+14F14  func   000033  _sub_14F14
+14F48  func   000009  _sub_14F48
+14F52  func   00011F  _sub_14F52
+15072  func   0001C9  _sub_15072
+1523C  func   00011B  _sub_1523C
+15358  func   00003E  _sub_15358
+15396  func   00018D  _sub_15396
+15524  func   000208  _sub_15524
+1572C  func   000030  _sub_1572C
+1575C  func   000030  _sub_1575C
+1578C  func   000143  _sub_1578C
+158D0  func   0002F8  _sub_158D0
+15BC8  func   00003C  _sub_15BC8
+15C04  func   00002D  _sub_15C04
+15C32  func   000030  _sub_15C32
+15C62  func   000023  _sub_15C62
+15C86  func   000015  _sub_15C86
+15C9C  func   00001F  _sub_15C9C
+15CBC  func   000268  _sub_15CBC
+15F24  func   000035  _sub_15F24
+15F5A  func   00007D  _sub_15F5A
+15FD8  func   0000ED  _sub_15FD8
+160C6  func   000020  _sub_160C6
+160E6  func   000417  _sub_160E6
+164FE  func   000081  _sub_164FE
+16580  func   0000FF  _sub_16580
+16680  func   000045  _sub_16680
+166C6  func   000050  _sub_166C6
+16716  func   000024  _sub_16716
+1673A  func   000078  _sub_1673A
+167B2  func   000020  _sub_167B2
+167D2  func   000017  _sub_167D2
+167EA  func   0000F3  _sub_167EA
+168DE  func   0001CC  _sub_168DE
+16AAA  func   000076  _sub_16AAA
+16B20  func   00002A  _sub_16B20
+16B4A  func   000027  _sub_16B4A
+16B72  func   000024  _sub_16B72
+16B96  func   00003A  _sub_16B96
+16BD0  func   000055  _sub_16BD0
+16C26  func   000014  _sub_16C26
+16C3A  func   000011  _sub_16C3A
+16C4C  func   000013  _sub_16C4C
+16C60  func   000014  _sub_16C60
+16C74  func   00001C  _sub_16C74
+16C90  func   000040  _sub_16C90
+16CD0  func   000011  _sub_16CD0
+16CE2  func   000032  _sub_16CE2
+16D14  func   000032  _sub_16D14
+16D46  func   000097  _sub_16D46
+16DDE  func   000027  _sub_16DDE
+16E06  func   00000D  _sub_16E06
+16E14  func   000016  _sub_16E14
+16E2A  func   000066  _sub_16E2A
+16E90  func   000039  _sub_16E90
+16ECA  func   0000BA  _sub_16ECA
+16F84  func   0000CE  _sub_16F84
+17052  func   00009B  _sub_17052
+170EE  func   00031C  _sub_170EE
+1740A  func   000043  _sub_1740A
+1744E  func   00001A  _sub_1744E
+17468  func   000111  _sub_17468  near
+17579  func   00002B  _sub_17579
+175A4  func   000024  _sub_175A4
+175C8  func   000012  _sub_175C8
+175DA  func   00000F  _sub_175DA
+175EA  func   000026  _sub_175EA
+17610  func   00000A  _sub_17610
+1761A  func   00000A  _sub_1761A
+17624  func   00001C  _sub_17624
+17640  func   000139  _sub_17640
+1777A  func   000169  _sub_1777A
+178E4  func   00002B  _sub_178E4
+17910  func   000028  _sub_17910
+17938  func   000034  _sub_17938
+1796C  func   000062  _sub_1796C
+179CE  func   000006  _sub_179CE
+179D4  func   00003F  _sub_179D4
+17A14  func   0002CA  _sub_17A14
+17CDE  func   0000F9  _sub_17CDE
+17DD8  func   000117  _sub_17DD8
+17EF0  func   000031  _sub_17EF0
+17F22  func   000367  _sub_17F22
+1828A  func   00002B  _sub_1828A
+182B6  func   000020  _sub_182B6
+182D6  func   00155F  _sub_182D6
+19836  func   000182  _sub_19836
+199B8  func   00002F  _sub_199B8
+199E8  func   000275  _sub_199E8
+19C5E  func   000231  _sub_19C5E
+19E90  func   0001D3  _sub_19E90
+1A064  func   000093  _sub_1A064
+1A0F8  func   000372  _sub_1A0F8
+1A46A  func   0001D7  _sub_1A46A
+1A642  func   00009B  _sub_1A642
+1A6DE  func   00007D  _sub_1A6DE
+1A75C  func   000010  _sub_1A75C
+1A76C  func   000010  _sub_1A76C
+1A77C  func   000056  _sub_1A77C
+1A7D2  func   000059  _sub_1A7D2
+1A82C  func   000063  _sub_1A82C
+1A890  func   000096  _sub_1A890
+1A926  func   000087  _sub_1A926
+1A9AE  func   000085  _sub_1A9AE
+1AA34  func   000073  _sub_1AA34
+1AAA8  func   000044  _sub_1AAA8
+1AAEC  func   00001D  _sub_1AAEC
+1AB0A  func   000016  _sub_1AB0A
+1AB20  func   000016  _sub_1AB20
+1AB36  func   00004A  _sub_1AB36
+1AB80  func   000076  _sub_1AB80
+1ABF6  func   00000D  _sub_1ABF6
+1AC04  func   00003B  _sub_1AC04
+1AC40  func   000031  _sub_1AC40
+1AC72  func   000027  _sub_1AC72
+1AC9A  func   000023  _sub_1AC9A
+1ACBE  func   000032  _sub_1ACBE
+1ACF0  func   000004  _sub_1ACF0
+1ACF4  func   000125  _sub_1ACF4
+1AE1A  func   000072  _sub_1AE1A
+1AE8C  func   0001F3  _sub_1AE8C
+1B080  func   00007E  _sub_1B080
+1B0FE  func   000078  _sub_1B0FE
+1B176  func   0000A7  _sub_1B176
+1B21E  func   000062  _sub_1B21E
+1B280  func   00004E  _sub_1B280
+1B2CE  func   00003D  _sub_1B2CE
+1B30C  func   000060  _sub_1B30C
+1B36C  func   00001D  _sub_1B36C
+1B38A  func   00000C  _sub_1B38A
+1B396  func   00000B  _sub_1B396
+1B3A2  func   000078  _sub_1B3A2
+1B41A  func   000042  _sub_1B41A
+1B45C  func   000046  _sub_1B45C
+1B4A2  func   000020  _sub_1B4A2
+1B4C2  func   000021  _sub_1B4C2
+1B4E4  func   000013  _sub_1B4E4
+1B4F8  func   000013  _sub_1B4F8
+1B50C  func   000021  _sub_1B50C
+1B52E  func   0000EF  _sub_1B52E
+1B61E  func   0000AD  _sub_1B61E
+1B6CC  func   0000FC  _sub_1B6CC
+1B7C8  func   000075  _sub_1B7C8
+1B83E  func   000075  _sub_1B83E
+1B8B4  func   0000BD  _sub_1B8B4
+1B972  func   0000FB  _sub_1B972
+1BA6E  func   000028  _sub_1BA6E
+1BA96  func   000070  _sub_1BA96
+1BB06  func   000048  _sub_1BB06
+1BB4E  func   0000A0  _sub_1BB4E
+1BBEE  func   00004E  _sub_1BBEE
+1BC3C  func   000049  _sub_1BC3C
+1BC86  func   00001D  _sub_1BC86
+1BCA4  func   00001D  _sub_1BCA4
+1BCC2  func   00000C  _sub_1BCC2
+1BCCE  func   000094  _sub_1BCCE
+1BD62  func   0000B0  _sub_1BD62
+1BE12  func   0000FA  _sub_1BE12
+1BF0C  func   000157  _sub_1BF0C
+1C064  func   0001A5  _sub_1C064
+1C20A  func   00005C  _sub_1C20A
+1C266  func   000093  _sub_1C266
+1C2FA  func   000013  _sub_1C2FA
+1C30E  func   0000E4  _sub_1C30E
+1C3F2  func   000038  _sub_1C3F2
+1C42A  func   000006  _sub_1C42A
+1C430  func   000097  _sub_1C430
+1C4C8  func   00000B  _sub_1C4C8
+1C4D4  func   0005D2  _sub_1C4D4
+1CAA8  func   00019C  _sub_1CAA8
+1CC44  func   000032  _sub_1CC44
+1CC76  func   00003C  _sub_1CC76
+1CCB2  func   000469  _sub_1CCB2
+1D11C  func   000076  _sub_1D11C
+1D192  func   000078  _sub_1D192
+1D20A  func   000018  _sub_1D20A
+1D222  func   00003A  _sub_1D222
+1D25C  func   0001FD  _sub_1D25C
+1D45A  func   0000E4  _sub_1D45A
+1D53E  func   00001A  _sub_1D53E
+1D558  func   000128  _sub_1D558
+1D680  func   000038  _sub_1D680
+1D6B8  func   000063  _sub_1D6B8
+1D71C  func   000043  _sub_1D71C
+1D760  func   00003E  _sub_1D760
+1D79E  func   000108  _sub_1D79E
+1D8A6  func   0000AC  _sub_1D8A6
+1D952  func   0000FB  _sub_1D952
+1DA4E  func   000068  _sub_1DA4E
+1DAB6  func   000165  _sub_1DAB6
+1DC1C  func   000053  _sub_1DC1C
+1DC70  func   000014  _sub_1DC70
+1DC84  func   00000F  _sub_1DC84
+1DC94  func   000022  _sub_1DC94
+1DCB6  func   000C6E  _sub_1DCB6
+1E924  func   00004E  _sub_1E924
+1E972  func   000071  _sub_1E972
+1E9E4  func   0001DA  _sub_1E9E4
+1EBBE  func   000025  _sub_1EBBE
+1EBE4  func   000084  _sub_1EBE4
+1EC68  func   00011E  _sub_1EC68
+1ED86  func   000060  _sub_1ED86
+1EDE6  func   000071  _sub_1EDE6
+1EE58  func   0000EA  _sub_1EE58
+1EF42  func   00002E  _sub_1EF42
+1EF70  func   000094  _sub_1EF70
+1F004  func   0005A5  _sub_1F004
+1F5AA  func   000202  _sub_1F5AA
+1F7AC  func   000320  _sub_1F7AC
+1FACC  func   00002A  _sub_1FACC
+1FAF6  func   000075  _sub_1FAF6
+1FB6C  func   000190  _sub_1FB6C
+1FCFC  func   000075  _sub_1FCFC
+1FD72  func   000023  _sub_1FD72
+1FD96  func   0000F7  _sub_1FD96
+1FE8E  func   0000CD  _sub_1FE8E
+1FF5C  func   000185  _sub_1FF5C
+200E2  func   0000EE  _sub_200E2
+201D0  func   000019  _sub_201D0
+201EA  func   00008B  _sub_201EA
+20276  func   0001C8  _sub_20276
+2043E  func   000037  _sub_2043E
+20476  func   000019  _sub_20476
+20490  func   000019  _sub_20490
+204AA  func   000046  _sub_204AA
+204F0  func   00012D  _sub_204F0
+2061E  func   0000CF  _sub_2061E
+206EE  func   000084  _sub_206EE
+20772  func   000164  _sub_20772
+208D6  func   00005D  _sub_208D6
+20934  func   00012D  _sub_20934
+20A62  func   000072  _sub_20A62
+20AD4  func   000233  _sub_20AD4
+20D08  func   00003A  _sub_20D08
+20D42  func   000016  _sub_20D42
+20D58  func   000016  _sub_20D58
+20D6E  func   00002E  _sub_20D6E
+20D9C  func   000017  _sub_20D9C
+20DB4  func   00037F  _sub_20DB4
+21134  func   000169  _sub_21134
+2129E  func   000076  _sub_2129E
+21314  func   000078  _sub_21314
+2138C  func   00000E  _sub_2138C
+2139A  func   00005C  _sub_2139A
+213F6  func   000142  _sub_213F6
+21538  func   00005C  _sub_21538
+21594  func   00002F  _sub_21594
+215C4  func   00006E  _sub_215C4
+21632  func   000071  _sub_21632
+216A4  func   00006E  _sub_216A4
+21712  func   00006E  _sub_21712
+21780  func   000071  _sub_21780
+217F2  func   00006E  _sub_217F2
+21860  func   000034  _sub_21860
+21894  func   00008C  _sub_21894
+21920  func   00001A  _sub_21920
+2193A  func   000082  _sub_2193A
+219BC  func   00001A  _sub_219BC
+219D6  func   000082  _sub_219D6
+21A58  func   00006F  _sub_21A58
+21AC8  func   000144  _sub_21AC8
+21C0C  func   00004A  _sub_21C0C
+21C56  func   00004D  _sub_21C56
+21CA4  func   00004A  _sub_21CA4
+21CEE  func   0000A9  _sub_21CEE
+21D98  func   00001D  _sub_21D98
+21DB6  func   000019  _ListInit
+21DD0  func   000023  _ListAdd
+21DF4  func   00001C  _sub_21DF4
+21E10  func   000021  _sub_21E10
+21E32  func   000021  _sub_21E32
+21E54  func   000011  _sub_21E54
+21E66  func   00021A  _main  lib
+22080  func   000018  _sub_22080
+22098  func   00004E  _sub_22098
+220E6  func   000077  _sub_220E6
+2215E  func   000030  _sub_2215E
+2218E  func   00003A  _sub_2218E
+221C8  func   0000D6  _sub_221C8
+2229E  func   0002B4  _sub_2229E
+22552  func   000092  _sub_22552
+225E4  func   000001  _sub_225E4
+225E6  func   00002E  _sub_225E6
+22614  func   0000BF  _sub_22614
+226D4  func   000234  _sub_226D4
+22908  func   000030  _sub_22908
+22938  func   0000D9  _sub_22938
+22A12  func   000025  _sub_22A12
+22A38  func   00000D  _sub_22A38
+22A46  func   0000A8  _sub_22A46
+22AEE  func   0000C5  _sub_22AEE
+22BB4  func   00011B  _sub_22BB4
+22CD0  func   000033  _sub_22CD0
+22D04  func   00001C  _sub_22D04
+22D20  func   000010  _sub_22D20
+22D30  func   000040  _sub_22D30
+22D70  func   000011  _sub_22D70
+22D82  func   000242  _sub_22D82
+22FC4  func   000043  _sub_22FC4
+23008  func   00002C  _sub_23008
+23034  func   000030  _sub_23034
+23064  func   00005F  _sub_23064
+230C4  func   000034  _sub_230C4
+230F8  func   000039  _sub_230F8
+23132  func   00002A  _sub_23132
+2315C  func   000095  _sub_2315C
+231F2  func   0002B9  _sub_231F2
+234AC  func   0000B4  _sub_234AC
+23560  func   00017A  _sub_23560
+236DA  func   00049A  _sub_236DA
+23B74  func   0001BB  _sub_23B74
+23D30  func   000127  _sub_23D30
+23E58  func   000066  _sub_23E58
+23EBE  func   000017  _sub_23EBE
+23ED6  func   000015  _sub_23ED6
+23EEC  func   0003CB  _sub_23EEC
+242B8  func   00014A  _sub_242B8
+24402  func   0000F9  _sub_24402
+244FC  func   00000B  _sub_244FC
+24508  func   000006  _sub_24508
+2450E  func   00000D  _sub_2450E
+2451C  func   000424  _sub_2451C
+24940  func   000006  _sub_24940
+24946  func   00004B  _sub_24946
+24992  func   00005F  _sub_24992
+249F2  func   00001B  _sub_249F2
+24A0E  func   00002F  _sub_24A0E
+24A3E  func   0000FD  _sub_24A3E
+24B3C  func   000069  _sub_24B3C
+24BA6  func   000069  _sub_24BA6
+24C10  func   00001A  _sub_24C10
+24C2A  func   000014  _sub_24C2A
+24C3E  func   000011  _sub_24C3E
+24C50  func   00000D  _sub_24C50
+24C5E  func   00000E  _sub_24C5E
+24C6C  func   000027  _sub_24C6C
+24C94  func   000075  _sub_24C94
+24D0A  func   000029  _sub_24D0A
+24D34  func   000046  _sub_24D34
+24D7A  func   000024  _sub_24D7A
+24D9E  func   00000C  _sub_24D9E
+24DAA  func   00004F  _sub_24DAA
+24DFA  func   000074  _sub_24DFA
+24E6E  func   00008C  _sub_24E6E
+24EFA  func   00001F  _sub_24EFA
+24F1A  func   00002B  _sub_24F1A
+24F46  func   00001B  _sub_24F46
+24F62  func   000050  _sub_24F62
+24FB2  func   0000D7  _sub_24FB2
+2508A  func   00012A  _sub_2508A
+251B4  func   00016B  _sub_251B4
+25320  func   000088  _sub_25320
+253A8  func   0001ED  _sub_253A8
+25596  func   00008E  _sub_25596
+25624  func   00009D  _sub_25624
+256C2  func   00000F  _sub_256C2
+256D2  func   0001AA  _sub_256D2
+2587C  func   000015  _sub_2587C
+25892  func   000089  _sub_25892
+2591C  func   000021  _sub_2591C
+2593E  func   00009C  _sub_2593E
+259DA  func   000058  _sub_259DA
+25A32  func   00018A  _sub_25A32
+25BBC  func   0001F2  _sub_25BBC
+25DAE  func   00005D  _sub_25DAE
+25E0C  func   0002D9  _sub_25E0C
+260E6  func   000036  _sub_260E6
+2611C  func   0000A2  _sub_2611C
+261BE  func   00006A  _sub_261BE
+26228  func   000056  _sub_26228
+2627E  func   0000A9  _sub_2627E
+26328  func   0000E5  _sub_26328
+2640E  func   000167  _sub_2640E
+26576  func   000034  _sub_26576
+265AA  func   00001F  _sub_265AA
+265CA  func   00001F  _sub_265CA
+265EA  func   000021  _sub_265EA
+2660C  func   000032  _sub_2660C
+2663E  func   000014  _sub_2663E
+26652  func   000021  _sub_26652
+26674  func   00006A  _sub_26674
+266DE  func   0001E3  _sub_266DE
+268C2  func   000038  _sub_268C2
+268FA  func   00007B  _sub_268FA
+26976  func   00003A  _sub_26976
+269B0  func   000019  _sub_269B0
+269CA  func   000095  _sub_269CA
+26A60  func   000067  _sub_26A60
+26AC8  func   000036  _sub_26AC8
+26AFE  func   0001D8  _sub_26AFE
+26CD6  func   0000C5  _sub_26CD6
+26D9C  func   000035  _sub_26D9C
+26DD2  func   000168  _sub_26DD2
+26F3A  func   00000F  _sub_26F3A
+26F4A  func   000010  _sub_26F4A
+26F5A  func   00000D  _sub_26F5A
+26F68  func   000067  _sub_26F68
+26FD0  func   000067  _sub_26FD0
+27038  func   00000D  _sub_27038
+27046  func   000016  _sub_27046
+2705C  func   000016  _sub_2705C
+27072  func   000016  _sub_27072
+27088  func   00000D  _sub_27088
+27096  func   00006A  _sub_27096
+27100  func   00000D  _sub_27100
+2710E  func   000040  _sub_2710E
+2714E  func   00001E  _sub_2714E
+2716C  func   000029  _sub_2716C
+27196  func   0001FC  _sub_27196
+27392  func   0000D4  _sub_27392
+27466  func   000021  _sub_27466
+27488  func   000026  _sub_27488
+274AE  func   000052  _sub_274AE
+27500  func   000391  _sub_27500
+27892  func   0000B5  _sub_27892
+27948  func   00002B  _sub_27948
+27974  func   00009B  _sub_27974
+27A10  func   000185  _sub_27A10
+27B96  func   000048  _sub_27B96
+27BDE  func   000181  _sub_27BDE
+27D60  func   0000F5  _sub_27D60
+27E56  func   00002E  _sub_27E56
+27E84  func   000104  _sub_27E84
+27F88  func   000070  _sub_27F88
+27FF8  func   000032  _sub_27FF8
+2802A  func   0000F0  _sub_2802A
+2811A  func   000122  _sub_2811A
+2823C  func   000032  _sub_2823C
+2826E  func   000434  _sub_2826E
+286A2  func   0000D1  _sub_286A2
+28774  func   0000BA  _sub_28774
+2882E  func   000116  _sub_2882E
+28944  func   000262  _sub_28944
+28BA6  func   0000A4  _sub_28BA6
+28C4A  func   000034  _sub_28C4A
+28C7E  func   00000D  _sub_28C7E
+28C8C  func   000023  _sub_28C8C
+28CB0  func   00001C  _sub_28CB0
+28CCC  func   00005B  _sub_28CCC
+28D28  func   000001  _sub_28D28
+28D2A  func   000011  _sub_28D2A
+28D3C  func   00000D  _sub_28D3C
+28D4A  func   00002C  _sub_28D4A
+28D76  func   000009  _sub_28D76
+28D80  func   000029  _sub_28D80
+28DAA  func   000041  _sub_28DAA
+28DEC  func   000055  _sub_28DEC
+28E42  func   000011  _sub_28E42
+28E54  func   00025E  _sub_28E54
+290B2  func   0000D8  _sub_290B2
+2918A  func   00001B  _sub_2918A
+291A6  func   000049  _sub_291A6
+291F0  func   000138  _sub_291F0
+29328  func   00008C  _sub_29328
+293B4  func   0003A3  _sub_293B4
+29758  func   00007A  _sub_29758
+297D2  func   000077  _sub_297D2
+2984A  func   000067  _sub_2984A
+298B2  func   0000FA  _sub_298B2
+299AC  func   00002E  _sub_299AC
+299DA  func   000013  _sub_299DA
+299EE  func   00006F  _sub_299EE
+29A5E  func   000062  _sub_29A5E
+29AC0  func   000001  _sub_29AC0
+29AC2  func   000241  _sub_29AC2
+29D04  func   00002D  _sub_29D04
+29D32  func   000046  _sub_29D32
+29D78  func   000025  _sub_29D78
+29D9E  func   00025E  _sub_29D9E
+29FFC  func   0000B4  _sub_29FFC
+2A0B0  func   000303  _sub_2A0B0
+2A3B4  func   000172  _sub_2A3B4
+2A526  func   000018  _sub_2A526
+2A53E  func   000007  _sub_2A53E
+2A546  func   00006E  _sub_2A546
+2A5B4  func   00008F  _sub_2A5B4
+2A644  func   000033  _sub_2A644
+2A677  func   000051  _sub_2A677
+2A6C8  func   00002B  _sub_2A6C8
+2A6F3  func   00002B  _sub_2A6F3
+2A71E  func   000051  _sub_2A71E
+2A76F  func   00000F  _sub_2A76F
+2A77E  func   000043  _sub_2A77E
+2A7C1  func   0000A6  _sub_2A7C1
+2A867  func   000015  _sub_2A867
+2A87C  func   000015  _sub_2A87C
+2A891  func   000024  _sub_2A891
+2A8B5  func   00002C  _sub_2A8B5
+2A8E1  func   00001D  _sub_2A8E1
+2A8FE  func   00012D  _sub_2A8FE
+2AA2B  func   000029  _sub_2AA2B
+2AA54  func   000033  _sub_2AA54
+2AA87  func   0001D2  _sub_2AA87
+2AC59  func   00003F  _sub_2AC59  near
+2AC98  func   00000D  _sub_2AC98  near
+2ACA6  func   00018D  _sub_2ACA6
+2AE34  func   00002D  _sub_2AE34
+2AE62  func   0000BC  _sub_2AE62
+2AF1E  func   0000E7  _sub_2AF1E
+2B006  func   000032  _sub_2B006
+2B038  func   00005F  _sub_2B038
+2B098  func   000013  _sub_2B098
+2B0AC  func   00001A  _sub_2B0AC
+2B0C6  func   00005D  _sub_2B0C6
+2B124  func   000011  _sub_2B124
+2B136  func   000110  _sub_2B136
+2B246  func   00002B  _sub_2B246
+2B272  func   000018  _sub_2B272
+2B28A  func   000005  _sub_2B28A
+2B290  func   0000A7  _sub_2B290
+2B338  func   000075  _sub_2B338
+2B3AE  func   0001BC  _sub_2B3AE
+2B56A  func   00001A  _sub_2B56A
+2B584  func   000038  _sub_2B584
+2B5BC  func   000050  _sub_2B5BC
+2B60C  func   000051  _sub_2B60C
+2B65E  func   00002D  _sub_2B65E
+2B68C  func   000066  _sub_2B68C
+2B6F2  func   00008A  _sub_2B6F2
+2B77C  func   000035  _sub_2B77C
+2B7B2  func   000005  _sub_2B7B2
+2B7B8  func   0001C7  _sub_2B7B8
+2B980  func   000098  _sub_2B980
+2BA18  func   0000B6  _sub_2BA18
+2BACE  func   000013  _sub_2BACE
+2BAE2  func   00000B  _sub_2BAE2
+2BAEE  func   000073  _sub_2BAEE
+2BB62  func   000287  _sub_2BB62
+2BDEA  func   000026  _sub_2BDEA
+2BE10  func   0000A0  _sub_2BE10
+2BEB0  func   000017  _sub_2BEB0
+2BEC8  func   00004E  _sub_2BEC8
+2BF16  func   000033  _sub_2BF16
+2BF4A  func   00004A  _sub_2BF4A
+2BF94  func   000B32  _sub_2BF94  near
+2CAC6  func   000445  _sub_2CAC6
+2CF0C  func   000157  _sub_2CF0C
+2D064  func   00003F  _sub_2D064
+2D0A4  func   000070  _sub_2D0A4
+2D114  func   00017C  _sub_2D114
+2D290  func   0001C7  _sub_2D290
+2D458  func   0000D0  _sub_2D458
+2D528  func   00015F  _sub_2D528
+2D688  func   000092  _sub_2D688
+2D71A  func   0000B9  _sub_2D71A
+2D7D4  func   000032  _sub_2D7D4
+2D806  func   000043  _sub_2D806
+2D84A  func   00014F  _sub_2D84A
+2D99A  func   0000BE  _sub_2D99A
+2DA58  func   00007D  _sub_2DA58
+2DAD6  func   00009C  _sub_2DAD6
+2DB72  func   000109  _sub_2DB72
+2DC7C  func   00008C  _sub_2DC7C
+2DD08  func   00001D  _sub_2DD08
+2DD26  func   000011  _sub_2DD26
+2DD38  func   00001D  _sub_2DD38
+2DD56  func   000011  _sub_2DD56
+2DD68  func   000055  _sub_2DD68
+2DDBE  func   000092  _sub_2DDBE
+2DE50  func   00003B  _sub_2DE50
+2DE8C  func   00006E  _sub_2DE8C
+2DEFA  func   00012F  _sub_2DEFA
+2E02A  func   000042  _sub_2E02A
+2E06C  func   000082  _sub_2E06C
+2E0EE  func   000025  _sub_2E0EE
+2E114  func   00002C  _sub_2E114
+2E140  func   000012  _sub_2E140
+2E152  func   000058  _sub_2E152
+2E1AA  func   000068  _sub_2E1AA
+2E212  func   00001B  _sub_2E212
+2E22E  func   000062  _sub_2E22E
+2E290  func   000059  _sub_2E290
+2E2EA  func   00005C  _sub_2E2EA
+2E346  func   00005C  _sub_2E346
+2E3A2  func   00007C  _sub_2E3A2
+2E41E  func   000030  _sub_2E41E
+2E44E  func   00017B  _sub_2E44E
+2E5CA  func   0000DA  _sub_2E5CA
+2E6A4  func   0000CD  _sub_2E6A4
+2E772  func   000052  _sub_2E772
+2E7C4  func   00001E  _sub_2E7C4
+2E7E2  func   000004  _sub_2E7E2
+2E7E6  func   0000D8  _sub_2E7E6
+2E8BE  func   0000C4  _sub_2E8BE
+2E982  func   000010  _sub_2E982
+2E992  data   000202  _word_2E992
+2EB94  func   000021  _sub_2EB94  near
+2EBB5  func   000045  _sub_2EBB5
+2EBFA  data   000002  _word_2EBFA
+2EBFC  data   000042  _word_2EBFC
+2EC3E  data   000002  _word_2EC3E
+2EC40  data   000044  _word_2EC40
+2EC84  data   00008A  _word_2EC84
+2ED0E  data   000002  _word_2ED0E
+2ED10  data   000002  _word_2ED10
+2ED12  data   000002  _dword_2ED12
+2ED14  data   000002  _word_2ED14
+2ED16  data   000002  _word_2ED16
+2ED18  data   000002  _word_2ED18
+2ED1A  data   000002  _word_2ED1A
+2ED1C  data   000086  _word_2ED1C
+2EDA2  data   000006  _word_2EDA2
+2EDA8  data   000002  _word_2EDA8
+2EDAA  func   00020A  _sub_2EDAA  near
+2EFB4  func   000038  _sub_2EFB4
+2EFEC  func   000018  _sub_2EFEC
+2F004  func   0000D1  _sub_2F004  near
+2F0D5  func   000032  _sub_2F0D5
+2F107  func   000001  _sub_2F107  near
+2F111  func   000007  _sub_2F111
+2F118  func   000042  _sub_2F118
+2F15A  func   000001  _sub_2F15A  near
+2F164  func   000026  _sub_2F164
+2F18A  func   000001  _sub_2F18A  near
+2F194  func   00001E  _sub_2F194
+2F1B2  func   000001  _sub_2F1B2  near
+2F1BD  func   00002A  _sub_2F1BD
+2F1E7  func   00004B  _sub_2F1E7
+2F232  func   00008B  _sub_2F232
+2F2BD  func   000001  _sub_2F2BD  near
+2F2C7  func   000041  _sub_2F2C7
+2F308  func   000001  _sub_2F308  near
+2F312  func   00005A  _sub_2F312
+2F36C  func   000001  _sub_2F36C  near
+2F377  func   0000C0  _sub_2F377
+2F437  func   000001  _sub_2F437  near
+2F442  func   00003E  _sub_2F442
+2F480  func   000001  _sub_2F480  near
+2F48B  func   000014  _sub_2F48B
+2F49F  func   000001  _sub_2F49F  near
+2F4A9  func   00001D  _sub_2F4A9
+2F4C6  func   000001  _sub_2F4C6  near
+2F4D1  func   000014  _sub_2F4D1
+2F4E5  func   000001  _sub_2F4E5  near
+2F4EF  func   00001D  _sub_2F4EF
+2F50C  func   000001  _sub_2F50C  near
+2F517  func   000014  _sub_2F517
+2F52B  func   000001  _sub_2F52B  near
+2F535  func   00004A  _sub_2F535
+2F57F  func   000001  _sub_2F57F  near
+2F58A  func   000036  _sub_2F58A
+2F5C0  func   000001  _sub_2F5C0  near
+2F5CB  func   000031  _sub_2F5CB
+2F5FC  func   000001  _sub_2F5FC  near
+2F607  func   00000A  _sub_2F607
+2F611  func   000001  _sub_2F611  near
+2F61B  func   000097  _sub_2F61B
+2F6B2  func   000001  _sub_2F6B2  near
+2F6FE  func   00003C  _sub_2F6FE
+2F73A  func   000001  _sub_2F73A  near
+2F745  func   000026  _sub_2F745
+2F76B  func   000006  _sub_2F76B
+2F771  func   0000A7  _sub_2F771
+2F818  func   000001  _sub_2F818  near
+2F823  func   000033  _sub_2F823
+2F856  func   000006  _sub_2F856  near
+2F85C  func   000006  _sub_2F85C
+2F862  func   000006  _sub_2F862
+2F868  func   000006  _sub_2F868
+2F86E  func   000006  _sub_2F86E  near
+2F874  func   000006  _sub_2F874  near
+2F87A  func   000006  _sub_2F87A  near
+2F880  func   000006  _sub_2F880
+2F886  func   000006  _sub_2F886
+2F88C  func   000006  _sub_2F88C
+2F892  func   000006  _sub_2F892
+2F898  func   000006  _sub_2F898
+2F89E  func   000006  _sub_2F89E  near
+2F8A4  func   000006  _sub_2F8A4
+2F8AA  func   000006  _sub_2F8AA  near
+2F8B0  func   000006  _sub_2F8B0
+2F8B6  func   000006  _sub_2F8B6
+2F8BC  func   000006  _sub_2F8BC
+2F8C2  func   000006  _sub_2F8C2
+2F8C8  func   000006  _sub_2F8C8
+2F8CE  func   000006  _sub_2F8CE  near
+2F8D4  func   000006  _sub_2F8D4
+2F8DA  func   000006  _sub_2F8DA  near
+2F8E0  func   000006  _sub_2F8E0  near
+2F8E6  func   000006  _sub_2F8E6  near
+2F8EC  func   000006  _sub_2F8EC
+2F8F2  func   000006  _sub_2F8F2
+2F8F8  func   000006  _sub_2F8F8  near
+2F8FE  func   000006  _sub_2F8FE
+2F904  func   000006  _sub_2F904  near
+2F90A  func   000006  _sub_2F90A  near
+2F910  func   000006  _sub_2F910  near
+2F916  func   000006  _sub_2F916  near
+2F91C  func   000006  _sub_2F91C  near
+2F922  func   000006  _sub_2F922  near
+2F928  func   000006  _sub_2F928  near
+2FA18  data   000002  _word_2FA18
+2FA1A  data   000002  _word_2FA1A
+2FA1C  data   000002  _word_2FA1C
+2FA1E  data   000002  _word_2FA1E
+2FA20  data   000ADE  _word_2FA20
+304FE  func   000043  _sub_304FE
+30542  func   000022  _sub_30542
+30564  func   000022  _sub_30564
+30586  func   000026  _sub_30586
+305AC  func   000036  _sub_305AC
+305E2  func   000063  _sub_305E2
+30646  func   00007A  _sub_30646
+306C0  func   00000C  _sub_306C0
+306CC  func   000027  _sub_306CC
+306F4  func   000050  _sub_306F4
+30744  func   000029  _sub_30744
+3076E  func   00002B  _sub_3076E
+3079A  func   000016  _sub_3079A
+307B0  func   000019  _sub_307B0
+307CA  func   000076  _sub_307CA
+30840  func   000020  _sub_30840
+30860  func   00004A  _sub_30860
+308AA  func   000049  _sub_308AA
+308F4  func   000013  _sub_308F4
+30908  func   000012  _sub_30908
+3091A  func   000035  _sub_3091A
+30950  func   0002B6  _sub_30950
+30C06  func   00001B  _sub_30C06
+30C22  func   000097  _sub_30C22
+30CBA  func   00009F  _sub_30CBA
+30D5A  func   000019  _sub_30D5A
+30D74  func   0000B5  _sub_30D74
+30E2A  func   000023  _sub_30E2A
+30E4E  func   00001B  _sub_30E4E
+30E6A  func   00001B  _sub_30E6A
+30E86  func   000035  _sub_30E86
+30EBC  func   0000B4  _sub_30EBC
+30F70  func   00001E  _sub_30F70
+30F8E  func   000031  _sub_30F8E
+30FC0  func   000272  _sub_30FC0
+31232  func   0002B6  _sub_31232
+314E8  func   000236  _sub_314E8
+3171E  func   000280  _sub_3171E
+3199E  func   00004D  _sub_3199E
+319EC  func   000075  _sub_319EC
+31A62  func   0000BA  _sub_31A62
+31B1C  func   000019  _sub_31B1C
+31B36  func   000034  _sub_31B36
+31B6A  func   000184  _sub_31B6A
+31CEE  func   0000CC  _sub_31CEE
+31DBA  func   000178  _sub_31DBA
+31F32  func   000060  _sub_31F32  near
+31FE0  func   0000A8  _sub_31FE0  near
+320FC  func   0000B0  _sub_320FC  near
+321AC  func   00004C  _sub_321AC  near
+321FE  func   00017C  _sub_321FE
+3237A  func   000060  _sub_3237A  near
+32428  func   0000A8  _sub_32428  near
+32544  func   0000B0  _sub_32544  near
+325F4  func   00004C  _sub_325F4  near
+32646  func   000019  _sub_32646
+32660  func   000052  _sub_32660
+326B2  func   00001F  _sub_326B2
+326D2  func   00014A  _sub_326D2
+3281C  func   000034  _sub_3281C
+32850  func   000098  _sub_32850
+328E8  func   000277  _sub_328E8
+32B60  func   00016E  _sub_32B60
+32CCE  func   000054  _sub_32CCE
+32D22  func   0001CE  _sub_32D22
+32EF0  func   00019E  _sub_32EF0
+3308E  func   000027  _sub_3308E
+330B6  func   000019  _sub_330B6
+330D0  func   00003C  _sub_330D0
+3310C  func   0003BE  _sub_3310C
+334CA  func   000017  _sub_334CA
+334E2  func   0000B4  _sub_334E2
+335A6  func   0000C7  __astart  lib near
+3366D  func   00003D  __cintDIV  lib near
+3367C  func   000000  __amsg_exit  lib
+336A8  func   000000  __dataseg  lib
+336AA  func   0000C9  __cinit  lib
+33773  func   000007  _exit  lib
+3377A  func   000008  __exit  lib
+33782  func   00000A  __cexit  lib
+3378C  func   00006E  __c_exit  lib
+337FA  func   000019  __ctermsub  lib near
+33813  func   000013  _sub_33813  near
+33826  func   0000C0  _fclose  lib
+338E6  func   00002B  __fsopen  lib
+33912  func   000015  _fopen  lib
+33928  func   0000E3  _fread  lib
+33A0C  func   000104  _fwrite  lib
+33B10  func   00003E  _printf  lib
+33B4E  func   000028  _strncpy  lib
+33B76  func   00003A  _strncmp  lib
+33BB0  func   000004  _sub_33BB0
+33BB4  func   00000B  __tolower  lib
+33BC0  func   000016  _tolower  lib
+33BD6  func   000073  _fgets  lib
+33C4A  func   000053  _fputs  lib
+33C9E  func   00005A  _sprintf  lib
+33CF8  func   00003E  _sscanf  lib
+33D36  func   000029  _strchr  lib
+33D60  func   00001E  __strlwr  lib
+33D7E  func   00008F  _strtok  lib
+33E0E  func   000005  _isalpha  lib
+33E13  func   000005  _isupper  lib
+33E18  func   000005  _islower  lib
+33E1D  func   000005  _isdigit  lib
+33E22  func   000005  _isxdigit  lib
+33E27  func   000005  _isspace  lib
+33E2C  func   00000A  _ispunct  lib
+33E31  func   000000  _isalnum  lib
+33E36  func   000005  _isprint  lib
+33E3B  func   000005  _isgraph  lib
+33E40  func   00000F  _iscntrl  lib
+33E50  func   000008  _atexit  lib
+33E58  func   00002A  __onexit  lib
+33E82  func   000138  _qsort  lib
+33FBA  func   00001D  _sub_33FBA  near
+33FD8  func   000011  _srand  lib
+33FEA  func   000028  _rand  lib
+34012  func   000023  _setjmp  lib
+34035  func   000027  _longjmp  lib
+3405C  func   000006  _sub_3405C
+34062  func   0000AE  _signal  lib
+34110  func   000025  __sigentry  lib
+34135  func   00007F  _sub_34135
+341B4  func   000001  _sub_341B4
+341B5  func   000005  _sub_341B5  near
+341BA  func   00001B  _sub_341BA
+341D6  func   000153  __splitpath  lib
+3432A  func   000087  __makepath  lib
+343B2  func   00000E  _remove  lib
+343C0  func   00001C  __chain_intr  lib
+343DC  func   00000E  __dos_close  lib
+343EA  func   000012  __dos_getvect  lib
+343FC  func   00000B  __dos_findnext  lib
+34407  func   000033  __dos_findfirst  lib
+3443A  func   000018  __dos_open  lib
+34452  func   000007  __dos_read  lib
+34459  func   000029  __dos_write  lib
+34482  func   000015  __dos_setvect  lib
+34498  func   00009A  __aFldiv  lib
+34532  func   000032  __aFlmul  lib
+34564  func   0000A0  __aFlrem  lib
+34604  func   00005F  __aFuldiv  lib
+34664  func   00006A  __aFulrem  lib
+346CE  func   000032  __fstrchr  lib
+34700  func   00003B  __fstrncmp  lib
+3473C  func   00002A  __fstrncpy  lib
+34766  func   000024  __fstrupr  lib
+3478A  func   00006B  __fstrstr  lib
+347F6  func   000014  _sub_347F6
+3480A  func   000022  _sub_3480A  near
+3482C  func   00002A  _sub_3482C
+34856  func   000024  _sub_34856  near
+3487A  func   00002F  _sub_3487A
+348A9  func   000006  _sub_348A9  near
+348AF  func   000034  _sub_348AF  near
+348E3  func   00000D  _sub_348E3  near
+348F0  func   00000A  _sub_348F0  near
+348FA  func   000007  _sub_348FA
+34901  func   000057  _sub_34901
+34958  func   00002F  _sub_34958  near
+34987  func   000026  _sub_34987  near
+349AD  func   000004  _sub_349AD  near
+349B1  func   000014  _sub_349B1
+349C5  func   000004  _sub_349C5  near
+349C9  func   000004  _sub_349C9
+349CD  func   00002E  _sub_349CD
+349FB  func   000004  _sub_349FB  near
+349FF  func   000014  _sub_349FF
+34A13  func   000004  _sub_34A13
+34A17  func   00002D  _sub_34A17
+34A44  func   000004  _sub_34A44
+34A48  func   000013  _sub_34A48
+34A5B  func   000004  _sub_34A5B
+34A5F  func   000023  _sub_34A5F
+34A82  func   000008  _sub_34A82
+34A8A  func   000008  _sub_34A8A
+34A92  func   000012  _sub_34A92
+34AA4  func   000005  _sub_34AA4  near
+34AA9  func   000005  _sub_34AA9  near
+34AAE  func   000019  _sub_34AAE  near
+34AC7  func   000039  _sub_34AC7
+34B00  func   00002D  _sub_34B00
+34B2D  func   00000F  _sub_34B2D
+34B3C  func   000038  _sub_34B3C
+34B74  func   000008  _sub_34B74  near
+34B7C  func   000007  _sub_34B7C  near
+34B83  func   000009  _sub_34B83
+34B8C  func   000008  _sub_34B8C  near
+34B94  func   000007  _sub_34B94  near
+34B9B  func   000009  _sub_34B9B
+34BA4  func   000008  _sub_34BA4  near
+34BAC  func   000007  _sub_34BAC  near
+34BB3  func   000009  _sub_34BB3
+34BBC  func   000008  _sub_34BBC  near
+34BC4  func   000007  _sub_34BC4  near
+34BCB  func   000009  _sub_34BCB
+34BD4  func   000008  _sub_34BD4  near
+34BDC  func   000007  _sub_34BDC  near
+34BE3  func   000009  _sub_34BE3  near
+34BEC  func   000008  _sub_34BEC  near
+34BF4  func   000007  _sub_34BF4  near
+34BFB  func   000038  _sub_34BFB
+34C33  func   000008  _sub_34C33  near
+34C3B  func   000007  _sub_34C3B  near
+34C42  func   000009  _sub_34C42
+34C4B  func   000008  _sub_34C4B  near
+34C53  func   000007  _sub_34C53  near
+34C5A  func   000009  _sub_34C5A
+34C63  func   000008  _sub_34C63  near
+34C6B  func   000007  _sub_34C6B  near
+34C72  func   000009  _sub_34C72
+34C7B  func   000008  _sub_34C7B  near
+34C83  func   000007  _sub_34C83  near
+34C8A  func   000009  _sub_34C8A
+34C93  func   000008  _sub_34C93  near
+34C9B  func   000007  _sub_34C9B  near
+34CA2  func   000009  _sub_34CA2
+34CAB  func   000008  _sub_34CAB  near
+34CB3  func   000007  _sub_34CB3  near
+34CBA  func   00001F  _sub_34CBA
+34CD9  func   000005  _sub_34CD9
+34CDE  func   000005  _sub_34CDE
+34CE3  func   000005  _sub_34CE3
+34CE8  func   000005  _sub_34CE8
+34CED  func   000005  _sub_34CED
+34CF2  func   000005  _sub_34CF2
+34CF7  func   000005  _sub_34CF7
+34CFC  func   00008E  _sub_34CFC
+34D8A  func   00000E  _sub_34D8A
+34D98  func   000026  _sub_34D98
+34DBE  func   000018  _sub_34DBE
+34DD6  func   000015  _sub_34DD6  near
+34DEB  func   00006F  _sub_34DEB
+34E5A  func   000009  _sub_34E5A  near
+34E63  func   000009  _sub_34E63
+34E6C  func   000009  _sub_34E6C  near
+34E75  func   000009  _sub_34E75
+34E7E  func   000009  _sub_34E7E  near
+34E87  func   000009  _sub_34E87
+34E90  func   000009  _sub_34E90  near
+34E99  func   000009  _sub_34E99
+34EA2  func   000009  _sub_34EA2
+34EAC  func   00001A  _sub_34EAC
+34EC6  func   00001F  _sub_34EC6
+34EE5  func   00004A  _sub_34EE5  near
+34F30  func   000022  __FF_MSGBANNER  lib
+34F52  func   000006  __fptrap  lib near
+34F58  func   000024  __aFchkstk  lib
+34F7C  func   000024  __nullcheck  lib
+34FA0  func   00018E  __setargv  lib
+3512E  func   00007D  __setenvp  lib
+351AC  func   00002B  __NMSG_TEXT  lib
+351D7  func   000036  __NMSG_WRITE  lib
+3520E  func   000000  __dosret0  lib
+35216  func   000000  __dosreturn  lib
+35223  func   000000  __dosretax  lib
+35230  func   000006  __maperror  lib
+35236  func   00002D  _sub_35236  near
+35264  func   000001  __farstub  lib
+35266  func   000095  __filbuf  lib
+352FC  func   0000E3  __flsbuf  lib
+353E0  func   00002C  __freebuf  lib near
+3540C  func   00012C  __openfile  lib
+35538  func   000073  __stbuf  lib near
+355AB  func   00003E  __ftbuf  lib near
+355EA  func   000050  _fflush  lib
+3563A  func   000077  __flush  lib near
+356B2  func   000008  __flushall  lib
+356BA  func   000069  flsall  lib near
+35724  func   000844  __input  lib
+35F68  func   00001D  _hextodec  lib near
+35F86  func   00002E  _inc  lib near
+35FB4  func   00001A  _un_inc  lib near
+35FCE  func   000021  _whiteout  lib near
+35FF0  data   000010  _off_35FF0
+36000  func   00040B  __output  lib
+3640B  func   000008  _sub_3640B  near
+36413  func   00000C  _sub_36413  near
+3641F  func   00001D  _sub_3641F  near
+3643C  func   00002A  _sub_3643C  near
+36466  func   00001E  _sub_36466  near
+36484  func   00001C  _sub_36484  near
+364A0  func   000031  _sub_364A0  near
+364D8  func   000032  __getstream  lib
+3650A  func   000020  __close  lib
+3652A  func   0000E9  __read  lib
+36614  func   0000B4  __write  lib
+366C8  func   000058  _sub_366C8  near
+36754  func   000014  __stackavail  lib
+36768  func   000021  __nfree  lib
+36789  func   00003B  __nmalloc  lib
+367C4  func   00003F  _strcat  lib
+36804  func   000032  _strcpy  lib
+36836  func   00001B  _strlen  lib
+36852  func   000000  __catox  lib
+368A6  func   00001C  __itoa  lib
+368C2  func   00002C  _memcpy  lib
+368EE  func   00002E  _sub_368EE
+3691C  func   00000B  _sub_3691C
+36927  func   000016  _sub_36927  near
+3693D  func   000018  _sub_3693D  near
+36955  func   00000C  _sub_36955  near
+36961  func   000003  _sub_36961  near
+36964  func   00003F  _sub_36964  near
+369A3  func   000041  _sub_369A3  near
+369E4  func   000082  _sub_369E4  near
+36A66  func   00000A  _sub_36A66  near
+36A70  func   00000C  _sub_36A70  near
+36A7C  func   00001A  _sub_36A7C  near
+36A96  func   00000A  _sub_36A96  near
+36AA0  func   00000C  _sub_36AA0  near
+36AAC  func   00001F  _sub_36AAC  near
+36ACB  func   000005  _sub_36ACB  near
+36AD0  func   000005  _sub_36AD0  near
+36AD5  func   000005  _sub_36AD5  near
+36ADA  func   00000D  _sub_36ADA  near
+36AE7  func   000005  _sub_36AE7  near
+36AEC  func   000005  _sub_36AEC  near
+36AF1  func   00000D  _sub_36AF1  near
+36AFE  func   000005  _sub_36AFE  near
+36B03  func   000005  _sub_36B03  near
+36B08  func   000005  _sub_36B08  near
+36B0D  func   000020  _sub_36B0D  near
+36B2D  func   000005  _sub_36B2D  near
+36B32  func   00001C  _sub_36B32  near
+36B4E  func   000003  _sub_36B4E  near
+36B51  func   000035  _sub_36B51  near
+36B86  func   000079  _sub_36B86  near
+36BFF  func   000003  _sub_36BFF  near
+36C02  func   000023  _sub_36C02  near
+36C4C  func   000010  _sub_36C4C  near
+36C5C  func   000011  _sub_36C5C  near
+36C6D  func   000045  _sub_36C6D  near
+36CB2  func   000089  _sub_36CB2  near
+36D3B  func   00003B  _sub_36D3B  near
+36D76  func   00000A  _sub_36D76  near
+36D80  func   000003  _sub_36D80  near
+36D83  func   000006  _sub_36D83  near
+36DDC  func   000052  _sub_36DDC  near
+36E2E  func   00000A  _sub_36E2E  near
+36E38  func   0000D2  _sub_36E38  near
+36F0A  func   00002E  _sub_36F0A  near
+36F38  func   00005D  _sub_36F38  near
+36F95  func   000005  _sub_36F95  near
+36F9A  func   000084  _sub_36F9A  near
+3701E  func   000073  _sub_3701E  near
+37091  func   000004  _sub_37091  near
+37095  func   00001D  _sub_37095  near
+37128  func   000002  _sub_37128  near
+3712A  func   000023  _sub_3712A  near
+3714D  func   000133  _sub_3714D  near
+37280  func   000055  _sub_37280  near
+372D5  func   00005F  _sub_372D5  near
+37334  func   00001F  _sub_37334  near
+37353  func   00005E  _sub_37353  near
+373B1  func   000003  _sub_373B1  near
+373B4  func   000002  _sub_373B4  near
+373B6  func   0000CF  _sub_373B6  near
+37485  func   000084  _sub_37485  near
+37509  func   00015C  _sub_37509  near
+376E8  func   000005  _sub_376E8  near
+376ED  func   000011  _sub_376ED  near
+376FE  func   0000BE  _sub_376FE  near
+377BC  func   00002C  _sub_377BC  near
+377E8  func   00001A  _sub_377E8  near
+37802  func   000019  _sub_37802  near
+3781B  func   000080  _sub_3781B  near
+378A6  func   000027  _sub_378A6  near
+378CD  func   00003B  _sub_378CD  near
+37908  func   000018  _sub_37908
+37920  func   0000D2  _sub_37920
+379F2  func   000039  _sub_379F2
+37A5A  func   000069  _sub_37A5A
+37AC4  func   00006D  _sub_37AC4
+37B32  func   000028  _sub_37B32
+37B5A  func   000046  _sub_37B5A
+37BA0  func   00012F  _sub_37BA0
+37CD0  func   000025  _sub_37CD0
+37CF6  func   000100  _sub_37CF6
+37DF6  func   000022  _sub_37DF6
+37E18  func   0000B5  _sub_37E18
+37ECE  func   000051  _sub_37ECE
+37F20  func   00002A  _sub_37F20  near
+37F4A  func   000025  __myalloc  lib near
+37F70  func   000016  __endstdio  lib
+37F86  func   000043  __getbuf  lib near
+37FCA  func   000063  _ungetc  lib
+3802E  func   000081  __lseek  lib
+380B0  func   00001A  __sopen  lib
+380CA  func   000191  __open  lib
+3825B  func   000011  __cXENIXtoDOSmode  lib near
+3826C  func   00007C  __searchseg  lib near
+382E8  func   00008C  __growseg  lib near
+38374  func   00004F  __incseg  lib near
+383C3  func   000002  _sub_383C3  near
+383C5  func   000020  __findlast  lib near
+383E6  func   000046  _atof  lib
+3842C  func   00006F  __fptostr  lib
+3849C  func   00005B  __commit  lib
+384F8  func   000048  _memmove  lib
+38540  func   00002D  _memset  lib
+3856E  func   00005F  __cltoasub  lib
+3857A  func   000000  __cxtoa  lib
+385CE  func   00001B  __wrt2err  lib
+385EA  func   000020  __aFNaulmul  lib
+3860A  func   00001D  __aFNalshl  lib
+38627  func   00000A  _sub_38627  near
+38631  func   00000A  _sub_38631  near
+3863B  func   00000A  _sub_3863B  near
+38645  func   00000A  _sub_38645  near
+3864F  func   00000A  _sub_3864F  near
+38659  func   00000A  _sub_38659  near
+38663  func   000010  _sub_38663  near
+38673  func   000019  _sub_38673  near
+38690  func   00000B  _sub_38690  near
+3869B  func   00000B  _sub_3869B  near
+386A6  func   000005  _sub_386A6  near
+386AB  func   000004  _sub_386AB  near
+386AF  func   00000E  _sub_386AF  near
+386BD  func   000005  _sub_386BD  near
+386C2  func   000012  _sub_386C2  near
+386D4  func   000045  _sub_386D4  near
+38719  func   000036  _sub_38719  near
+38796  func   000009  _sub_38796  near
+3879F  func   00001C  _sub_3879F  near
+387BC  func   000046  __fltout  lib
+38802  func   000009  __matherr  lib
+3880B  func   000006  _sub_3880B
+38812  func   000025  __fcloseall  lib
+38838  func   00000D  __dos_commit  lib
+38846  func   00000B  __aFlshl  lib
+38851  func   000029  _sub_38851  near
+3887A  func   000036  _sub_3887A  near
+388B0  func   000002  _sub_388B0  near
+388D6  func   000100  $i8_output  lib near
+389D6  func   000027  _sub_389D6
+389FD  func   000013  __fltin  lib
+38A10  func   000030  _sub_38A10  near
+38A40  func   00004C  _sub_38A40  near
+38A8C  func   0000F5  _sub_38A8C  near
+38B81  func   000003  _sub_38B81  near
+38B84  func   000022  _sub_38B84  near
+38BA6  func   000035  _sub_38BA6  near
+38BDB  func   000085  _sub_38BDB  near
+38C60  func   000016  _sub_38C60  near
+38C76  func   000009  _sub_38C76  near
+38C7F  func   000010  _sub_38C7F  near
+38C8F  func   000017  _sub_38C8F  near
+38CA6  func   000024  _sub_38CA6  near
+38CCA  func   000005  _sub_38CCA  near
+38CE0  func   00002C  _sub_38CE0  near
+38D0C  func   000076  _sub_38D0C  near
+38D82  func   0000B2  _sub_38D82  near
+38E3B  func   000038  _sub_38E3B  near
+38E73  func   00000C  _sub_38E73  near
+38E7F  func   00000C  _sub_38E7F  near
+38E8B  func   00001F  _sub_38E8B  near
+38EE8  func   000024  _sub_38EE8  near
+38F0C  func   000004  __getche  lib
+38F10  func   000028  __getch  lib
+38F38  func   000017  __tell  lib
+38F50  func   000086  __filelength  lib
+38FD6  func   000048  __intdos  lib
+3901E  func   000042  __stricmp  lib
+39060  func   000028  __strdup  lib
+39088  func   00001E  __strupr  lib
+390A6  func   00001F  __access  lib
+390D0  func   00000F  _sub_390D0  near
+3B870  data   000002  _byte_3B870
+3B872  data   000002  _word_3B872
+3B874  data   00003E  _byte_3B874
+3B8B2  data   000002  _word_3B8B2
+3B8B4  data   000004  aAnm
+3B8B8  data   000012  aAllAnimsInUse
+3B8CA  data   000009  aStnd
+3B8D3  data   000004  aAnm_0
+3B8D7  data   000004  aAnm_1
+3B8DB  data   000007  aNOANIM
+3B8E2  data   000012  aAllAnimsInUse_0
+3B8F4  data   000004  aAnm_2
+3B8F8  data   000004  aAnm_3
+3B8FC  data   00000D  aCwalkC02d
+3B909  data   000003  aIw
+3B90C  data   000007  aGetu
+3B913  data   000007  aStnd_0
+3B91A  data   000014  aBan
+3B92E  data   000002  _word_3B92E
+3B930  data   000002  _word_3B930
+3B932  data   000002  _word_3B932
+3B934  data   000004  _word_3B934
+3B938  data   000002  _word_3B938
+3B93A  data   000002  _word_3B93A
+3B93C  data   000001  _word_3B93C
+3B93D  data   000001  _byte_3B93D
+3B93E  data   000002  _byte_3B93E
+3B940  data   000002  _word_3B940
+3B942  data   000002  _word_3B942
+3B944  data   000002  _word_3B944
+3B946  data   000002  _word_3B946
+3B948  data   000002  _word_3B948
+3B94A  data   000002  _word_3B94A
+3B94C  data   000002  _word_3B94C
+3B94E  data   000002  _word_3B94E
+3B950  data   000002  _word_3B950
+3B952  data   000002  _word_3B952
+3B954  data   000002  _word_3B954
+3B956  data   000002  _word_3B956
+3B958  data   000002  _word_3B958
+3B95A  data   000002  _word_3B95A
+3B95C  data   000002  _word_3B95C
+3B95E  data   000002  _word_3B95E
+3B960  data   000002  _word_3B960
+3B962  data   000002  _word_3B962
+3B964  data   000002  _word_3B964
+3B966  data   000002  _word_3B966
+3B968  data   000002  _word_3B968
+3B96A  data   000002  _word_3B96A
+3B96C  data   000002  _word_3B96C
+3B96E  data   000002  _word_3B96E
+3B970  data   000002  _word_3B970
+3B972  data   000002  _word_3B972
+3B974  data   000002  _word_3B974
+3B976  data   000002  _word_3B976
+3B978  data   000002  _word_3B978
+3B97A  data   000002  _word_3B97A
+3B97C  data   000034  _word_3B97C
+3B9B0  data   000058  aMrSulu
+3BA08  data   000007  aBridge
+3BA0F  data   000004  aPri
+3BA13  data   000007  aBridge_0
+3BA1A  data   000008  aPalette
+3BA22  data   000008  aBstndki
+3BA2A  data   000008  aBstndsp
+3BA32  data   000008  aBstnduh
+3BA3A  data   000008  aBstndch
+3BA42  data   000008  aBstndsu
+3BA4A  data   000010  aBstndsc
+3BA5A  data   000004  aSS
+3BA5E  data   000008  aTS02d
+3BA66  data   000008  aSS02d
+3BA6E  data   00000A  aSshd02d
+3BA78  data   000004  aBmp
+3BA7C  data   000048  aBmp_0
+3BAC4  data   000002  _word_3BAC4
+3BAC6  data   000078  aPushbtn
+3BB3E  data   000051  aMagnificationD
+3BB8F  data   000024  aBridS37OurWeapo
+3BBB3  data   00007F  aBridS47WeCanTMa
+3BC32  data   000012  aScotphasPhasers
+3BC44  data   000012  aScotengiEngines
+3BC56  data   000016  aSRepairedCaptai
+3BC6C  data   000002  _word_3BC6C
+3BC6E  data   00002C  _word_3BC6E
+3BC9A  data   00003C  aChk002IDoNotThi
+3BCD6  data   000016  aChk003YesKeptin
+3BCEC  data   000027  aB349WeMustFirst
+3BD13  data   000009  aMnuspeed
+3BD1C  data   000008  aMnuview
+3BD24  data   000008  aMnulook
+3BD2C  data   000008  aMnumagn
+3BD34  data   000008  aMnukirk
+3BD3C  data   00001B  aB344TargetAnaly
+3BD57  data   00001C  aB343TargetAnaly
+3BD73  data   000008  aMnudmgc
+3BD7B  data   000027  aB349WeMustFirst_0
+3BDA2  data   000026  aBRIDS41SheCanTT
+3BDC8  data   00003A  aBRIDS32IDonTKno
+3BE02  data   000018  aB340RaisingShie
+3BE1A  data   000019  aB337LoweringShi
+3BE33  data   000017  aB351ArmingWeapo
+3BE4A  data   00002E  aB354DisarmingWe
+3BE78  data   000004  aBgd
+3BE7C  data   000009  aTransprt
+3BE85  data   000008  aPalette_0
+3BE8D  data   000007  aTransc
+3BE94  data   000007  aTeled
+3BE9B  data   000006  aBlank
+3BEA1  data   000005  aBmp_1
+3BEA6  data   000022  _word_3BEA6
+3BEC8  data   000004  aBmp_2
+3BECC  data   000008  aPhasind
+3BED4  data   000006  aBlank_0
+3BEDA  data   000007  aCursor
+3BEE1  data   000007  aEntcur
+3BEE8  data   000008  aPushbtn_0
+3BEF0  data   000003  aDb
+3BEF3  data   000004  aR
+3BEF7  data   00000E  aComputerVcc
+3BF05  data   000019  aComputerSelectT
+3BF1E  data   00000D  aComputerVcc_0
+3BF2B  data   000004  aKey
+3BF2F  data   000003  aDb_0
+3BF32  data   000023  aNoReferencesFor
+3BF55  data   000009  aComputer
+3BF5E  data   00000D  aDescription
+3BF6B  data   00000F  aEnterCode
+3BF7A  data   000010  _word_3BF7A
+3BF8A  data   00000E  aCanTOpenS
+3BF98  data   000018  aErrorReadingInL
+3BFB0  data   000005  aData
+3BFB5  data   000006  aS
+3BFBB  data   000005  aDir
+3BFC0  data   00000D  aNotFoundS
+3BFCD  data   000005  aRun
+3BFD2  data   00000D  aNotFoundS_0
+3BFDF  data   000005  _a001
+3BFE4  data   00000D  aNotFoundS_1
+3BFF1  data   000003  _asc
+3BFF4  data   000009  aSS_0
+3BFFD  data   00000B  aSS_1
+3C008  data   000018  aDataSSdataSS
+3C020  data   00000D  aNotFoundS_2
+3C02D  data   000014  aErrorReadingSS
+3C041  data   000015  aErrorReadingSS_0
+3C056  data   000002  _word_3C056
+3C058  data   000002  _word_3C058
+3C05A  data   000002  _word_3C05A
+3C05C  data   000002  _word_3C05C
+3C05E  data   000002  _word_3C05E
+3C060  data   000009  aEMMXXXX0
+3C069  data   00003F  aYouMustHaveAMin
+3C0A8  data   000018  _word_3C0A8
+3C0C0  data   000022  aEMSEMSUnlockWit
+3C0E2  data   000018  aEMSSaveLockCoun
+3C0FA  data   00001D  aEMSRestoreWhile
+3C117  data   00001F  aEMSFreeAttemptT
+3C136  data   000002  _word_3C136
+3C138  data   000002  _word_3C138
+3C13A  data   000002  _word_3C13A
+3C13C  data   000002  _word_3C13C
+3C13E  data   000041  aInsufficientMem
+3C17F  data   000008  aWarning
+3C187  data   000049  aMoveTheJoystick
+3C1D0  data   00000A  aJoystick
+3C1DA  data   000002  _word_3C1DA
+3C1DC  data   000002  _word_3C1DC
+3C1DE  data   000006  _word_3C1DE
+3C1E4  data   000002  _word_3C1E4
+3C1E6  data   000002  _word_3C1E6
+3C1E8  data   000002  _word_3C1E8
+3C1EA  data   0000E0  _word_3C1EA
+3C2CA  data   000009  aStaticD
+3C2D3  data   000004  aBmp_3
+3C2D7  data   000016  aAddR3OutOfShape
+3C2ED  data   000018  aDelR3ShapeNotFo
+3C305  data   000004  aFed
+3C309  data   000023  aTheEnterpriseHa
+3C32C  data   000007  aExpl0X
+3C333  data   000004  aShp
+3C337  data   000006  aShotX
+3C33D  data   000004  aShp_0
+3C341  data   000007  aPlasm0
+3C348  data   000004  aShp_1
+3C34C  data   000004  aShp_2
+3C350  data   00000B  aBigExp02d
+3C35B  data   000004  aShp_3
+3C35F  data   000012  aObjectTooClose
+3C371  data   000005  _a08d
+3C376  data   000031  aR3d
+3C3A7  data   000024  aShapeWidthTooBi
+3C3CB  data   000022  aIllegalShotSave
+3C3ED  data   00002B  aIllegalNonShotS
+3C418  data   000002  _word_3C418
+3C41A  data   00000F  aSsavegameDir
+3C429  data   000003  aRb
+3C42C  data   00000F  aSsavegameDir_0
+3C43B  data   000003  aWb
+3C43E  data   00000E  aSsavegameD
+3C44C  data   000003  aWb_0
+3C44F  data   000003  aRb_0
+3C452  data   000015  aUnableToLoadGam
+3C467  data   00004A  aUnableToLoadGam_0
+3C4B1  data   00000A  aLoadGame
+3C4BB  data   000003  aRb_1
+3C4BE  data   00000F  aSsavegameNew
+3C4CD  data   00000F  aSsavegameNew_0
+3C4DC  data   00001C  aUnableToLoadSav
+3C4F8  data   000009  aSSSav
+3C501  data   000009  aSSSav_0
+3C50A  data   00000E  aCanTOpenS_0
+3C518  data   000008  aCancel
+3C520  data   00001A  aThereAreNoSaved
+3C53A  data   00000E  aDescription_0
+3C548  data   000088  aRb_2
+3C5D0  data   000039  aTooManyGamesSav
+3C609  data   000034  aUnableToSaveGam
+3C63D  data   00000A  aSaveGame
+3C647  data   000037  aUnableToReplace
+3C67E  data   00000D  aDeleteGame
+3C68B  data   00001A  aNoGamesHaveBeen
+3C6A5  data   00000A  aLoadGame_0
+3C6AF  data   00000B  aLoadGame_1
+3C6BA  data   0000B6  _word_3C6BA
+3C770  data   00005F  aGENER006LoadAPr
+3C7CF  data   00015A  aRestoreNewGameF
+3C929  data   000007  aBridge_1
+3C930  data   000014  aPleaseInsertSCD
+3C944  data   000002  _word_3C944
+3C946  data   0000A1  _word_3C946
+3C9E7  data   00000A  aTrek2Cfg
+3C9F1  data   000009  aTalktype
+3C9FA  data   00000A  aTrek2Cfg_0
+3CA04  data   000003  aD
+3CA07  data   000009  aTalktype_0
+3CA10  data   000010  aTrek2Cfg_1
+3CA20  data   000002  _word_3CA20
+3CA22  data   000001  _byte_3CA22
+3CA23  data   000001  _byte_3CA23
+3CA24  data   000001  _byte_3CA24
+3CA25  data   000004  aPal
+3CA29  data   000004  aPal_0
+3CA2D  data   000007  aBridge_2
+3CA34  data   00000A  _word_3CA34
+3CA3E  data   000004  aLu
+3CA42  data   000004  aLu_0
+3CA46  data   000002  _word_3CA46
+3CA48  data   000002  _word_3CA48
+3CA4A  data   00000A  _byte_3CA4A
+3CA54  data   00000A  _byte_3CA54
+3CA5E  data   00000A  _byte_3CA5E
+3CA68  data   00000A  _byte_3CA68
+3CA72  data   00000A  _byte_3CA72
+3CA7C  data   00024E  _byte_3CA7C
+3CCCA  data   000002  _word_3CCCA
+3CCCC  data   000002  _word_3CCCC
+3CCCE  data   000006  _word_3CCCE
+3CCD4  data   000004  aPri_0
+3CCD8  data   000004  aMap
+3CCDC  data   000015  aTooManyGateBloc
+3CCF1  data   000007  aTeled_0
+3CCF8  data   000005  aSD
+3CCFD  data   000004  aBgd_0
+3CD01  data   000004  aPri_1
+3CD05  data   000008  aPalette_1
+3CD0D  data   000004  aRdf
+3CD11  data   000005  aData_0
+3CD16  data   00001E  aIncorrectGameHe
+3CD34  data   000004  aRdf_0
+3CD38  data   000004  aRtf
+3CD3C  data   000024  aIncorrectEpisod
+3CD60  data   000004  aRdf_1
+3CD64  data   000004  aRtf_0
+3CD68  data   00001E  aIncorrectRoomHe
+3CD86  data   000004  aMap_0
+3CD8A  data   000006  aTele
+3CD90  data   00001C  aNoGateBlocks
+3CDAC  data   000008  aPushbtn_1
+3CDB4  data   000004  aBgd_1
+3CDB8  data   000004  aPri_2
+3CDBC  data   000004  aPal_1
+3CDC0  data   000019  aUnknownRoomComm
+3CDD9  data   00000B  aChoiceD
+3CDE4  data   000056  _word_3CDE4
+3CE3A  data   000002  _word_3CE3A
+3CE3C  data   000006  aSS_2
+3CE42  data   000002  _word_3CE42
+3CE44  data   000002  _word_3CE44
+3CE46  data   00001C  aNotAllChoicesHa
+3CE62  data   000007  aMnudlg
+3CE69  data   000019  aPushbtn_2
+3CE82  data   000002  _word_3CE82
+3CE84  data   000005  aWait
+3CE89  data   000005  aUseh
+3CE8E  data   000005  aUsen
+3CE93  data   000005  aGeth
+3CE98  data   00003D  aGetn
+3CED5  data   000006  aLookn
+3CEDB  data   000007  aTalkh0
+3CEE2  data   000007  aTalkh1
+3CEE9  data   000006  aTalkn
+3CEEF  data   000008  aOptions
+3CEF7  data   00000F  aWalk
+3CF06  data   000020  aJayDidnTThinkAb
+3CF26  data   000006  aIUse
+3CF2C  data   000004  aBmp_4
+3CF30  data   000004  aBmp_5
+3CF34  data   000006  aInv00
+3CF3A  data   000008  aPushbtn_3
+3CF42  data   000012  aBlank_1
+3CF54  data   000004  aBmp_6
+3CF58  data   000002  _word_3CF58
+3CF5A  data   000006  aBlank_2
+3CF60  data   000007  aBridge_3
+3CF67  data   000007  aTeled_1
+3CF6E  data   000007  aTeleb
+3CF75  data   00000F  aCanTBeHere
+3CF84  data   000006  aTitle
+3CF8A  data   000002  _word_3CF8A
+3CF8C  data   000002  _word_3CF8C
+3CF8E  data   000010  aBkLockCount0
+3CF9E  data   000004  aDsc
+3CFA2  data   00001E  aEnterpri
+3CFC0  data   000004  aBmp_7
+3CFC4  data   000006  aVeng9
+3CFCA  data   000029  aTurboLiftAccess
+3CFF3  data   000036  aTheTurboLiftWil
+3D029  data   000008  aTurboD
+3D031  data   000014  aInternalError
+3D045  data   000011  aGameAborted
+3D056  data   000013  aInternalError_0
+3D069  data   000011  aGameAborted_0
+3D07A  data   000005  aA001
+3D07F  data   000005  aA002
+3D084  data   000005  aA004
+3D089  data   000005  aA009
+3D08E  data   000005  aE000
+3D093  data   000005  aE003
+3D098  data   000005  aE009
+3D09D  data   000005  aE00F
+3D0A2  data   000023  aCanTLocateMusic
+3D0C5  data   00000A  aTrek2Cfg_2
+3D0CF  data   000006  aMusic
+3D0D5  data   000009  aMusicIo
+3D0DE  data   000003  aX
+3D0E1  data   00000A  aBacksound
+3D0EB  data   000006  aSound
+3D0F1  data   000009  aSoundIo
+3D0FA  data   000003  aX_0
+3D0FD  data   00000A  aSoundIrq
+3D107  data   00000A  aSoundDma
+3D111  data   000008  aSrc
+3D119  data   000008  aUncomp
+3D121  data   000005  aDst
+3D126  data   000008  aUncomp_0
+3D12E  data   00002C  aNearMemoryAlloc
+3D15A  data   000002  _word_3D15A
+3D15C  data   000002  _word_3D15C
+3D15E  data   00001E  aCanTAllocatePMe
+3D17C  data   000029  aCompactPMemDidn
+3D1A5  data   000022  aCanTPushDBytesO
+3D1C7  data   000018  aPopMemWithoutPu
+3D1DF  data   000017  aOutOfMemoryHand
+3D1F6  data   00001B  aMemoryLockedInA
+3D211  data   00001B  aInternalErrorIn
+3D22C  data   000012  aOutOfFARMemory
+3D23E  data   00000F  aLockCount0
+3D24D  data   000019  aMemoryLockedInF
+3D266  data   000008  aOptions_0
+3D26E  data   000008  aMnuqopt
+3D276  data   000008  aMnuoptn
+3D27E  data   000007  aAction
+3D285  data   000008  aOptions_1
+3D28D  data   000005  aLook
+3D292  data   000005  aTalk
+3D297  data   000004  aUse
+3D29B  data   000004  aGet
+3D29F  data   000005  aWalk_0
+3D2A4  data   000002  _word_3D2A4
+3D2A6  data   000002  _word_3D2A6
+3D2A8  data   000002  _word_3D2A8
+3D2AA  data   000002  _word_3D2AA
+3D2AC  data   000002  _word_3D2AC
+3D2AE  data   000004  aMnu
+3D2B2  data   000004  aMnu_0
+3D2B6  data   000004  aBmp_8
+3D2BA  data   000002  _word_3D2BA
+3D2BC  data   000002  _word_3D2BC
+3D2BE  data   000002  _word_3D2BE
+3D2C0  data   000002  _word_3D2C0
+3D2C2  data   000002  _word_3D2C2
+3D2C4  data   000002  _word_3D2C4
+3D2C6  data   000002  _word_3D2C6
+3D2C8  data   000004  _word_3D2C8
+3D2CC  data   000002  _word_3D2CC
+3D2CE  data   000002  _word_3D2CE
+3D2D0  data   000002  _word_3D2D0
+3D2D2  data   000001  _byte_3D2D2
+3D2D3  data   000002  _byte_3D2D3
+3D2D5  data   000008  aPCSPKR4
+3D2DD  data   000006  aADLIB
+3D2E3  data   000007  aADLIBG
+3D2EA  data   000007  aALGDIG
+3D2F1  data   000005  aSBFM
+3D2F6  data   000006  aSBDIG
+3D2FC  data   000007  aSBP1FM
+3D303  data   000007  aSBPDIG
+3D30A  data   000007  aSBP2FM
+3D311  data   000007  aSBPDIG_0
+3D318  data   000006  aPASFM
+3D31E  data   000007  aPASDIG
+3D325  data   000007  aPASOPL
+3D32C  data   000007  aPASDIG_0
+3D333  data   000008  aMT32MPU
+3D33B  data   000009  aMT32MPU_0
+3D344  data   000004  aADV
+3D348  data   000004  aADV_0
+3D34C  data   000004  aADV_1
+3D350  data   000004  aADV_2
+3D354  data   000003  aPc
+3D357  data   000003  aGm
+3D35A  data   000006  aTrek2
+3D360  data   000007  _a7sC
+3D367  data   000005  _a8s
+3D36C  data   000005  _word_3D36C
+3D371  data   000026  aStreamInitEMSSt
+3D397  data   000007  aVOC
+3D39E  data   000014  aCreativeVoiceFi
+3D3B2  data   000014  aInterplayACMPDa
+3D3C6  data   00001F  aVOCFileSInvalid
+3D3E5  data   00001A  aVOCFileSNotFoun
+3D3FF  data   000004  aAll
+3D403  data   000004  aAll_0
+3D407  data   000009  aCMPFILES
+3D410  data   000009  aVOCFILES
+3D419  data   000020  aVCCFileSInvalid
+3D439  data   00001E  aVCCOpenInsuffic
+3D457  data   000023  aVCCOpenVCCFileN
+3D47A  data   000026  aVCCOpenNoFreeVC
+3D4A0  data   00001E  aVocReadInvalidB
+3D4BE  data   000018  aVocReadErrorRea
+3D4D6  data   000004  aRaw
+3D4DA  data   000004  aRaw_0
+3D4DE  data   000009  aSinmixD
+3D4E7  data   000004  aMix
+3D4EB  data   00001A  aSuiteInfoStillI
+3D505  data   000005  aSui
+3D50A  data   000010  aCacheOverflow
+3D51A  data   000010  aCacheOverflow_0
+3D52A  data   000024  aReleaseCacheToo
+3D54E  data   000004  aBmp_9
+3D552  data   000033  aGetanyfileExces
+3D585  data   000033  aGetanyfileExces_0
+3D5B8  data   000007  aS02x
+3D5BF  data   000004  aR3s
+3D5C3  data   0003BF  aBmp_10
+3D982  data   000008  aDsc_0
+3D98A  data   0000CA  aThisIsInFindSid
+3DA54  data   000063  _word_3DA54
+3DAB7  data   000013  aBRIDS22AyeSir
+3DACA  data   000013  aBRIDS22AyeSir_0
+3DADD  data   00002B  aBRIDS26DamageCo
+3DB08  data   000007  aCursor_0
+3DB0F  data   000009  aEntcur_0
+3DB18  data   000002  _word_3DB18
+3DB1A  data   00000A  _word_3DB1A
+3DB24  data   000024  aAddSpriteFatalT
+3DB48  data   00008B  aDelSpriteFatalS
+3DBD3  data   000004  aFon
+3DBD7  data   000055  aFont
+3DC2C  data   000006  aCross
+3DC32  data   000007  aCircle
+3DC39  data   000004  aBgd_2
+3DC3D  data   000008  aStarMap
+3DC45  data   000009  aPalette_2
+3DC4E  data   000002  _word_3DC4E
+3DC50  data   000004  aShp_4
+3DC54  data   000006  aStars
+3DC5A  data   000014  aTooManyInstD
+3DC6E  data   000108  aWarpD
+3DD76  data   000002  _word_3DD76
+3DD78  data   000002  _word_3DD78
+3DD7A  data   000002  _word_3DD7A
+3DD7C  data   000002  _word_3DD7C
+3DD7E  data   000002  _word_3DD7E
+3DD80  data   000002  _word_3DD80
+3DD82  data   000001  _byte_3DD82
+3DD83  data   000002  _word_3DD83
+3DD85  data   000002  _word_3DD85
+3DD87  data   000002  _word_3DD87
+3DD89  data   000006  _word_3DD89
+3DD8F  data   000003  _word_3DD8F
+3DD92  data   000002  _word_3DD92
+3DD94  data   000002  _word_3DD94
+3DD96  data   000010  aSNotFound
+3DDA6  data   000022  aMveAllocAskedFo
+3DDC8  data   000018  aMveAllocNoFreeM
+3DDE0  data   000016  aMveFreeBadMemPt
+3DDF6  data   000002  _word_3DDF6
+3DDF8  data   000006  _word_3DDF8
+3DDFE  data   000015  aNotADPaintPictu
+3DE13  data   000017  aNotAPBMOrILBMFi
+3DE2A  data   000009  aBadBMHD
+3DE33  data   00000D  aNoColorMap
+3DE40  data   000008  aNoBODY
+3DE48  data   000009  aBadBody
+3DE51  data   00000A  aSSSS
+3DE5B  data   00000E  aErrorDS
+3DE69  data   000004  aDem
+3DE6D  data   000004  aDem_0
+3DE71  data   00000B  aSSSMve
+3DE7C  data   000004  aAnm_4
+3DE80  data   000020  aPlayDpAnimBadFi
+3DEA0  data   000002  _word_3DEA0
+3DEA2  data   000002  _word_3DEA2
+3DEA4  data   000002  _word_3DEA4
+3DEA6  data   000022  _word_3DEA6
+3DEC8  data   0000AC  _word_3DEC8
+3DF74  data   000004  aAll_1
+3DF78  data   000007  aSVcc
+3DF7F  data   000009  aDataVcc
+3DF88  data   00000C  aBacksndVcc
+3DF94  data   00000D  aCaptainKirk
+3DFA1  data   00000A  aMrSpock
+3DFAB  data   00000A  aDrMcCoy
+3DFB5  data   000011  aSecurityOfficer
+3DFC6  data   000009  aMrSulu_0
+3DFCF  data   00000B  aMrChekov
+3DFDA  data   00000A  aLtUhura
+3DFE4  data   00000A  aMrScott
+3DFEE  data   00000C  aEnsignJons
+3DFFA  data   000004  aRdf_2
+3DFFE  data   000007  aRandom
+3E005  data   000006  _a7ss
+3E00B  data   000004  aRdf_3
+3E00F  data   00001F  aIncorrectSpaceH
+3E02E  data   000023  aSpaceCmdCalledF
+3E051  data   000030  aEpisodeTitleSeq
+3E081  data   000006  aTitle_0
+3E087  data   000008  aEndgame
+3E08F  data   000027  aSpacePauseComma
+3E0B6  data   000030  aSpaceBeginEvent
+3E0E6  data   000032  aSpaceOffShipAdv
+3E118  data   000008  aPushbtn_4
+3E120  data   000019  aRepairallInvali
+3E139  data   000029  aSpaceSaveGameCo
+3E162  data   000012  aUnknownSpaceCmd
+3E174  data   000024  aB332CaptainTheS
+3E198  data   000023  aB350WeReNotInOr
+3E1BB  data   000014  aRightNowCaptain
+3E1CF  data   000023  aB155NothingToRe
+3E1F2  data   000024  aBRIDU016Hailing
+3E216  data   000036  aB348UnableToCom
+3E24C  data   00005C  aB338MayIRespect
+3E2A8  data   000020  aB333EnteringSta
+3E2C8  data   000036  aB348UnableToCom_0
+3E2FE  data   00005C  aB338MayIRespect_0
+3E35A  data   000028  aB349WeMustFirst_1
+3E382  data   000002  _word_3E382
+3E384  data   000004  aTlk
+3E388  data   000006  aBlack
+3E38E  data   00000A  aBridge_4
+3E398  data   000004  _word_3E398
+3E39C  data   000033  _word_3E39C
+3E3CF  data   00011B  aEVAL005ILlBeFra
+3E4EA  data   000102  aEVAL004WhileYou
+3E5EC  data   0000C1  aEVAL003WellDone
+3E6AD  data   000099  aEVAL002TheTopBr
+3E746  data   00009B  aEVAL001IAmVeryP
+3E7E1  data   000006  aBlack_0
+3E7E7  data   00005F  aEVAL000IVeRevie
+3E846  data   00002F  aC007NoRecentMis
+3E875  data   00000E  aCaptainSLog
+3E883  data   000001  aWeHaveEarned
+3E884  data   00000F  _byte_3E884
+3E893  data   00000B  aDPoints
+3E89E  data   000009  _a1Point
+3E8A7  data   000031  aForTheFollowing
+3E8D8  data   000010  aDPoints_0
+3E8E8  data   00000E  _a1Point_0
+3E8F6  data   00000E  aCaptainSLog_0
+3E904  data   000005  aBMHD
+3E909  data   000005  aBODY
+3E90E  data   000005  aCMAP
+3E913  data   000005  aFORM
+3E918  data   000005  aPBM
+3E91D  data   000005  aILBM
+3E922  data   000006  aFORM_0
+3E928  data   000026  aExceededMaxEnvi
+3E94E  data   000007  _asc_0
+3E955  data   000003  aRt
+3E958  data   000026  aExceededMaxEnvi_0
+3E97E  data   000003  aWt
+3E981  data   000007  aSS_3
+3E988  data   000026  aCouldnTSaveConf
+3E9AE  data   000002  _word_3E9AE
+3E9B0  data   000002  _word_3E9B0
+3E9B2  data   000002  _word_3E9B2
+3E9B4  data   000002  _word_3E9B4
+3E9B6  data   000002  _word_3E9B6
+3E9B8  data   000018  _word_3E9B8
+3E9D0  data   000002  _word_3E9D0
+3E9D2  data   000002  _dword_3E9D2
+3E9D4  data   000002  _word_3E9D4
+3E9D6  data   000002  _word_3E9D6
+3E9D8  data   000002  _word_3E9D8
+3E9DA  data   000002  _word_3E9DA
+3E9DC  data   000022  _word_3E9DC
+3E9FE  data   00000E  aMovieAborted
+3EA0C  data   000019  aMovieCompletedN
+3EA25  data   00001C  aUnknownMovieErr
+3EA41  data   000031  aFileIOErrorOrUn
+3EA72  data   000017  aUnableToCreateT
+3EA89  data   000021  aUnableToAllocat
+3EAAA  data   000021  aUnableToAllocat_0
+3EACB  data   000029  aInsufficientScr
+3EAF4  data   00002C  aUnableToSetupGr
+3EB20  data   000013  aInvalidMovieFil
+3EB33  data   00001C  aIncorrectScreen
+3EB4F  data   000019  aUnknownMovieErr_0
+3EB68  data   000002  __atopsp  lib
+3EB6A  data   000002  __aexit_rtn  lib
+3EB6C  data   000002  __asizds  lib
+3EB6E  data   000014  __nheap_desc  lib
+3EB82  data   000002  __aseghi  lib
+3EB84  data   000002  __aseglo  lib
+3EB86  data   000002  __fDosExt  lib
+3EB88  data   00000E  __acfinfo  lib
+3EB96  data   000002  __aintdiv  lib
+3EB98  data   000002  _word_3EB98
+3EB9A  data   000007  __fac  lib
+3EBA1  data   000003  _byte_3EBA1
+3EBA4  data   000002  _errno  lib
+3EBA6  data   000002  __umaskval  lib
+3EBA8  data   000002  __pspadr  lib
+3EBAA  data   000002  __psp  lib
+3EBAC  data   000001  __osversion  lib
+3EBAD  data   000001  __osminor  lib
+3EBAE  data   000001  __osmode  lib
+3EBAF  data   000001  __cpumode  lib
+3EBB0  data   000002  __doserrno  lib
+3EBB2  data   000002  __nfile  lib
+3EBB4  data   000014  __osfile  lib
+3EBC8  data   000002  ___argc  lib
+3EBCA  data   000002  ___argv  lib
+3EBCC  data   000002  __environ  lib
+3EBCE  data   000002  __pgmptr  lib
+3EBD0  data   000003  _word_3EBD0
+3EBD3  data   000002  __child  lib
+3EBD5  data   000001  __ovlflag  lib
+3EBD6  data   000001  __intno  lib
+3EBD7  data   000004  __ovlvec  lib
+3EBDB  data   000005  __exitflag  lib
+3EBE0  data   000002  _word_3EBE0
+3EBE2  data   000002  _word_3EBE2
+3EBE4  data   000002  _word_3EBE4
+3EBE6  data   000002  _word_3EBE6
+3EBE8  data   000002  __csigtab0  lib
+3EBEA  data   000016  _word_3EBEA
+3EC00  data   000002  _word_3EC00
+3EC02  data   000032  _word_3EC02
+3EC34  data   00002C  _byte_3EC34
+3EC60  data   000002  __adbgmsg  lib
+3EC62  data   000002  _word_3EC62
+3EC64  data   000004  __aaltstkovr  lib
+3EC68  data   000002  _STKHQQ  lib
+3EC6A  data   000002  _word_3EC6A
+3EC6C  data   000016  _word_3EC6C
+3EC82  data   0000A0  __iob  lib
+3ED22  data   0000A0  __iob2  lib
+3EDC2  data   000008  __lastiob  lib
+3EDCA  data   000067  _asc_1
+3EE31  data   000003  _word_3EE31
+3EE34  data   000002  __pnhNearHeap  lib
+3EE36  data   000002  _word_3EE36
+3EE38  data   000004  __cfltcvt_tab  lib
+3EE3C  data   000004  _dword_3EE3C
+3EE40  data   000004  _dword_3EE40
+3EE44  data   000008  _dword_3EE44
+3EE4C  data   000004  _dword_3EE4C
+3EE50  data   000004  _dword_3EE50
+3EE54  data   000002  __sigintseg  lib
+3EE56  data   000106  __sigintoff  lib
+3EF5C  data   000002  _word_3EF5C
+3EF5E  data   000180  _word_3EF5E
+3F0DE  data   00000A  _word_3F0DE
+3F0E8  data   000002  _byte_3F0E8
+3F0EA  data   000001  _byte_3F0EA
+3F0EB  data   000002  _word_3F0EB
+3F0ED  data   000007  _word_3F0ED
+3F0F4  data   000002  _word_3F0F4
+3F0F6  data   000002  _word_3F0F6
+3F0F8  data   000002  _word_3F0F8
+3F0FA  data   000002  _word_3F0FA
+3F0FC  data   000002  _word_3F0FC
+3F0FE  data   000002  _word_3F0FE
+3F100  data   000001  _byte_3F100
+3F101  data   000013  _word_3F101
+3F114  data   000060  _byte_3F114
+3F174  data   000002  _word_3F174
+3F176  data   000002  _word_3F176
+3F178  data   000002  _word_3F178
+3F17A  data   000002  _word_3F17A
+3F17C  data   000019  _word_3F17C
+3F195  data   000010  _byte_3F195
+3F1A5  data   000001  _byte_3F1A5
+3F1A6  data   000002  _byte_3F1A6
+3F1A8  data   000002  _word_3F1A8
+3F1AA  data   000001  _byte_3F1AA
+3F1AB  data   000007  aE000_0
+3F1B2  data   000002  __cflush  lib
+3F1B4  data   000002  __commode  lib
+3F1B6  data   00006E  __amblksiz  lib
+3F224  data   000003  __matherr_flag  lib
+3F227  data   000001  _byte_3F227
+3F228  data   000032  __lseekchk  lib
+3F25A  data   000001  _byte_3F25A
+3F25B  data   000003  _byte_3F25B
+3F25E  data   000002  _word_3F25E
+3F260  data   000002  _word_3F260
+3F262  data   000002  _word_3F262
+3F264  data   000002  _word_3F264
+3F266  data   000002  _word_3F266
+3F268  data   000002  _word_3F268
+3F26A  data   000002  _word_3F26A
+3F26C  data   000002  _word_3F26C
+3F26E  data   000002  _word_3F26E
+3F270  data   00000C  _word_3F270
+3F27C  data   000012  _byte_3F27C
+3F28E  data   000002  __chbuf  lib
+3F290  data   000002  ___qczrinit  lib
+3F292  data   000002  ___aDBswpflg  lib
+3F294  data   000002  ___aDBswpchk  lib
+3F296  data   000002  ___aDBrterr  lib
+3F298  data   000008  ___aDBexit  lib
+3F2A0  data   000002  __fpinit  lib
+3F2A2  data   000002  _word_3F2A2
+3F2A4  data   000002  _word_3F2A4
+3F2A6  data   000002  _word_3F2A6
+3F2A8  data   000002  _word_3F2A8
+3F2AA  data   000026  _word_3F2AA
+3F2D0  data   000002  _word_3F2D0
+3F2D2  data   000022  _word_3F2D2
+3F2F4  data   000002  _word_3F2F4
+3F2F6  data   000002  _word_3F2F6
+3F2F8  data   000002  _word_3F2F8
+3F2FA  data   00004A  _word_3F2FA
+3F344  data   000002  _word_3F344
+3F346  data   0001BC  _word_3F346
+3F502  data   0000DE  __edata  lib
+3F5E0  data   0003A4  _word_3F5E0
+3F984  data   000002  _word_3F984
+3F986  data   000002  _word_3F986
+3F988  data   000006  _word_3F988
+3F98E  data   000006  _word_3F98E
+3F994  data   000024  _word_3F994
+3F9B8  data   000014  _word_3F9B8
+3F9CC  data   00002C  _byte_3F9CC
+3F9F8  data   000A4C  _word_3F9F8
+40444  data   000002  _word_40444
+40446  data   000002  _word_40446
+40448  data   000002  _word_40448
+4044A  data   000002  _word_4044A
+4044C  data   000002  _word_4044C
+4044E  data   000382  _byte_4044E
+407D0  data   000002  _word_407D0
+407D2  data   000002  _word_407D2
+407D4  data   000001  _byte_407D4
+407D5  data   000001  _byte_407D5
+407D6  data   000002  _byte_407D6
+407D8  data   000002  _word_407D8
+407DA  data   000002  _word_407DA
+407DC  data   000002  _word_407DC
+407DE  data   000002  _word_407DE
+407E0  data   000002  _word_407E0
+407E2  data   000002  _word_407E2
+407E4  data   000002  _word_407E4
+407E6  data   000002  _word_407E6
+407E8  data   000002  _word_407E8
+407EA  data   000002  _word_407EA
+407EC  data   00007A  _byte_407EC
+40866  data   000002  _word_40866
+40868  data   000166  _word_40868
+409CE  data   000004  _word_409CE
+409D2  data   000002  _word_409D2
+409D4  data   00002E  _word_409D4
+40A02  data   000004  _word_40A02
+40A06  data   000002  _word_40A06
+40A08  data   000028  _word_40A08
+40A30  data   000002  _word_40A30
+40A32  data   000002  _word_40A32
+40A34  data   00009E  _word_40A34
+40AD2  data   000002  _word_40AD2
+40AD4  data   000002  _word_40AD4
+40AD6  data   000001  _byte_40AD6
+40AD7  data   000001  _byte_40AD7
+40AD8  data   000002  _byte_40AD8
+40ADA  data   000002  _word_40ADA
+40ADC  data   000002  _word_40ADC
+40ADE  data   000026  _word_40ADE
+40B04  data   000002  _word_40B04
+40B06  data   00000B  _word_40B06
+40B11  data   000469  _byte_40B11
+40F7A  data   000002  _word_40F7A
+40F7C  data   000002  _word_40F7C
+40F7E  data   000002  _word_40F7E
+40F80  data   00004C  _word_40F80
+40FCC  data   000002  _word_40FCC
+40FCE  data   000002  _word_40FCE
+40FD0  data   000002  _word_40FD0
+40FD2  data   000002  _word_40FD2
+40FD4  data   000026  _word_40FD4
+40FFA  data   000029  _word_40FFA
+41023  data   00005D  _byte_41023
+41080  data   000006  _word_41080
+41086  data   000002  _word_41086
+41088  data   00003A  _word_41088
+410C2  data   000002  _word_410C2
+410C4  data   000004  _word_410C4
+410C8  data   000002  _word_410C8
+410CA  data   000644  _word_410CA
+4170E  data   000002  _word_4170E
+41710  data   000002  _word_41710
+41712  data   000002  _word_41712
+41714  data   000006  _word_41714
+4171A  data   000002  _word_4171A
+4171C  data   000002  _word_4171C
+4171E  data   000002  _word_4171E
+41720  data   000002  _word_41720
+41722  data   000002  _word_41722
+41724  data   000002  _word_41724
+41726  data   000002  _word_41726
+41728  data   000002  _word_41728
+4172A  data   000002  _word_4172A
+4172C  data   000002  _word_4172C
+4172E  data   00012C  _word_4172E
+4185A  data   00001A  _word_4185A
+41874  data   000004  _word_41874
+41878  data   00003A  _word_41878
+418B2  data   000002  _word_418B2
+418B4  data   000002  _word_418B4
+418B6  data   000002  _word_418B6
+418B8  data   000002  _word_418B8
+418BA  data   000100  _byte_418BA
+419BA  data   000002  _word_419BA
+419BC  data   000002  _word_419BC
+419BE  data   000002  _word_419BE
+419C0  data   000002  _word_419C0
+419C2  data   000002  _word_419C2
+419C4  data   000002  _word_419C4
+419C6  data   000102  _word_419C6
+41AC8  data   000002  _word_41AC8
+41ACA  data   000002  _word_41ACA
+41ACC  data   000002  _byte_41ACC
+41ACE  data   000002  _word_41ACE
+41AD0  data   000002  _word_41AD0
+41AD2  data   000002  _word_41AD2
+41AD4  data   000002  _word_41AD4
+41AD6  data   000002  _word_41AD6
+41AD8  data   000002  _word_41AD8
+41ADA  data   000002  _word_41ADA
+41ADC  data   000002  _word_41ADC
+41ADE  data   000002  _word_41ADE
+41AE0  data   000002  _word_41AE0
+41AE2  data   00000E  _word_41AE2
+41AF0  data   000002  _word_41AF0
+41AF2  data   000002  _word_41AF2
+41AF4  data   000002  _word_41AF4
+41AF6  data   000001  _byte_41AF6
+41AF7  data   000019  _byte_41AF7
+41B10  data   000002  _word_41B10
+41B12  data   000002  _word_41B12
+41B14  data   000002  _word_41B14
+41B16  data   000002  _word_41B16
+41B18  data   000002  _word_41B18
+41B1A  data   000002  _word_41B1A
+41B1C  data   000002  _word_41B1C
+41B1E  data   000002  _word_41B1E
+41B20  data   000002  _word_41B20
+41B22  data   00001A  _word_41B22
+41B3C  data   000002  _word_41B3C
+41B3E  data   000002  _word_41B3E
+41B40  data   000002  _word_41B40
+41B42  data   000002  _word_41B42
+41B44  data   000001  _byte_41B44
+41B45  data   000001  _byte_41B45
+41B46  data   000002  _byte_41B46
+41B48  data   000002  _word_41B48
+41B4A  data   000002  _word_41B4A
+41B4C  data   000002  _word_41B4C
+41B4E  data   000002  _word_41B4E
+41B50  data   000002  _word_41B50
+41B52  data   000002  _word_41B52
+41B54  data   000002  _word_41B54
+41B56  data   000002  _word_41B56
+41B58  data   000002  _word_41B58
+41B5A  data   000002  _word_41B5A
+41B5C  data   000002  _word_41B5C
+41B5E  data   000002  _word_41B5E
+41B60  data   000002  _word_41B60
+41B62  data   000002  _word_41B62
+41B64  data   000002  _word_41B64
+41B66  data   000002  _word_41B66
+41B68  data   000002  _word_41B68
+41B6A  data   000002  _word_41B6A
+41B6C  data   000002  _word_41B6C
+41B6E  data   000002  _word_41B6E
+41B70  data   000002  _word_41B70
+41B72  data   000002  _word_41B72
+41B74  data   000002  _word_41B74
+41B76  data   000002  _word_41B76
+41B78  data   000002  _word_41B78
+41B7A  data   000002  _word_41B7A
+41B7C  data   000002  _word_41B7C
+41B7E  data   000002  _word_41B7E
+41B80  data   000002  _word_41B80
+41B82  data   000004  _byte_41B82
+41B86  data   000002  _word_41B86
+41B88  data   000002  _word_41B88
+41B8A  data   000002  _byte_41B8A
+41B8C  data   000296  _word_41B8C
+41E22  data   00027A  _word_41E22
+4209C  data   000009  _byte_4209C
+420A5  data   000009  _byte_420A5
+420AE  data   000009  _byte_420AE
+420B7  data   000009  _byte_420B7
+420C0  data   000009  _byte_420C0
+420C9  data   000009  _byte_420C9
+420D2  data   000009  _byte_420D2
+420DB  data   000409  _byte_420DB
+424E4  data   000009  _byte_424E4
+424ED  data   000009  _byte_424ED
+424F6  data   000009  _byte_424F6
+424FF  data   000009  _byte_424FF
+42508  data   000009  _byte_42508
+42511  data   000009  _byte_42511
+4251A  data   000009  _byte_4251A
+42523  data   000131  _byte_42523
+42654  data   000024  _word_42654
+42678  data   000002  _word_42678
+4267A  data   000002  _word_4267A
+4267C  data   000002  _word_4267C
+4267E  data   000040  _byte_4267E
+426BE  data   000002  _word_426BE
+426C0  data   000002  _word_426C0
+426C2  data   000044  _word_426C2
+42706  data   000002  _word_42706
+42708  data   000002  _word_42708
+4270A  data   000002  _word_4270A
+4270C  data   000002  _word_4270C
+4270E  data   000002  _word_4270E
+42710  data   000002  _word_42710
+42712  data   000017  _word_42712
+42729  data   000001  _byte_42729
+4272A  data   000001  _byte_4272A
+4272B  data   0002FB  _byte_4272B
+42A26  data   000044  _word_42A26
+42A6A  data   000002  _word_42A6A
+42A6C  data   000004  _word_42A6C
+42A70  data   000004  _word_42A70
+42A74  data   000006  _word_42A74
+42A7A  data   000024  _word_42A7A
+42A9E  data   000002  _word_42A9E
+42AA0  data   000002  _word_42AA0
+42AA2  data   000002  _dword_42AA2
+42AA4  data   000196  _word_42AA4
+42C3A  data   00000E  _word_42C3A
+42C48  data   000045  _byte_42C48
+42C8D  data   000003  _byte_42C8D
+42C90  data   00001B  _byte_42C90
+42CAB  data   000001  _byte_42CAB
+42CAC  data   000002  _word_42CAC
+42CAE  data   000002  _word_42CAE
+42CB0  data   000016  _word_42CB0
+42CC6  data   00000C  _word_42CC6
+42CD2  data   000045  _byte_42CD2
+42D17  data   000003  _byte_42D17
+42D1A  data   00001B  _byte_42D1A
+42D35  data   000001  _byte_42D35
+42D36  data   000002  _word_42D36
+42D38  data   000002  _word_42D38
+42D3A  data   000022  _word_42D3A
+42D5C  data   000045  _byte_42D5C
+42DA1  data   000003  _byte_42DA1
+42DA4  data   00001B  _byte_42DA4
+42DBF  data   000001  _byte_42DBF
+42DC0  data   000002  _word_42DC0
+42DC2  data   000002  _word_42DC2
+42DC4  data   000022  _word_42DC4
+42DE6  data   000045  _byte_42DE6
+42E2B  data   000003  _byte_42E2B
+42E2E  data   00001B  _byte_42E2E
+42E49  data   000001  _byte_42E49
+42E4A  data   000002  _word_42E4A
+42E4C  data   000002  _word_42E4C
+42E4E  data   000022  _word_42E4E
+42E70  data   000045  _byte_42E70
+42EB5  data   000003  _byte_42EB5
+42EB8  data   00001B  _byte_42EB8
+42ED3  data   000001  _byte_42ED3
+42ED4  data   000002  _word_42ED4
+42ED6  data   000002  _word_42ED6
+42ED8  data   000022  _word_42ED8
+42EFA  data   000045  _byte_42EFA
+42F3F  data   000003  _byte_42F3F
+42F42  data   00001B  _byte_42F42
+42F5D  data   000001  _byte_42F5D
+42F5E  data   000002  _word_42F5E
+42F60  data   000002  _word_42F60
+42F62  data   000022  _word_42F62
+42F84  data   000045  _byte_42F84
+42FC9  data   000003  _byte_42FC9
+42FCC  data   00001B  _byte_42FCC
+42FE7  data   000001  _byte_42FE7
+42FE8  data   000002  _word_42FE8
+42FEA  data   000002  _word_42FEA
+42FEC  data   000022  _word_42FEC
+4300E  data   000045  _byte_4300E
+43053  data   000003  _byte_43053
+43056  data   00001B  _byte_43056
+43071  data   000001  _byte_43071
+43072  data   000002  _word_43072
+43074  data   000002  _word_43074
+43076  data   000022  _word_43076
+43098  data   000045  _byte_43098
+430DD  data   000003  _byte_430DD
+430E0  data   00001B  _byte_430E0
+430FB  data   000001  _byte_430FB
+430FC  data   000002  _word_430FC
+430FE  data   000002  _word_430FE
+43100  data   000BF9  _word_43100
+43CF9  data   00008F  _word_43CF9
+43D88  data   000002  _word_43D88
+43D8A  data   000002  _word_43D8A
+43D8C  data   000EFF  _word_43D8C
+44C8B  data   00006E  _word_44C8B
+44CF9  data   0005A5  _word_44CF9
+4529E  data   000034  _word_4529E
+452D2  data   000002  _word_452D2
+452D4  data   000002  _word_452D4
+452D6  data   000086  _word_452D6
+4535C  data   000002  _word_4535C
+4535E  data   000002  _word_4535E
+45360  data   000002  _word_45360
+45362  data   000002  _word_45362
+45364  data   000002  _word_45364
+45366  data   000002  _byte_45366
+45368  data   001852  _word_45368
+46BBA  data   000002  _word_46BBA
+46BBC  data   000002  _word_46BBC
+46BBE  data   000002  _word_46BBE
+46BC0  data   000002  _word_46BC0
+46BC2  data   000002  _word_46BC2
+46BC4  data   000008  _word_46BC4
+46BCC  data   000002  _word_46BCC
+46BCE  data   000012  _word_46BCE
+46BE0  data   00002A  _byte_46BE0
+46C0A  data   00003C  _word_46C0A
+46C46  data   000002  _word_46C46
+46C48  data   000002  _word_46C48
+46C4A  data   000002  _word_46C4A
+46C4C  data   000002  _word_46C4C
+46C4E  data   000002  _word_46C4E
+46C50  data   000002  _word_46C50
+46C52  data   000002  _word_46C52
+46C54  data   000002  _word_46C54
+46C56  data   000014  _word_46C56
+46C6A  data   000002  _word_46C6A
+46C6C  data   000004  _word_46C6C
+46C70  data   000002  _word_46C70
+46C72  data   000004  _word_46C72
+46C76  data   000002  _word_46C76
+46C78  data   000002  _word_46C78
+46C7A  data   000002  _word_46C7A
+46C7C  data   000002  _word_46C7C
+46C7E  data   000002  _word_46C7E
+46C80  data   000006  _word_46C80
+46C86  data   000002  _word_46C86
+46C88  data   000002  _word_46C88
+46C8A  data   000002  _word_46C8A
+46C8C  data   000002  _word_46C8C
+46C8E  data   000002  _word_46C8E
+46C90  data   00000A  _word_46C90
+46C9A  data   000002  _word_46C9A
+46C9C  data   000002  _word_46C9C
+46C9E  data   000002  _word_46C9E
+46CA0  data   000002  _word_46CA0
+46CA2  data   000012  _word_46CA2
+46CB4  data   000752  _word_46CB4
+47406  data   00002C  _word_47406
+47432  data   000002  _word_47432
+47434  data   000014  _word_47434
+47448  data   000002  _word_47448
+4744A  data   000002  _word_4744A
+4744C  data   000002  _word_4744C
+4744E  data   000008  _word_4744E
+47456  data   000002  _word_47456
+47458  data   000002  _word_47458
+4745A  data   000002  _word_4745A
+4745C  data   000033  _word_4745C
+4748F  data   000043  _byte_4748F
+474D2  data   000002  _word_474D2
+474D4  data   000002  _byte_474D4
+474D6  data   000002  _word_474D6
+474D8  data   000002  _word_474D8
+474DA  data   0001D0  _word_474DA
+476AA  data   000002  _word_476AA
+476AC  data   000002  _word_476AC
+476AE  data   000006  _word_476AE
+476B4  data   00012A  _word_476B4
+477DE  data   000002  _word_477DE
+477E0  data   000002  _word_477E0
+477E2  data   000024  _word_477E2
+47806  data   00002C  _word_47806
+47832  data   000002  _word_47832
+47834  data   000042  _word_47834
+47876  data   000002  _word_47876
+47878  data   000002  _word_47878
+4787A  data   000008  _byte_4787A
+47882  data   000002  _byte_47882
+47884  data   000006  _word_47884
+4788A  data   000002  _word_4788A
+4788C  data   000002  _word_4788C
+4788E  data   000002  _word_4788E
+47890  data   000002  _word_47890
+47892  data   000002  _word_47892
+47894  data   000002  _word_47894
+47896  data   000002  _word_47896
+47898  data   000002  _word_47898
+4789A  data   000002  _word_4789A
+4789C  data   000002  _word_4789C
+4789E  data   000002  _word_4789E
+478A0  data   000002  _word_478A0
+478A2  data   000002  _word_478A2
+478A4  data   000006  _word_478A4
+478AA  data   000002  _word_478AA
+478AC  data   000002  _word_478AC
+478AE  data   000036  _word_478AE
+478E4  data   000002  _word_478E4
+478E6  data   000002  _word_478E6
+478E8  data   000002  _word_478E8
+478EA  data   000002  _word_478EA
+478EC  data   000002  _word_478EC
+478EE  data   000002  _word_478EE
+478F0  data   000026  _word_478F0
+47916  data   00016C  _word_47916
+47A82  data   000002  _word_47A82
+47A84  data   000002  _word_47A84
+47A86  data   000001  _byte_47A86
+47A87  data   000001  _byte_47A87
+47A88  data   000002  _word_47A88
+47A8A  data   000002  _word_47A8A
+47A8C  data   000002  _word_47A8C
+47A8E  data   000001  _byte_47A8E
+47A8F  data   000001  _byte_47A8F
+47A90  data   000001  _byte_47A90
+47A91  data   000001  _byte_47A91
+47A92  data   000002  _word_47A92
+47A94  data   000002  _word_47A94
+47A96  data   000002  _word_47A96
+47A98  data   000002  _word_47A98
+47A9A  data   000102  _word_47A9A
+47B9C  data   00000A  _word_47B9C
+47BA6  data   000002  _word_47BA6
+47BA8  data   00000A  _word_47BA8
+47BB2  data   000002  _word_47BB2
+47BB4  data   000014  _word_47BB4
+47BC8  data   000002  _word_47BC8
+47BCA  data   000002  _word_47BCA
+47BCC  data   000002  _word_47BCC
+47BCE  data   000002  _word_47BCE
+47BD0  data   000002  _word_47BD0
+47BD2  data   000002  _word_47BD2
+47BD4  data   000002  _word_47BD4
+47BD6  data   000002  _word_47BD6
+47BD8  data   000002  _word_47BD8
+47BDA  data   000002  _word_47BDA
+47BDC  data   000080  _word_47BDC
+47C5C  data   000002  _word_47C5C
+47C5E  data   00002E  _word_47C5E
+47C8C  data   000002  _word_47C8C
+47C8E  data   00001C  _word_47C8E
+47CAA  data   000002  _word_47CAA
+47CAC  data   000006  _word_47CAC
+47CB2  data   000002  _word_47CB2
+47CB4  data   000006  _word_47CB4
+47CBA  data   000002  _word_47CBA
+47CBC  data   000002  _word_47CBC
+47CBE  data   000002  _word_47CBE
+47CC0  data   000002  _word_47CC0
+47CC2  data   000002  _word_47CC2
+47CC4  data   000002  _word_47CC4
+47CC6  data   000002  _word_47CC6
+47CC8  data   000006  _word_47CC8
+47CCE  data   000002  _word_47CCE
+47CD0  data   00001E  _word_47CD0
+47CEE  data   000002  _word_47CEE
+47CF0  data   000002  _word_47CF0
+47CF2  data   000002  _word_47CF2
+47CF4  data   000072  _word_47CF4
+47D66  data   000002  _word_47D66
+47D68  data   000002  _word_47D68
+47D6A  data   000008  _word_47D6A
+47D72  data   000002  _word_47D72
+47D74  data   000004  _word_47D74
+47D78  data   000002  _word_47D78
+47D7A  data   000002  _word_47D7A
+47D7C  data   000002  _word_47D7C
+47D7E  data   000002  _word_47D7E
+47D80  data   000002  _word_47D80
+47D82  data   000002  _word_47D82
+47D84  data   000002  _word_47D84
+47D86  data   000002  _word_47D86
+47D88  data   000002  _word_47D88
+47D8A  data   000002  _word_47D8A
+47D8C  data   000002  _word_47D8C
+47D8E  data   000042  _word_47D8E
+47DD0  data   000002  _word_47DD0
+47DD2  data   000042  _word_47DD2
+47E14  data   000002  _word_47E14
+47E16  data   000002  _word_47E16
+47E18  data   000002  _word_47E18
+47E1A  data   000002  _word_47E1A
+47E1C  data   000002  _word_47E1C
+47E1E  data   000002  _word_47E1E
+47E20  data   00024A  _word_47E20
+4806A  data   000002  _word_4806A
+4806C  data   000002  _word_4806C
+4806E  data   000002  _word_4806E
+48070  data   000002  _word_48070
+48072  data   000002  _word_48072
+48074  data   000002  _word_48074
+48076  data   000026  _word_48076
+4809C  data   000002  _word_4809C
+4809E  data   000002  _word_4809E
+480A0  data   000002  _word_480A0
+480A2  data   000002  _word_480A2
+480A4  data   000002  _word_480A4
+480A6  data   000002  _word_480A6
+480A8  data   00001B  _word_480A8
+480C3  data   000213  _byte_480C3
+482D6  data   000024  _word_482D6
+482FA  data   000002  _word_482FA
+482FC  data   000002  _word_482FC
+482FE  data   000002  _word_482FE
+48300  data   000002  _word_48300
+48302  data   000002  _word_48302
+48304  data   000014  _word_48304
+48318  data   000002  _word_48318
+4831A  data   000012  _word_4831A
+4832C  data   000024  _word_4832C
+48350  data   000010  _word_48350
+48360  data   0012F0  __end  lib

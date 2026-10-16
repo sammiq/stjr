@@ -1,0 +1,153 @@
+# unit                     section  start  end    [flags]
+# Address ranges are IDA linear addresses, end exclusive. Units map to
+# src/<unit>.c (or .asm); lib=<LIB>:<module> units are built from the C library.
+
+seg000                     .text    10000  1BD60
+seg001                     .text    1BD60  21DB6
+list                       .text    21DB6  21E66
+c21E66                     .text    21E66  2B97F
+seg002                     .text    2B980  33596
+lib/crt0                   .text    335A6  336AA  lib=MLIBCE.LIB:crt0.asm
+lib/crt0                   .data    3EB68  3EB88  lib=MLIBCE.LIB:crt0.asm
+lib/crt0dat                .text    336AA  33826  lib=MLIBCE.LIB:crt0dat.asm
+lib/crt0dat                .data    3EB88  3EBDC  lib=MLIBCE.LIB:crt0dat.asm
+lib/fclose                 .text    33826  338E6  lib=MLIBCE.LIB:fclose.c
+lib/fclose                 .data    3EBDC  3EBE0  lib=MLIBCE.LIB:fclose.c
+lib/fopen                  .text    338E6  33928  lib=MLIBCE.LIB:fopen.c
+lib/fread                  .text    33928  33A0B  lib=MLIBCE.LIB:fread.asm
+lib/fwrite                 .text    33A0C  33B10  lib=MLIBCE.LIB:fwrite.asm
+lib/printf                 .text    33B10  33B4E  lib=MLIBCE.LIB:printf.c
+lib/strncpy                .text    33B4E  33B76  lib=MLIBCE.LIB:strncpy.asm
+lib/strncmp                .text    33B76  33BB0  lib=MLIBCE.LIB:strncmp.asm
+asm/t33BB0                 .text    33BB0  33BB3
+lib/tolower                .text    33BB4  33BD6  lib=MLIBCE.LIB:tolower.c
+lib/fgets                  .text    33BD6  33C49  lib=MLIBCE.LIB:fgets.asm
+lib/fputs                  .text    33C4A  33C9E  lib=MLIBCE.LIB:fputs.c
+lib/sprintf                .text    33C9E  33CF8  lib=MLIBCE.LIB:sprintf.c
+lib/sprintf                .bss     41B7C  41B84  lib=MLIBCE.LIB:sprintf.c
+lib/sscanf                 .text    33CF8  33D36  lib=MLIBCE.LIB:sscanf.c
+lib/sscanf                 .bss     41B84  41B8C  lib=MLIBCE.LIB:sscanf.c
+lib/strchr                 .text    33D36  33D5F  lib=MLIBCE.LIB:strchr.asm
+lib/strlwr                 .text    33D60  33D7E  lib=MLIBCE.LIB:strlwr.asm
+lib/strtok                 .text    33D7E  33E0D  lib=MLIBCE.LIB:strtok.asm
+lib/strtok                 .data    3EBE0  3EBE2  lib=MLIBCE.LIB:strtok.asm
+lib/_ctype                 .text    33E0E  33E4F  lib=MLIBCE.LIB:_ctype.asm
+lib/onexit                 .text    33E50  33E82  lib=MLIBCE.LIB:onexit.asm
+lib/onexit                 .data    3EBE2  3EBE4  lib=MLIBCE.LIB:onexit.asm
+lib/qsort                  .text    33E82  33FD7  lib=MLIBCE.LIB:qsort.asm
+lib/rand                   .text    33FD8  34012  lib=MLIBCE.LIB:rand.c
+lib/rand                   .data    3EBE4  3EBE8  lib=MLIBCE.LIB:rand.c
+lib/setjmp                 .text    34012  3405C  lib=MLIBCE.LIB:setjmp.asm
+lib/signal                 .text    3405C  341D5  lib=MLIBCE.LIB:signal.asm
+lib/signal                 .data    3EBE8  3EC04  lib=MLIBCE.LIB:signal.asm
+lib/splitpat               .text    341D6  3432A  lib=MLIBCE.LIB:splitpat.c
+lib/makepath               .text    3432A  343B2  lib=MLIBCE.LIB:makepath.c
+lib/unlink                 .text    343B2  343BF  lib=MLIBCE.LIB:unlink.asm
+lib/chainint               .text    343C0  343DC  lib=MLIBCE.LIB:chainint.asm
+lib/d_close                .text    343DC  343E9  lib=MLIBCE.LIB:d_close.asm
+lib/d_getvec               .text    343EA  343FC  lib=MLIBCE.LIB:d_getvec.asm
+lib/d_find                 .text    343FC  3443A  lib=MLIBCE.LIB:d_find.asm
+lib/d_open                 .text    3443A  34451  lib=MLIBCE.LIB:d_open.asm
+lib/d_rdwr                 .text    34452  34481  lib=MLIBCE.LIB:d_rdwr.asm
+lib/d_setvec               .text    34482  34497  lib=MLIBCE.LIB:d_setvec.asm
+lib/ldiv                   .text    34498  34532  lib=MLIBCE.LIB:ldiv.asm
+lib/lmul                   .text    34532  34564  lib=MLIBCE.LIB:lmul.asm
+lib/lrem                   .text    34564  34604  lib=MLIBCE.LIB:lrem.asm
+lib/uldiv                  .text    34604  34663  lib=MLIBCE.LIB:uldiv.asm
+lib/ulrem                  .text    34664  346CE  lib=MLIBCE.LIB:ulrem.asm
+lib/mlibce_strchr          .text    346CE  34700  lib=MLIBCE.LIB:strchr.asm
+lib/mlibce_strncmp         .text    34700  3473B  lib=MLIBCE.LIB:strncmp.asm
+lib/mlibce_strncpy         .text    3473C  34766  lib=MLIBCE.LIB:strncpy.asm
+lib/strupr                 .text    34766  3478A  lib=MLIBCE.LIB:strupr.asm
+lib/strstr                 .text    3478A  347F5  lib=MLIBCE.LIB:strstr.asm
+lib/fltusedc               .text    347F6  3480A  lib=MLIBCE.LIB:fltusedc.asm
+lib/fltusedc               .data    3EC04  3EC18  lib=MLIBCE.LIB:fltusedc.asm
+asm/t3480A                 .text    3480A  34F2F
+lib/crt0msg                .text    34F30  34F52  lib=MLIBCE.LIB:crt0msg.asm
+lib/crt0msg                .data    3EC60  3EC64  lib=MLIBCE.LIB:crt0msg.asm
+lib/crt0fp                 .text    34F52  34F58  lib=MLIBCE.LIB:crt0fp.asm
+lib/chkstk                 .text    34F58  34F7C  lib=MLIBCE.LIB:chkstk.asm
+lib/chkstk                 .data    3EC64  3EC6A  lib=MLIBCE.LIB:chkstk.asm
+lib/chksum                 .text    34F7C  34FA0  lib=MLIBCE.LIB:chksum.asm
+lib/stdargv                .text    34FA0  3512E  lib=MLIBCE.LIB:stdargv.asm
+lib/stdargv                .data    3EC6A  3EC6E  lib=MLIBCE.LIB:stdargv.asm
+lib/stdenvp                .text    3512E  351AB  lib=MLIBCE.LIB:stdenvp.asm
+lib/nmsghdr                .text    351AC  3520D  lib=MLIBCE.LIB:nmsghdr.asm
+lib/dosret                 .text    3520E  35263  lib=MLIBCE.LIB:dosret.asm
+lib/dosret                 .data    3EC6E  3EC82  lib=MLIBCE.LIB:dosret.asm
+lib/farstub                .text    35264  35265  lib=MLIBCE.LIB:farstub.asm
+lib/_filbuf                .text    35266  352FB  lib=MLIBCE.LIB:_filbuf.asm
+lib/_flsbuf                .text    352FC  353DF  lib=MLIBCE.LIB:_flsbuf.asm
+lib/_freebuf               .text    353E0  3540C  lib=MLIBCE.LIB:_freebuf.asm
+lib/_open                  .text    3540C  35538  lib=MLIBCE.LIB:_open.c
+lib/_sftbuf                .text    35538  355E9  lib=MLIBCE.LIB:_sftbuf.asm
+lib/_sftbuf                .data    3EDC4  3EDCA  lib=MLIBCE.LIB:_sftbuf.asm
+lib/fflush                 .text    355EA  35724  lib=MLIBCE.LIB:fflush.c
+lib/input                  .text    35724  35FF0  lib=MLIBCE.LIB:input.c
+lib/input                  .data    3EDCA  3EDD2  lib=MLIBCE.LIB:input.c
+lib/output                 .text    35FF0  364D7  lib=MLIBCE.LIB:output.asm
+lib/output                 .data    3EDD2  3EE33  lib=MLIBCE.LIB:output.asm
+lib/stream                 .text    364D8  3650A  lib=MLIBCE.LIB:stream.c
+lib/close                  .text    3650A  3652A  lib=MLIBCE.LIB:close.asm
+lib/read                   .text    3652A  36613  lib=MLIBCE.LIB:read.asm
+lib/write                  .text    36614  36754  lib=MLIBCE.LIB:write.asm
+lib/stackava               .text    36754  36768  lib=MLIBCE.LIB:stackava.asm
+lib/nmalloc                .text    36768  367C4  lib=MLIBCE.LIB:nmalloc.asm
+lib/nmalloc                .data    3EE34  3EE38  lib=MLIBCE.LIB:nmalloc.asm
+lib/strcat                 .text    367C4  36803  lib=MLIBCE.LIB:strcat.asm
+lib/strcpy                 .text    36804  36836  lib=MLIBCE.LIB:strcpy.asm
+lib/strlen                 .text    36836  36851  lib=MLIBCE.LIB:strlen.asm
+lib/atox                   .text    36852  368A6  lib=MLIBCE.LIB:atox.asm
+lib/itoa                   .text    368A6  368C1  lib=MLIBCE.LIB:itoa.asm
+lib/memcpy                 .text    368C2  368EE  lib=MLIBCE.LIB:memcpy.asm
+asm/t368EE                 .text    368EE  37F4A
+lib/stdalloc               .text    37F4A  37F6F  lib=MLIBCE.LIB:stdalloc.asm
+lib/_cflush                .text    37F70  37F86  lib=MLIBCE.LIB:_cflush.asm
+lib/_getbuf                .text    37F86  37FC9  lib=MLIBCE.LIB:_getbuf.asm
+lib/ungetc                 .text    37FCA  3802E  lib=MLIBCE.LIB:ungetc.c
+lib/lseek                  .text    3802E  380AF  lib=MLIBCE.LIB:lseek.asm
+lib/open                   .text    380B0  3826C  lib=MLIBCE.LIB:open.asm
+lib/searchsg               .text    3826C  382E8  lib=MLIBCE.LIB:searchsg.asm
+lib/growseg                .text    382E8  383E5  lib=MLIBCE.LIB:growseg.asm
+lib/growseg                .data    3F1B6  3F1B8  lib=MLIBCE.LIB:growseg.asm
+lib/atof                   .text    383E6  3842C  lib=MLIBCE.LIB:atof.c
+lib/atof                   .bss     41B8E  41B96  lib=MLIBCE.LIB:atof.c
+lib/_fptostr               .text    3842C  3849C  lib=MLIBCE.LIB:_fptostr.c
+lib/commit                 .text    3849C  384F8  lib=MLIBCE.LIB:commit.c
+lib/mlibce_memcpy          .text    384F8  38540  lib=MLIBCE.LIB:memcpy.asm
+lib/memset                 .text    38540  3856D  lib=MLIBCE.LIB:memset.asm
+lib/xtoa                   .text    3856E  385CD  lib=MLIBCE.LIB:xtoa.asm
+lib/wrt2err                .text    385CE  385E9  lib=MLIBCE.LIB:wrt2err.asm
+lib/almul                  .text    385EA  3860A  lib=MLIBCE.LIB:almul.asm
+lib/alshl                  .text    3860A  38627  lib=MLIBCE.LIB:alshl.asm
+asm/t38627                 .text    38627  387BB
+lib/cfout                  .text    387BC  38802  lib=MLIBCE.LIB:cfout.asm
+lib/cfout                  .data    3F1F8  3F21B  lib=MLIBCE.LIB:cfout.asm
+lib/matherr                .text    38802  38811  lib=MLIBCE.LIB:matherr.asm
+lib/closeall               .text    38812  38838  lib=MLIBCE.LIB:closeall.c
+lib/d_commit               .text    38838  38845  lib=MLIBCE.LIB:d_commit.asm
+lib/lshl                   .text    38846  38851  lib=MLIBCE.LIB:lshl.asm
+asm/t38851                 .text    38851  38F0C
+lib/getch                  .text    38F0C  38F38  lib=MLIBCE.LIB:getch.asm
+lib/getch                  .data    3F28E  3F290  lib=MLIBCE.LIB:getch.asm
+lib/tell                   .text    38F38  38F50  lib=MLIBCE.LIB:tell.c
+lib/flength                .text    38F50  38FD6  lib=MLIBCE.LIB:flength.c
+lib/intdos                 .text    38FD6  3901E  lib=MLIBCE.LIB:intdos.asm
+lib/stricmp                .text    3901E  39060  lib=MLIBCE.LIB:stricmp.asm
+lib/strdup                 .text    39060  39088  lib=MLIBCE.LIB:strdup.asm
+lib/mlibce_strupr          .text    39088  390A6  lib=MLIBCE.LIB:strupr.asm
+lib/access                 .text    390A6  390C5  lib=MLIBCE.LIB:access.asm
+asm/t390D0                 .text    390D0  390DF
+far/seg003                 .data    390E0  3B0E0
+far/seg004                 .data    3B0E0  3B3E0
+far/seg005                 .data    3B3E0  3B870
+data/d3B870                .data    3B870  3EB68
+data/d3EC18                .data    3EC18  3EC60
+data/d3EC82                .data    3EC82  3EDC4
+data/d3EE38                .data    3EE38  3F1B6
+data/d3F1B8                .data    3F1B8  3F1F8
+data/d3F21B                .data    3F21B  3F28E
+data/d3F290                .rodata  3F290  3F502
+data/d3F502                .bss     3F502  41B7C
+data/d41B96                .bss     41B96  48360
+data/stack                 .bss     48360  49650

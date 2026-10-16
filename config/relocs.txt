@@ -1,0 +1,3 @@
+# INSN_ADDR  SYMBOL[+ADDEND] [only] | none
+# Explicit references for operands the analysis cannot tell from numbers
+# (see tools/split.py load_overrides).

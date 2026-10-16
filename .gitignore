@@ -1,0 +1,18 @@
+# Build output
+build/
+build.ninja
+.ninja_*
+objdiff.json
+__pycache__/
+.venv/
+
+# Copyrighted inputs - supply your own copies
+orig/
+tools/C600/
+tools/C700/
+tools/MASM50/
+
+# Locally built tools
+tools/bin/
+tools/objdiff/src/
+tools/exepack/src/
