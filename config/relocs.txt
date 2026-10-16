@@ -18,3 +18,6 @@
 249D5  _seq_handles   # _PlaySeq
 1AC24  _save_version   # _SaveVersion
 2895A  __end+0x110   # _AiStrafe
+211F8  _tan_table+0x102   # InitTrig: the end of the array
+11E30  _bans+0x40   # LoadBan: the end of the array
+16E1D  _ev_queue+0x380   # NextEvent: the end of the queue

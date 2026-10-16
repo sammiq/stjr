@@ -20,9 +20,6 @@ void Fatal(char *msg);  /* fatal error */
 int CachePurge(int ems);    /* seg016: release cached memory, 0 if nothing left */
 int PurgeSound(void);       /* seg015 (new): free sound memory, 0 if there was none */
 
-int pool_stack_size = 0;
-int pool_lock_count = 0;
-
 void *AllocMemPtr(int size)
 {
     void *p;
@@ -31,6 +28,9 @@ void *AllocMemPtr(int size)
         Fatal("Near memory allocation failure, game over.");
     return p;
 }
+
+int pool_stack_size = 0;
+int pool_lock_count = 0;
 
 void FreeMemPtr(void *p)
 {
@@ -176,10 +176,6 @@ void FreeMemHandle(MemHandle h)
     mem_handle_free_list = h;
 }
 
-/* Near match (99.9%): the original's frame is 4 bytes smaller (the split-off
- * block shares a stack slot with last) and it tests lpPoolCurrent against
- * lpPoolEnd with the operands the other way round. Declaration order and
- * the /O flags don't change either. */
 MemHandle AllocMem(unsigned size, int ems)
 {
     unsigned paras;
@@ -187,7 +183,6 @@ MemHandle AllocMem(unsigned size, int ems)
     int failed;
     int found;
     PoolHdr far *last;
-    PoolHdr far *n;
 
     paras = ((size + 15) >> 4) + 1;
     failed = 0;
@@ -243,6 +238,8 @@ MemHandle AllocMem(unsigned size, int ems)
                     Fatal("Internal error in AllocMem");
             }
             if (paras != p->size) {
+                PoolHdr far *n;
+
                 n = p;
                 FP_SEG(n) += paras;
                 n->size = p->size - paras;

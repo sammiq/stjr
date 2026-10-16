@@ -6,16 +6,23 @@ that file's own _DATA, and LINK lays the files' _DATA out in the same order
 as their code. A unit's _DATA starts:
 
   * where its compiled object says: a public variable of the object's _DATA
-    that has its name in config/symbols.txt too sits at its offset from the
-    start (the most common such start wins)
+    that has its name in config/symbols.txt too, or whose initial bytes occur
+    once in the original, sits at its offset from the start; ST25's whole
+    file (build/st25/<unit>.obj) votes too (the most common start wins)
   * failing that, after the previous unit's last string literal: the
     literals a unit's code references (and no other unit does) are its own
 
-and runs to the next unit's start. A unit's .data range lets a compiled
+and runs as far as the evidence goes: its last literal, or the end of the
+compiled object's _DATA. What lies between two units belongs to nobody yet
+and becomes a data/ unit (so a unit's data can't count as matched just
+because nothing was there to compare). A unit's .data range lets a compiled
 function's reference to a literal match the original's (objdiff compares
 the text the two references point at).
 
     tools/dataunits.py [--dry-run]
+
+A unit flagged data-pinned in units.txt keeps the .data range it has
+(set by hand); the others are fitted around it.
 
 Re-run after moving code between units. Units without literals of their
 own get no .data; the region before the first one stays a data/ unit.
@@ -98,18 +105,25 @@ def main() -> None:
     from collections import Counter
     by_name = {sy.name: sy.addr for sy in syms.by_addr.values()}
     anchored: dict[str, int] = {}
+    obj_len: dict[str, int] = {}
     for u in code:
         obj = ROOT / "build/obj" / f"{u.name}.obj"
         if not obj.exists():
             continue
         m = omf.parse_obj(obj.read_bytes())
+        dseg = next((sg for sg in m.segments if sg.name == "_DATA"), None)
+        obj_len[u.name] = dseg.length if dseg else 0
         starts = Counter(by_name[p.name] - p.offset for p in m.publics
                          if p.seg and m.seg(p.seg).name == "_DATA" and p.name in by_name
                          and lo <= by_name[p.name] < hi)
         starts.update(content_votes(m, image, lo, hi))
+        ref = ROOT / "build/st25" / f"{u.name}.obj"        # all of ST25's variables (tools/st25match.py)
+        if ref.exists():
+            starts.update(content_votes(omf.parse_obj(ref.read_bytes()), image, lo, hi))
         if starts:
             anchored[u.name] = starts.most_common(1)[0][0]
 
+    stray: list[int] = []       # data found out of order: the start of some other file's
     # anchors must follow code order: keep the largest increasing set
     seq = [(u.name, anchored[u.name]) for u in code if u.name in anchored]
     best: list[list] = []
@@ -119,7 +133,8 @@ def main() -> None:
     keep = max(best, key=len, default=[])
     for i, (n, st) in enumerate(seq):
         if i not in keep:
-            print(f"{n:<8} anchor {st:05X} is out of code order: ignored")
+            print(f"{n:<8} anchor {st:05X} is out of code order: that data is another file's")
+            stray.append(st)
             del anchored[n]
 
     # literals: each unit's own, outliers dropped (kept increasing)
@@ -130,7 +145,7 @@ def main() -> None:
         if ts:
             cursor = ts[0]
             lit_end[u.name] = ts
-    order = []          # (unit, start)
+    order = []          # (unit, start, evidence end)
     prev_end = lo
     for k, u in enumerate(code):
         # the next unit's start: its anchor, or its first literal; a literal of
@@ -138,28 +153,61 @@ def main() -> None:
         later = [anchored[v.name] if v.name in anchored else lit_end[v.name][0]
                  for v in code[k + 1:] if v.name in anchored or v.name in lit_end]
         nxt = min(later[:1] or [hi])
+        mine = [t for t in lit_end.get(u.name, []) if t < nxt]
         if u.name in anchored:
             start = anchored[u.name]
+            # the file's own literals can come before its first variable
+            early = [t for t in mine if prev_end <= t < start]
+            if early:
+                start = min(early)
         elif u.name in lit_end:
             start = prev_end
             if start >= nxt or (order and start <= order[-1][1]):
                 continue                # no room before the next anchored unit
         else:
             continue
-        order.append((u, start))
-        mine = [t for t in lit_end.get(u.name, []) if t < nxt]
+        end = start
         if mine:
-            end = max(mine) + max(syms.get(max(mine)).size, 1)
-            prev_end = max(prev_end, end + (end & 1))
-        else:
-            prev_end = max(prev_end, start + 2)
+            last = max(mine)
+            end = last + max(syms.get(last).size, 1)
+            body = image[last - lo:]
+            if b"\0" in body:
+                end = last + body.index(b"\0") + 1        # just the string
+        if u.name in anchored:
+            end = max(end, start + obj_len.get(u.name, 0))
+        end = min(end + (end & 1), nxt)
+        order.append((u, start, end))
+        prev_end = max(prev_end, end)
+    # pinned ranges win: drop computed units inside them, clip the rest
+    pinned = [(u, u.ranges[".data"]) for u in code if "data-pinned" in u.flags and ".data" in u.ranges]
+    if pinned:
+        kept = []
+        for u, start, end in order:
+            if "data-pinned" in u.flags:
+                continue
+            for _pu, (a, b) in pinned:
+                if a <= start < b:
+                    start = b
+                if start < a < end:
+                    end = a
+            if end > start:
+                kept.append((u, start, end))
+        order = sorted(kept + [(u, a, b) for u, (a, b) in pinned], key=lambda x: x[1])
+
+    # tight ranges: up to where the evidence ends; the rest is nobody's yet
     bounds = []
-    for k, (u, start) in enumerate(order):
-        end = order[k + 1][1] if k + 1 < len(order) else hi
+    gaps = []
+    for k, (u, start, end) in enumerate(order):
+        nxt = order[k + 1][1] if k + 1 < len(order) else hi
+        cuts = sorted(a for a in stray if start < a < nxt)
+        end = min([end] + cuts) if end > start else start
         u.ranges[".data"] = (start, end)
         bounds.append((u, end))
+        for a, b in zip([end] + cuts, cuts + [nxt]):
+            if b > a:
+                gaps.append((a, b))
     for u in code:
-        if u not in [b[0] for b in bounds]:
+        if u not in [b[0] for b in bounds] or u.ranges[".data"][1] <= u.ranges[".data"][0]:
             u.ranges.pop(".data", None)
     first = order[0][1] if order else hi
     # the data/ units that covered the game's _DATA keep only what's left
@@ -175,8 +223,11 @@ def main() -> None:
                 out.append(Unit(f"data/d{hi:05X}", {".data": (hi, r[1])}, set(u.flags)))
             continue
         out.append(u)
+    out += [Unit(f"data/d{a:05X}", {".data": (a, b)}) for a, b in gaps]
     out.sort(key=lambda u: min(r[0] for r in u.ranges.values()))
     for u, _ in bounds:
+        if ".data" not in u.ranges:
+            continue
         a, b = u.ranges[".data"]
         how = "variables" if u.name in anchored else "literals"
         print(f"{u.name:<8} .data {a:05X}-{b:05X}  (from {how}; {len(lits[u.name])} literals)")

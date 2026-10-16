@@ -16,6 +16,7 @@ matching what tools/omf2elf.py does for compiled objects.
 from __future__ import annotations
 
 import argparse
+import re
 import bisect
 import sys
 from pathlib import Path
@@ -124,6 +125,10 @@ class Splitter:
                 # Functions run to the next symbol, like publics in a compiled
                 # object (this absorbs alignment padding IDA leaves outside)
                 size = nxt - s.addr if s.kind == "func" else min(s.size, end - s.addr)
+                if s.kind == "data" and sec == ".data" and not unit.lib and _is_generated(s.name):
+                    lit = literal_name(data, s.addr - start)
+                    if lit:             # a string literal: just the string, not the padding after it
+                        size = min(size, data.index(b"\0", s.addr - start) + 1 - (s.addr - start))
                 if s.kind == "func" and size > 1 and self.exe.bytes(s.addr + size - 1, s.addr + size) == b"\x90":
                     size -= 1   # word alignment: C 7.00 pads each function to an even address
                 kind = "func" if s.kind == "func" else "object"
@@ -140,36 +145,48 @@ class Splitter:
                 self._code_relocs(w, unit, sec, start, end, covered, pending_seg)
             self._data_relocs(w, unit, sec, start, end, covered, pending_seg)
             self._resolve_segs(w, unit, sec, start, pending_seg)
-        if not unit.lib and ".data" in w.sections:
+        if not unit.lib:
             self._name_literals(w)
         return w
 
     @staticmethod
     def _name_literals(w: ElfWriter) -> None:
-        """References to string literals in the unit's own .data use names made
-        from the text (elf16.literal_name), as tools/omf2elf.py names the
-        compiler's anonymous labels, so the two sides match by name."""
-        data = w.sections[".data"].data
-        own = {s.name: s for s in w.symbols.values() if s.section == ".data"}
-        refs = []
-        for secname, sec in w.sections.items():
-            for i, (off, rtype, sym, addend) in enumerate(sec.relocs):
-                s = own.get(sym)
-                if s is None or rtype == R_386_PC16:
-                    continue
-                if not (DUMMY_NAME.match(sym) or sym.startswith("a")):
-                    continue                    # a named variable keeps its name
-                o = s.value + addend
-                if literal_name(data, o):
+        """References to unnamed data in the unit's own .data/.rodata get the
+        names tools/omf2elf.py gives the compiler's anonymous labels: a string
+        literal is named by its text (elf16.literal_name), anything else by its
+        offset ($rodata_0008), so the two sides match by name."""
+        for dsec in (".data", ".rodata"):
+            if dsec not in w.sections:
+                continue
+            data = w.sections[dsec].data
+            own = {s.name: s for s in w.symbols.values() if s.section == dsec}
+            refs = []
+            for secname, sec in w.sections.items():
+                for i, (off, rtype, sym, addend) in enumerate(sec.relocs):
+                    if rtype == R_386_PC16:
+                        continue
+                    if sym == dsec:
+                        o = addend                      # no symbol there: section relative
+                    else:
+                        s = own.get(sym)
+                        if s is None or not (DUMMY_NAME.match(sym) or sym.startswith("a")):
+                            continue                    # a named variable keeps its name
+                        o = s.value + addend
+                        if not literal_name(data, o):
+                            continue
                     refs.append((secname, i, o))
-        offs = sorted({o for _, _, o in refs})
-        names = dict(zip(offs, number_duplicates([literal_name(data, o) for o in offs])))
-        for o, name in names.items():
-            end = data.find(b"\0", o) + 1
-            w.add_symbol(name, ".data", o, end - o, "object", local=True)
-        for secname, i, o in refs:
-            off, rtype, _sym, _add = w.sections[secname].relocs[i]
-            w.sections[secname].relocs[i] = (off, rtype, names[o], 0)
+            offs = sorted({o for _, _, o in refs})
+            names = dict(zip(offs, number_duplicates([literal_name(data, o) or f"${dsec[1:]}_{o:04X}"
+                                                      for o in offs])))
+            for k, (o, name) in enumerate(names.items()):
+                if name.startswith("$s_"):
+                    size = data.find(b"\0", o) + 1 - o
+                else:
+                    size = (offs[k + 1] if k + 1 < len(offs) else len(data)) - o
+                w.add_symbol(name, dsec, o, size, "object", local=True)
+            for secname, i, o in refs:
+                off, rtype, _sym, _add = w.sections[secname].relocs[i]
+                w.sections[secname].relocs[i] = (off, rtype, names[o], 0)
 
     _lib_cache: dict[str, list] = {}
 
@@ -349,13 +366,14 @@ class Splitter:
                     if (ins.memory_displacement & 0xFFFF) >= LOW_DGROUP and self._named_var(s0) \
                             and t < s0.addr + max(s0.size, 1):
                         targets.append(t)
-            # Immediates IDA left as numbers (push 3507h): accept them when they
-            # are exactly the start of a symbol in the unit's own CONST (strings)
+            # Immediates IDA left as numbers (push 3507h, mov bx, offset c):
+            # accept them when they point into the unit's own CONST (strings,
+            # floating point constants) - a tight range, so not by chance
             if co.immediate_size == 2 and ".rodata" in unit.ranges and not unit.lib:
                 v = _word(code, co.immediate_offset)
                 t = self.dgroup + v
                 lo, hi = unit.ranges[".rodata"]
-                if lo <= t < hi and self.syms.get(t) is not None and t not in targets:
+                if lo <= t < hi and t not in targets:
                     targets.append(t)
             for at, value, _is_mem in fields:
                 hit = None
@@ -535,6 +553,10 @@ class Splitter:
                     else:
                         sym = f"SEG_{seg.name}" if seg else f"SEG_{segv:04X}"
             self._add(w, sec, start, at, R_386_SEG16, sym, 0, set())
+
+
+def _is_generated(name: str) -> bool:
+    return bool(DUMMY_NAME.match(name) or re.match(r"^_?a[A-Z0-9]|^_?asc(_\d+)?$", name))
 
 
 def _word(code: bytes, off: int) -> int:

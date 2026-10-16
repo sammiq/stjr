@@ -299,7 +299,8 @@ class Analysis:
                         self.add_data(t, max(1, ix.MemorySizeExt.size(ins.memory_size)))
                 elif kind == ix.OpKind.IMMEDIATE16 and (
                         ins.mnemonic == ix.Mnemonic.PUSH
-                        or (ins.mnemonic == ix.Mnemonic.MOV and ins.op0_kind == ix.OpKind.REGISTER)):
+                        or (ins.mnemonic == ix.Mnemonic.MOV and ins.op0_kind == ix.OpKind.REGISTER
+                            and ins.op0_register != ix.Register.CX)):     # cx: a count, not a pointer
                     # push offset aText / mov ax, offset aText; not mov [x], 450
                     t = self.dgroup + ins.immediate16
                     s = self.string_at(t)

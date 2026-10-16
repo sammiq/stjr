@@ -17,9 +17,9 @@ typedef struct Matrix {
     int e[3][3];
 } Matrix;
 
-extern int far sin_table[0x101];    /* sin over a quarter turn */
-extern int far cos_table[0x101];
-extern int far tan_table[0x81];     /* tan over an eighth of a turn */
+extern int sin_table[0x101];    /* sin over a quarter turn */
+extern int cos_table[0x101];
+extern int tan_table[0x81];     /* tan over an eighth of a turn */
 extern int sin_small[33];
 extern int cos_small[33];
 extern long ang_small[33];

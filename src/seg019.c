@@ -157,7 +157,7 @@ char *SlotName(int n, char *title, char *out)
     char *cancel;
     char *label;
 
-    cancel = save_dir.count ? "Cancel." : "#GENE\\GENERJ01#No games saved.";
+    cancel = save_dir.count ? "Cancel." : "There are no saved games.";
     label = "Description:\n";
     if (n > save_dir.count)
         return 0;

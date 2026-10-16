@@ -8,6 +8,8 @@
                                        took for numbers, or for the wrong symbol)
     tools/st25port.py src FILE...      write src/FILE.c from ref/st25/src/FILE.c, keeping
                                        only the functions that match (--force to overwrite)
+    tools/st25port.py add UNIT NAME@ADDR...  copy ST25's NAME into src/UNIT.c in address order,
+                                       naming the function at ADDR (a sub_ placeholder) NAME
     tools/st25port.py prunedata FILE...  remove from src/FILE.c the variables none of its
                                        functions use (they went with ST25's functions
                                        that weren't carried over)
@@ -463,6 +465,72 @@ def cmd_prunedata(files: list[str]) -> None:
         print(f"{path.relative_to(ROOT)}: dropped {', '.join(n for _a, _b, ns in drop for n in ns) or 'nothing'}")
 
 
+def cmd_add(unit: str, items: list[str], ref_file: str | None = None) -> None:
+    import subprocess
+    from project import load_units
+    u = next(x for x in load_units(UNITS) if x.name == unit)
+    lo, hi = u.ranges[".text"]
+    ref = (ROOT / "ref/st25/src" / f"{ref_file or unit}.c").read_text()
+    ref_funcs = {n: ref[a:b] for n, a, b in top_level_functions(ref)}
+    path = ROOT / "src" / f"{unit}.c"
+    syms = SymbolTable.load()
+    renames = []
+    wanted = []
+    for item in items:
+        name, _, addr = item.partition("@")
+        a = int(addr, 16)
+        s = syms.get(a)
+        if s is None or s.kind != "func":
+            sys.exit(f"add: no function at {addr}")
+        if s.name != "_" + name:
+            if not DUMMY_NAME.match(s.name):
+                sys.exit(f"add: {addr} is {s.name}, not a placeholder")
+            renames += [s.name, "_" + name]
+        if name not in ref_funcs:
+            sys.exit(f"add: no {name} in ref/st25/src/{ref_file or unit}.c")
+        wanted.append((a, name))
+    if renames:
+        subprocess.run([sys.executable, str(ROOT / "tools/rename.py"), *renames], check=True,
+                       stdout=subprocess.DEVNULL)
+        syms = SymbolTable.load()
+    order = {s.name[1:]: s.addr for s in syms.in_range(lo, hi) if s.kind == "func"}
+    for a, name in sorted(wanted):
+        text = path.read_text()
+        have = {n: (x, y) for n, x, y in top_level_functions(text)}
+        if name in have:
+            print(f"{name}: already in {path.name}")
+            continue
+        later = sorted((order[n], n) for n in have if n in order and order[n] > a)
+        at = have[later[0][1]][0] if later else len(text.rstrip("\n")) + 1
+        block = ref_funcs[name].rstrip("\n") + "\n\n"
+        if not later:
+            block = "\n" + block.rstrip("\n") + "\n"
+        path.write_text(text[:at] + block + text[at:])
+        print(f"{name}: added at {a:05X}")
+    restore_data(path, ref)
+
+
+def restore_data(path: Path, ref: str) -> None:
+    """Put back ST25 variables the file uses but no longer defines, each
+    before the first function that followed it in ST25 and is in the file."""
+    ref_stmts = [(a, b, declared_names(ref[a:b])) for a, b in top_level_statements(ref)]
+    ref_funcs = [(a, n) for n, a, _b in top_level_functions(ref)]
+    while True:
+        text = path.read_text()
+        defined = {n for a, b in top_level_statements(text) for n in declared_names(text[a:b])}
+        rest = text
+        missing = [(a, b, names) for a, b, names in ref_stmts if names and not set(names) & defined
+                   and any(re.search(rf"\b{re.escape(n)}\b", rest) for n in names)]
+        if not missing:
+            return
+        a, b, names = missing[0]
+        have = {n: x for n, x, _y in top_level_functions(text)}
+        nxt = next((have[n] for fa, n in ref_funcs if fa > a and n in have), None)
+        at = nxt if nxt is not None else len(text)
+        path.write_text(text[:at] + ref[a:b].rstrip("\n") + "\n\n" + text[at:])
+        print(f"  restored {', '.join(names)}")
+
+
 def cmd_src(files: list[str], force: bool) -> None:
     keep = defaultdict(set)
     for unit, name, _size, _tag, _addr in load_matches():
@@ -485,7 +553,8 @@ def cmd_src(files: list[str], force: bool) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
-    ap.add_argument("cmd", choices=["units", "names", "relocs", "src", "prunedata"])
+    ap.add_argument("cmd", choices=["units", "names", "relocs", "src", "prunedata", "add"])
+    ap.add_argument("--ref", help="add: the ST25 file to copy from (default: the unit's name)")
     ap.add_argument("files", nargs="*")
     ap.add_argument("--force", action="store_true")
     args = ap.parse_args()
@@ -497,6 +566,8 @@ def main() -> None:
         cmd_relocs()
     elif args.cmd == "prunedata":
         cmd_prunedata(args.files)
+    elif args.cmd == "add":
+        cmd_add(args.files[0], args.files[1:], args.ref)
     else:
         cmd_src(args.files, args.force)
 

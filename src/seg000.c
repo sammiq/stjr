@@ -66,6 +66,8 @@ void UpdateActors(void);
 void AnimStep(int n);
 void WalkStep(int n);
 void DrawBans(void);
+void LockScreen(void);           /* seg012 */
+void UnlockScreen(void);
 void UpdateBans(void);
 void BanDraw(char far *dst, char far *src);
 void BanCopyEGA(char far *dst, char far *src, char far *from);
@@ -100,6 +102,43 @@ void LoadBan(char *name)
 }
 
 /* Update the screen where each .ban changed the back buffer. */
+/* Draw the next frame of each .ban into the screen and back buffer. */
+void DrawBans(void)
+{
+    int n;
+    Ban *b;
+    char far *base;
+    char far *p;
+
+    b = bans;
+    if ((blink_count & 3) != 0)
+        return;
+    LockScreen();               /* new: the screen bitmap lives in EMS */
+    for (n = 16; n != 0; --n, ++b) {
+        if (b->h) {
+            base = LockMem(b->h);
+            p = base + b->pos;
+            if (*(int far *)p == -1)
+                p = base;
+            if (((int far *)p)[1] != 0) {
+                BanDraw(screen->data, p);
+                switch (video_mode) {
+                case VIDEO_VGA:
+                case VIDEO_TANDY:
+                    BanDraw(backbuf->data, p);
+                    break;
+                case VIDEO_EGA:
+                    BanCopyEGA(backbuf->data, p, screen->data);
+                    break;
+                }
+            }
+            b->pos = p - base;
+            UnlockMem(b->h);
+        }
+    }
+    UnlockScreen();
+}
+
 void UpdateBans(void)
 {
     int n;
@@ -281,6 +320,17 @@ void BanCopyEGA(char far *dst, char far *src, char far *from)
         pop si
         pop ds
     }
+}
+
+/* EGA and Tandy are gone from the sequel. */
+char far *BanEGA(char far *dst, char far *src, char far *from)
+{
+    return src;
+}
+
+char far *BanTandy(char far *dst, char far *src, char far *from)
+{
+    return src;
 }
 
 /* VGA: copy the changed runs of from into dst. */

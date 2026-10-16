@@ -26,8 +26,8 @@ typedef struct PoolHdr {
 extern MemSlot mem__handle_tbl[MEM_MAX_HANDLES];
 extern MemSlot *mem_handle_free_list;   /* unused handle slots */
 extern PoolHdr far *lpPoolStart;
-extern PoolHdr far *lpPoolEnd;          /* PushMem blocks grow down from here */
 extern PoolHdr far *lpPoolCurrent;      /* allocation rover */
+extern PoolHdr far *lpPoolEnd;          /* PushMem blocks grow down from here */
 extern unsigned pool_free_mem;          /* free paragraphs */
 extern int pool_stack_size;             /* PushMem depth */
 extern int pool_lock_count;

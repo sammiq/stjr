@@ -6,6 +6,201 @@
 
 #define PI 3.141592654
 
+int sin_table[0x101];
+int cos_table[0x101];
+int tan_table[0x81];
+int sin_small[33];
+int cos_small[33];
+long ang_small[33];
+
+void InitTrig(void)
+{
+    int i;
+    double x;
+
+    for (i = 0, x = 0.0; i != 0x101; ++i, x += PI / 512) {
+        sin_table[i] = sin(x) * 16384.0;
+        cos_table[i] = cos(x) * 16384.0;
+    }
+    for (i = 0, x = 0.0; i != 0x81; ++i, x += PI / 512)
+        tan_table[i] = tan(x) * 16384.0;
+    for (i = 0; i <= 32; i++) {
+        x = i * 16.0 / 0x4000;
+        sin_small[i] = sin(x) * 16384.0;
+        cos_small[i] = cos(x) * 16384.0;
+        ang_small[i] = (x * 512 / PI) * 65536L;
+    }
+}
+
+int FixSin(int a)
+{
+    int r;
+
+    if (a < 0) {
+        a %= 0x400;
+        a += 0x400;
+    } else
+        a &= 0x3FF;
+    switch ((a >> 8) & 3) {
+    case 0:
+        r = sin_table[a];
+        break;
+    case 1:
+        r = sin_table[0x100 - (a & 0xFF)];
+        break;
+    case 2:
+        r = -sin_table[a & 0xFF];
+        break;
+    case 3:
+        r = -sin_table[0x100 - (a & 0xFF)];
+        break;
+    }
+    return r;
+}
+
+int FixCos(int a)
+{
+    int r;
+
+    a += 0x100;
+    if (a < 0) {
+        a %= 0x400;
+        a += 0x400;
+    } else
+        a &= 0x3FF;
+    switch ((a >> 8) & 3) {
+    case 0:
+        r = sin_table[a];
+        break;
+    case 1:
+        r = sin_table[0x100 - (a & 0xFF)];
+        break;
+    case 2:
+        r = -sin_table[a & 0xFF];
+        break;
+    case 3:
+        r = -sin_table[0x100 - (a & 0xFF)];
+        break;
+    }
+    return r;
+}
+
+int FixTan(int a)
+{
+    return tan_table[a];
+}
+
+int FixACos(int v)
+{
+    int lo;
+    int mid;
+    int hi;
+    int sign;
+
+    sign = 1;
+    if (v < 0) {
+        sign = -1;
+        v = -v;
+    }
+    lo = 0;
+    hi = 0x100;
+    while (lo <= hi) {
+        mid = (lo + hi) >> 1;
+        if (cos_table[mid] > v)
+            lo = mid + 1;
+        else if (cos_table[mid] < v)
+            hi = mid - 1;
+        else
+            break;
+    }
+    if (sign < 0)
+        return 0x200 - mid;
+    else
+        return mid;
+}
+
+/* Angle of the vector (a, b). */
+int FixAtan2(long a, long b)
+{
+    int lo;
+    int mid;
+    int hi;
+    int sb;
+    int sa;
+    int t;
+
+    if (b == 0 && a == 0)
+        return 0;
+    sb = b > 0 ? 0 : -1;
+    sa = a > 0 ? 0 : -1;
+    b = b > 0 ? b : -b;
+    a = a > 0 ? a : -a;
+    if (b > a)
+        t = FixDiv(a, b);
+    else
+        t = FixDiv(b, a);
+    lo = 0;
+    hi = 0x80;
+    while (lo <= hi) {
+        mid = (lo + hi) >> 1;
+        if (tan_table[mid] > t)
+            hi = mid - 1;
+        else if (tan_table[mid] < t)
+            lo = mid + 1;
+        else
+            break;
+    }
+    if (b > a) {
+        if (sb == 0 && sa == 0)
+            mid = mid;
+        else if (sb == 0 && sa == -1)
+            mid = -mid;
+        else if (sb == -1 && sa == 0)
+            mid = 0x200 - mid;
+        else
+            mid = mid - 0x200;
+    } else {
+        if (sb == 0 && sa == 0)
+            mid = 0x100 - mid;
+        else if (sb == -1 && sa == 0)
+            mid = mid + 0x100;
+        else if (sb == -1 && sa == -1)
+            mid = -0x100 - mid;
+        else
+            mid = mid - 0x100;
+    }
+    return mid;
+}
+
+int FixASin(int v)
+{
+    int lo;
+    int mid;
+    int hi;
+    int sign;
+
+    sign = 1;
+    if (v < 0) {
+        sign = -1;
+        v = -v;
+    }
+    lo = 0;
+    hi = 0x100;
+    while (lo <= hi) {
+        mid = (lo + hi) >> 1;
+        if (sin_table[mid] > v)
+            hi = mid - 1;
+        else if (sin_table[mid] < v)
+            lo = mid + 1;
+        else
+            break;
+    }
+    if (sign < 0)
+        return 0 - mid;
+    else
+        return mid;
+}
+
 void MatIdentity(Matrix *m)
 {
     int i;
@@ -293,18 +488,25 @@ Matrix *MatRotZSC(int s, int c, Matrix *out)
 }
 
 /* Re-orthonormalise a rotation matrix. */
+/* The sequel also copies each row into x, y and z, which go unused. */
 void MatOrtho(Matrix *m)
 {
     Vec v;
+    Vec x;
+    Vec y;
+    Vec z;
 
     VecCross(m->e[1], m->e[2], m->e[0]);
     VecCross(m->e[2], m->e[0], m->e[1]);
     VecNorm(m->e[0], v.e);
     *(Vec *)m->e[0] = v;
+    x = *(Vec *)m->e[0];
     VecNorm(m->e[1], v.e);
     *(Vec *)m->e[1] = v;
+    y = *(Vec *)m->e[1];
     VecNorm(m->e[2], v.e);
     *(Vec *)m->e[2] = v;
+    z = *(Vec *)m->e[2];
 }
 
 void VecSub(int *a, int *b)
