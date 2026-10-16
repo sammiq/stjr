@@ -101,7 +101,12 @@ def main() -> None:
     else:
         lines = ["SET PATH=" + MSC + "\\BIN", "SET INCLUDE=" + MSC + "\\INCLUDE", "SET TMP=" + dos_path(tmp),
                  f"{MSC}\\BIN\\CL.EXE /c /nologo {' '.join(flags)} /Fo{dos_path(obj)} {dos_path(src)}"]
-    log = run_dos(lines, tag)
+    # C 7.00's DOS extender occasionally fails to start under load (run-time
+    # error R69xx: no memory, no DPMI); that is worth another try
+    for _attempt in range(4):
+        log = run_dos(lines, tag)
+        if "run-time error R69" not in log:
+            break
     for leftover in tmp.iterdir():
         leftover.unlink()
     tmp.rmdir()

@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 import omf  # noqa: E402
 from elf16 import (R_386_16, R_386_8, R_386_FAR16, R_386_PC16, R_386_SEG16,  # noqa: E402
-                   ElfWriter)
+                   ElfWriter, literal_name, number_duplicates)
 
 DEBUG_CLASSES = {"DEBSYM", "DEBTYP"}
 
@@ -97,6 +97,8 @@ def convert(mod: omf.Module) -> ElfWriter:
         kind = "func" if sec.startswith(".text") else "object"
         for i, p in enumerate(pubs):
             end = pubs[i + 1].offset if i + 1 < len(pubs) else seg.length
+            if kind == "func" and end - p.offset > 1 and seg.data[end - 1] == 0x90:
+                end -= 1        # the nop that word-aligns the next function (tools/split.py too)
             w.add_symbol(p.name, sec, p.offset, end - p.offset, kind, local=p.local)
             public_loc[p.name] = (segi, p.offset)
 
@@ -127,26 +129,35 @@ def _name_data_targets(w: ElfWriter) -> None:
     for sec in w.sections.values():
         for i, (off, rtype, sym, addend) in enumerate(sec.relocs):
             if sym in targets and rtype != R_386_PC16:
-                inside = [s for s in named if s.section == sym and s.value < addend < s.value + s.size]
+                # (but not a string literal that the variable's size runs over:
+                # a public's size goes to the next public, past any literals)
+                inside = [s for s in named if s.section == sym and s.value < addend < s.value + s.size
+                          and not literal_name(w.sections[sym].data, addend)]
                 if inside:
                     sec.relocs[i] = (off, rtype, inside[0].name, addend - inside[0].value)
     for sec in w.sections.values():
         for off, rtype, sym, addend in sec.relocs:
             if sym in targets and rtype != R_386_PC16:
                 targets[sym].add(addend)
+    labels: dict[tuple[str, int], str] = {}
     for name, offs in targets.items():
         size = w.sections[name].size
+        data = w.sections[name].data
         taken = {s.value for s in w.symbols.values() if s.section == name}
-        offs = sorted(o for o in offs if 0 <= o < size)
-        for i, off in enumerate(offs):
-            end = offs[i + 1] if i + 1 < len(offs) else size
-            if off not in taken:
-                w.add_symbol(f"${name[1:]}_{off:04X}", name, off, end - off, "object", local=True)
+        offs = sorted(o for o in offs if 0 <= o < size and o not in taken)
+        # string literals are named by their text (elf16.literal_name), the rest by offset
+        names = number_duplicates([(literal_name(data, o) if data else None) or f"${name[1:]}_{o:04X}"
+                                   for o in offs])
+        allofs = sorted(set(offs) | taken)
+        for off, local in zip(offs, names):
+            later = [o for o in allofs if o > off]
+            end = later[0] if later else size
+            w.add_symbol(local, name, off, end - off, "object", local=True)
+            labels[(name, off)] = local
     for sec in w.sections.values():
         for i, (off, rtype, sym, addend) in enumerate(sec.relocs):
-            local = f"${sym[1:]}_{addend:04X}"
-            if sym in targets and local in w.symbols:
-                sec.relocs[i] = (off, rtype, local, 0)
+            if (sym, addend) in labels:
+                sec.relocs[i] = (off, rtype, labels[(sym, addend)], 0)
 
 
 def _apply_fixup(w: ElfWriter, mod: omf.Module, seg: omf.Segment, sec: str,

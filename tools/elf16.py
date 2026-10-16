@@ -183,3 +183,32 @@ class _StrTab:
 
     def data(self) -> bytes:
         return bytes(self.buf)
+
+
+def literal_name(data: bytes, off: int) -> str | None:
+    """A name for the string literal at data[off], made from its text, or None.
+
+    Both sides of a comparison name unnamed data this way (tools/omf2elf.py
+    for compiled objects, tools/split.py for the original), so references to
+    the same text match by name although the compiler's labels are anonymous.
+    """
+    import re
+    import zlib
+    end = data.find(b"\0", off)
+    if end <= off or end - off > 512:
+        return None                     # "" is as likely a zeroed variable
+    text = bytes(data[off:end])
+    if not all(32 <= c < 127 or c in (9, 10, 13) for c in text):
+        return None
+    word = re.sub(r"[^0-9A-Za-z]+", "_", text.decode("latin-1")).strip("_")[:32]
+    return f"$s_{word}_{zlib.crc32(text):08x}"
+
+
+def number_duplicates(names: list[str]) -> list[str]:
+    """Keep names unique within a section: the second "x" is "x~2", in address order."""
+    seen: dict[str, int] = {}
+    out = []
+    for n in names:
+        seen[n] = seen.get(n, 0) + 1
+        out.append(n if seen[n] == 1 else f"{n}~{seen[n]}")
+    return out

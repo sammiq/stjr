@@ -19,6 +19,7 @@ existing units.txt. --force regenerates units.txt from scratch.
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -32,6 +33,14 @@ DGROUP_SEG = "dseg"
 STACK_SEG = "stack"
 FAR_SEG_LIMIT = "seg003"  # code segments come before the first far data segment
 PAD_MAX = 16              # gaps up to this size made of 00/90 bytes are alignment padding
+
+
+LITERAL_NAME = re.compile(r"^_?a[A-Z0-9]|^_?asc(_\d+)?$")
+
+
+def generated(name: str) -> bool:
+    """A placeholder or literal name the analysis made up: replaced on every run."""
+    return bool(DUMMY_NAME.match(name) or LITERAL_NAME.match(name))
 
 
 def linker_name(name: str) -> str:
@@ -85,14 +94,26 @@ def build_symbols(ida: IdaExport, rec: libmatch.Recovered, old: SymbolTable | No
     if old is not None:
         for s in syms.by_addr.values():
             o = old.get(s.addr)
-            if o is not None and not DUMMY_NAME.match(o.name):
+            if o is not None and not generated(o.name):
                 if "lib" not in s.flags or "lib" in o.flags:
                     s.name = o.name
                 s.flags |= o.flags
         # symbols added by hand
         for o in old.by_addr.values():
-            if syms.get(o.addr) is None:
+            if syms.get(o.addr) is None and not generated(o.name):
                 syms.add(o)
+
+    # A named variable keeps the size it was given: drop the analysis's
+    # placeholder pieces of it (an access to its second word)
+    named_sizes = {}
+    if old is not None:
+        for o in old.by_addr.values():
+            if o.kind == "data" and o.size and not generated(o.name):
+                named_sizes[o.addr] = o.size
+                for inner in syms.in_range(o.addr + 1, o.addr + o.size):
+                    if DUMMY_NAME.match(inner.name):
+                        del syms.by_addr[inner.addr]
+        syms._sorted = None
 
     # Data sizes run to the next symbol in the same segment
     addrs = syms.sorted_addrs()
@@ -103,6 +124,8 @@ def build_symbols(ida: IdaExport, rec: libmatch.Recovered, old: SymbolTable | No
         seg = ida.seg_at(a)
         nxt = addrs[i + 1] if i + 1 < len(addrs) else seg.end
         s.size = max(0, min(nxt, seg.end) - a)
+        if a in named_sizes:
+            s.size = min(s.size, named_sizes[a])
     return syms
 
 

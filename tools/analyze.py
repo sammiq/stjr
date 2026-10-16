@@ -113,7 +113,10 @@ class Analysis:
         """A C string literal starting exactly at ea (in DGROUP)."""
         off = ea - LOAD_BASE
         img = self.exe.image
-        if not (self.dgroup <= ea < self.dgroup + 0x10000) or off >= len(img) or img[off - 1] != 0:
+        if not (self.dgroup <= ea < self.dgroup + 0x10000) or off >= len(img):
+            return None
+        # a string starts after a NUL or other non-text byte, never mid-text
+        if 32 <= img[off - 1] < 127 or img[off - 1] in (9, 10, 13):
             return None
         end = img.find(b"\0", off, off + 512)
         if end <= off + 1:
@@ -294,7 +297,10 @@ class Analysis:
                     self.drefs.setdefault(ea, set()).add(t)
                     if t not in self.tables:
                         self.add_data(t, max(1, ix.MemorySizeExt.size(ins.memory_size)))
-                elif kind == ix.OpKind.IMMEDIATE16 and ins.mnemonic in (ix.Mnemonic.PUSH, ix.Mnemonic.MOV):
+                elif kind == ix.OpKind.IMMEDIATE16 and (
+                        ins.mnemonic == ix.Mnemonic.PUSH
+                        or (ins.mnemonic == ix.Mnemonic.MOV and ins.op0_kind == ix.OpKind.REGISTER)):
+                    # push offset aText / mov ax, offset aText; not mov [x], 450
                     t = self.dgroup + ins.immediate16
                     s = self.string_at(t)
                     if s is not None:

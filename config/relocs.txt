@@ -1,3 +1,20 @@
 # INSN_ADDR  SYMBOL[+ADDEND] [only] | none
 # Explicit references for operands the analysis cannot tell from numbers
 # (see tools/split.py load_overrides).
+
+# From ST25 functions that compile to the sequel's code (tools/st25port.py relocs)
+12374  _mouse_sprite   # _KeyStation
+12D83  _radar_sprite   # _FreeRadar
+14532  _cam_pos   # _CamFollow
+14518  _cam_pos   # _CamFollow
+1458B  _cam_tab2   # _CamPath
+14584  _cam_tab1   # _CamPath
+17629  _cam_pos   # _CamReset
+17D07  _cam_pos   # _ProjectR3
+20668  _mouse_sprite   # _WaitAction
+225FA  _mouse_sprite   # _TrackMouse
+22926  _mouse_sprite   # _ResetPointer
+249DD  _seq_handles   # _PlaySeq
+249D5  _seq_handles   # _PlaySeq
+1AC24  _save_version   # _SaveVersion
+2895A  __end+0x110   # _AiStrafe

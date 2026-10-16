@@ -16,7 +16,7 @@ Judgment Rites is the sequel to Star Trek: 25th Anniversary, whose finished deco
 
 Differences from ST25 (C 6.00A `/qc`) that the tooling deals with:
 
-- **Packed code.** LINK `/PACKCODE` merged every `.C` file's code segment into three segments (`seg000` 0000h, `seg001` 0BD6h, `seg002` 1B98h, whose tail is the C runtime's `_TEXT`). Nothing in the EXE marks where one file ends, so each segment starts as one unit; carve files out with `tools/splitunit.py` as you identify them.
+- **Packed code.** LINK `/PACKCODE` merged every `.C` file's code segment into three segments (0000h, 0BD6h and 1B98h, whose tail is the C runtime's `_TEXT`). Nothing in the EXE marks where one file ends. The files are found from the ST25 functions that still compile to the sequel's code (`tools/st25match.py`): the sequel links ST25's files in almost the same order, each as one run of addresses.
 - **Far call translation.** LINK turned far calls inside a packed segment into `nop; push cs; call near` (`90 0E E8`). `project.load_exe()` turns them back into `call far` with a segment fixup, so the image every tool sees compares with compiled objects. A 4-byte `push cs; call near` without the `nop` is the compiler's own call to a function in the same file.
 - **No IDA database.** `tools/analyze.py` disassembles the EXE (recursive descent from every far call, near call and far code pointer) and writes `build/analysis.txt` in the IDA-export format the ST25 tools read. An IDA export from `tools/ida/export.idc` can replace it.
 - **DGROUP** is 2B87h (linear 3B870h). The far data segments are 290Eh, 2B0Eh and 2B3Eh. String literals are in the game's `_DATA`, not `CONST`.
@@ -64,14 +64,25 @@ Addresses are linear, with the load module at paragraph 1000h: `seg001:6056` is 
 
 ### Units
 
-- **`seg000`, `seg001`, `seg002`**: the game code of each packed segment, still unsplit. Split pieces get the file's name (8.3, as the compiler runs under DOS); the rest after a split is called `c<addr>` until it's identified.
+- **`segNNN`**: the sequel's version of ST25's `ref/st25/src/segNNN.c`, from its first to its last function that still matches (`tools/st25port.py units`). `src/segNNN.c` started as the ST25 file with the non-matching functions taken out (`tools/st25port.py src`).
+- **`c<addr>`**: game code between two files' runs: new code, or the changed functions of a neighbouring file. Move code from these into a file's unit by editing `config/units.txt` (or carve out a new file with `tools/splitunit.py`) as it's identified. Unit names must be 8.3, as the compiler runs under DOS.
 - **`lib/<module>`**: C runtime modules (`tools/libmatch.py`), built straight from `MLIBCE.LIB`. Their target relocations come from the library's own fixups, so they match 100%.
 - **`asm/tXXXXX`**: code in the runtime's `_TEXT` that isn't from the library: about 9 KB of hand-written assembly (interrupt handlers, sound).
 - **`far/segNNN`, `data/dXXXXX`, `data/stack`**: far data segments and the DGROUP pieces not yet given to a unit.
 
+## Carrying ST25 code over
+
+`tools/st25match.py` compiles every ST25 file with C 7.00 and the game flags (into `build/st25/`) and looks each function up in the sequel: byte for byte with relocated fields masked, then checked so that every external a function references lands on the same address everywhere. It writes `build/st25match.txt` (`exact`, `small`, `ambiguous`, `close` with a similarity, or `none`, plus the sequel address). `close` and `none` functions are the ones that changed: start from the ST25 source.
+
+`tools/st25port.py` then applies the results:
+- `units`: carve a unit per ST25 file
+- `names`: rename matched functions, and the functions and variables they reference, to their ST25 names. It also trims the analysis's pieces of a variable once its size is known.
+- `relocs`: add `config/relocs.txt` entries for operands that the matched code shows are addresses
+- `src FILE...`: write `src/FILE.c` from the ST25 file, keeping only matching functions
+
 ## Workflow
 
-1. Find the sequel function's ST25 counterpart: matching strings, constants and callees, then look in `ref/st25/src`.
+1. Find the sequel function's ST25 counterpart: `build/st25match.txt`, or matching strings, constants and callees, then look in `ref/st25/src`.
 2. If its file isn't a unit yet, carve it out: `tools/splitunit.py START END name`.
 3. Name things: `tools/rename.py _sub_21DB6 _ListInit` (updates symbols.txt, relocs.txt and sources).
 4. Write `src/<unit>.c` (copy what still matches from ST25, headers into `include/`), then `ninja progress`, or open `objdiff.json` in `tools/bin/objdiff`. Use `tools/fdiff.py UNIT SYMBOL` for a side-by-side view and `tools/disasm.py ADDR [END]` for the original.
@@ -80,5 +91,6 @@ Addresses are linear, with the load module at paragraph 1000h: `seg001:6056` is 
 ## Status
 
 - The C runtime matches: 147/147 functions, 100% of its code. Its `.data` is at 50%: data relocations aren't yet taken from the library fixups.
-- Game code: `src/list.c` (ListInit, ListAdd) matches. That proves the compile-and-compare chain end to end.
+- Game code: 150 of 1,085 functions (8.5%) match, all carried over unchanged from ST25 into 22 `src/segNNN.c` files. Of ST25's 602 C functions, 154 compile byte for byte to the sequel's code and 19 are close.
+- String literals: the game's `_DATA` isn't divided into units yet, so a function that references a string literal can't match (LoadBan is the one case so far). The target object points the literal at a symbol in a `data/` unit, and the compiled object at its own `.data`.
 - Not ported from ST25 yet: the full NMAKE/LINK rebuild (`ref/st25/tools/dosbuild.py`, `genbss.py`), and the room script (`.RDF`) tooling (`ref/st25/tools/rdf.py`). The sequel's RDFs are still x86 code, but with a shorter header.

@@ -2,11 +2,74 @@
 # Address ranges are IDA linear addresses, end exclusive. Units map to
 # src/<unit>.c (or .asm); lib=<LIB>:<module> units are built from the C library.
 
-seg000                     .text    10000  1BD60
-seg001                     .text    1BD60  21DB6
-list                       .text    21DB6  21E66
-c21E66                     .text    21E66  2B97F
-seg002                     .text    2B980  33596
+c10000                     .text    10000  11C20
+c10000                     .data    3B8B2  3B936
+seg000                     .text    11C20  1223E
+c1223E                     .text    1223E  12294
+seg001                     .text    12294  14F52
+seg001                     .data    3B936  3BED4
+c14F52                     .text    14F52  15BC8
+c14F52                     .data    3BED4  3BF7A
+seg003                     .text    15BC8  167EA
+seg003                     .data    3BF7A  3C056
+seg004                     .text    167EA  16C74
+seg004                     .data    3C056  3C136
+c16C74                     .text    16C74  16D14
+seg005                     .text    16D14  17624
+seg005                     .data    3C136  3C1DA
+seg006                     .text    17624  1A77C
+seg006                     .data    3C1DA  3C3CC
+c1A77C                     .text    1A77C  1AB0A
+c1A77C                     .data    3C3CC  3C44C
+seg019                     .text    1AB0A  1AE8C
+seg019                     .data    3C44C  3C5D0
+c1AE8C                     .text    1AE8C  1B7C8
+c1AE8C                     .data    3C5D0  3CA34
+seg007                     .text    1B7C8  1BCC2  complete
+seg007                     .data    3CA34  3CA46  complete
+c1BCC2                     .text    1BCC2  1BD60
+c1BD60                     .text    1BD60  1D20A
+c1BD60                     .data    3CA46  3CD90
+seg008                     .text    1D20A  20AD4
+seg008                     .data    3CD90  3CF3A
+c20AD4                     .text    20AD4  21594
+c20AD4                     .data    3CF3A  3CF58
+seg010                     .text    21594  21DB6
+seg011                     .text    21DB6  21E54  complete
+seg012                     .text    21E54  22A12
+seg012                     .data    3CF58  3D15A
+seg013                     .text    22A12  2315C
+seg013                     .data    3D15A  3D2A4
+seg014                     .text    2315C  23EEC
+seg014                     .data    3D2A4  3D2C6
+seg015                     .text    23EEC  26F5A
+seg015                     .data    3D2C6  3D552
+seg016                     .text    26F5A  27196
+seg016                     .data    3D552  3D982
+c27196                     .text    27196  27392
+seg020                     .text    27392  28CB0
+seg020                     .data    3D982  3DB08
+c28CB0                     .text    28CB0  28D2A
+c28CB0                     .data    3DB08  3DB16
+seg021                     .text    28D2A  29AC0
+seg021                     .data    3DB16  3DC2C
+c29AC0                     .text    29AC0  29D04
+c29AC0                     .data    3DC2C  3DC4E
+seg022                     .text    29D04  29D32  complete
+c29D32                     .text    29D32  29D78
+seg023                     .text    29D78  29D9E  complete
+seg023                     .data    3DC4E  3DC50  complete
+c29D9E                     .text    29D9E  2A3B4
+c29D9E                     .data    3DC50  3DC5A
+seg024                     .text    2A3B4  2A526
+seg024                     .data    3DC5A  3DC6E
+c2A526                     .text    2A526  2B97F
+c2A526                     .data    3DC6E  3DEA0
+c2B980                     .text    2B980  2D528
+c2B980                     .data    3DEA0  3E904
+seg017                     .text    2D528  2D688  complete
+c2D688                     .text    2D688  33596
+c2D688                     .data    3E904  3EB68
 lib/crt0                   .text    335A6  336AA  lib=MLIBCE.LIB:crt0.asm
 lib/crt0                   .data    3EB68  3EB88  lib=MLIBCE.LIB:crt0.asm
 lib/crt0dat                .text    336AA  33826  lib=MLIBCE.LIB:crt0dat.asm
@@ -141,7 +204,7 @@ asm/t390D0                 .text    390D0  390DF
 far/seg003                 .data    390E0  3B0E0
 far/seg004                 .data    3B0E0  3B3E0
 far/seg005                 .data    3B3E0  3B870
-data/d3B870                .data    3B870  3EB68
+data/d3B870                .data    3B870  3B8B2
 data/d3EC18                .data    3EC18  3EC60
 data/d3EC82                .data    3EC82  3EDC4
 data/d3EE38                .data    3EE38  3F1B6

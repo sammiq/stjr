@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 import libmatch  # noqa: E402
 import omf  # noqa: E402
 from elf16 import (R_386_16, R_386_FAR16, R_386_PC16, R_386_SEG16,  # noqa: E402
-                   ElfWriter)
+                   ElfWriter, literal_name, number_duplicates)
 from omf2elf import ABSOLUTE_SYMBOLS, ALIASES, module_basename  # noqa: E402
 from project import (ROOT, Exe, IdaExport, SymbolTable, Unit,  # noqa: E402
                      DUMMY_NAME, lin, load_exe, load_ida, load_units)
@@ -124,6 +124,8 @@ class Splitter:
                 # Functions run to the next symbol, like publics in a compiled
                 # object (this absorbs alignment padding IDA leaves outside)
                 size = nxt - s.addr if s.kind == "func" else min(s.size, end - s.addr)
+                if s.kind == "func" and size > 1 and self.exe.bytes(s.addr + size - 1, s.addr + size) == b"\x90":
+                    size -= 1   # word alignment: C 7.00 pads each function to an even address
                 kind = "func" if s.kind == "func" else "object"
                 w.add_symbol(s.name, sec, s.addr - start, size, kind, local="static" in s.flags)
 
@@ -138,7 +140,36 @@ class Splitter:
                 self._code_relocs(w, unit, sec, start, end, covered, pending_seg)
             self._data_relocs(w, unit, sec, start, end, covered, pending_seg)
             self._resolve_segs(w, unit, sec, start, pending_seg)
+        if not unit.lib and ".data" in w.sections:
+            self._name_literals(w)
         return w
+
+    @staticmethod
+    def _name_literals(w: ElfWriter) -> None:
+        """References to string literals in the unit's own .data use names made
+        from the text (elf16.literal_name), as tools/omf2elf.py names the
+        compiler's anonymous labels, so the two sides match by name."""
+        data = w.sections[".data"].data
+        own = {s.name: s for s in w.symbols.values() if s.section == ".data"}
+        refs = []
+        for secname, sec in w.sections.items():
+            for i, (off, rtype, sym, addend) in enumerate(sec.relocs):
+                s = own.get(sym)
+                if s is None or rtype == R_386_PC16:
+                    continue
+                if not (DUMMY_NAME.match(sym) or sym.startswith("a")):
+                    continue                    # a named variable keeps its name
+                o = s.value + addend
+                if literal_name(data, o):
+                    refs.append((secname, i, o))
+        offs = sorted({o for _, _, o in refs})
+        names = dict(zip(offs, number_duplicates([literal_name(data, o) for o in offs])))
+        for o, name in names.items():
+            end = data.find(b"\0", o) + 1
+            w.add_symbol(name, ".data", o, end - o, "object", local=True)
+        for secname, i, o in refs:
+            off, rtype, _sym, _add = w.sections[secname].relocs[i]
+            w.sections[secname].relocs[i] = (off, rtype, names[o], 0)
 
     _lib_cache: dict[str, list] = {}
 

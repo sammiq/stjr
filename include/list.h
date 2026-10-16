@@ -15,6 +15,7 @@ typedef struct List {
 
 void ListInit(List *l);
 void ListAdd(List *l, Node *n);
+void ListInsert(Node *at, Node *n);
 void ListRemove(List *l, Node *n);
 int ListCount(List *l);
 
