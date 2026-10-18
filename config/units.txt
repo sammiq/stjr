@@ -4,22 +4,22 @@
 
 seg000                     .text    10000  1223E  data-pinned
 seg000                     .data    3B8B2  3B91E  data-pinned
-seg001                     .text    1223E  14F52  data-pinned
-seg001                     .data    3B91E  3BED4  data-pinned
-c14F52                     .text    14F52  15BC8
-c14F52                     .data    3BED4  3BF78
-seg003                     .text    15BC8  167EA
+seg001                     .text    1223E  15396  data-pinned
+seg001                     .data    3B91E  3BEF0  data-pinned
+seg001                     .rodata  3F2B8  3F2D0  data-pinned
+seg002                     .text    15396  1578C  complete data-pinned
+seg002                     .data    3BEF0  3BF78  complete data-pinned
+seg003                     .text    1578C  167EA
 seg003                     .data    3BF78  3C056
 seg004                     .text    167EA  16C90  complete
 seg004                     .data    3C056  3C136  complete
-seg005                     .text    16C90  17624
-seg005                     .data    3C136  3C1DA
-seg006                     .text    17624  1A77C
-seg006                     .data    3C1DA  3C3CB
-c1A77C                     .text    1A77C  1AB0A
-c1A77C                     .data    3C3CB  3C44C
-seg019                     .text    1AB0A  1AE8C  complete
-seg019                     .data    3C44C  3C54C  complete
+seg005                     .text    16C90  17624  data-pinned
+seg005                     .data    3C136  3C1EC  data-pinned
+seg006                     .text    17624  1AA34  complete data-pinned
+seg006                     .data    3C1EC  3C418  complete data-pinned
+seg006                     .rodata  3F2D0  3F30C  complete data-pinned
+seg019                     .text    1AA34  1AE8C  complete data-pinned
+seg019                     .data    3C418  3C54C  complete data-pinned
 c1AE8C                     .text    1AE8C  1B7C8
 c1AE8C                     .data    3C54C  3CA34
 seg007                     .text    1B7C8  1BCC2  complete
@@ -27,8 +27,8 @@ seg007                     .data    3CA34  3CA46  complete
 c1BCC2                     .text    1BCC2  1BD60
 c1BD60                     .text    1BD60  1D20A
 c1BD60                     .data    3CA46  3CD90
-seg008                     .text    1D20A  20AD4
-seg008                     .data    3CD90  3CF3A
+seg008                     .text    1D20A  20AD4  data-pinned
+seg008                     .data    3CD90  3CF3A  data-pinned
 c20AD4                     .text    20AD4  21134
 c20AD4                     .data    3CF3A  3CF58
 seg010                     .text    21134  21DB6
@@ -38,15 +38,15 @@ seg012                     .text    21E54  22A12
 seg012                     .data    3CF5A  3D12E
 seg013                     .text    22A12  2315C  complete
 seg013                     .data    3D12E  3D266  complete
-seg014                     .text    2315C  23EEC
+seg014                     .text    2315C  244FC
 seg014                     .data    3D266  3D2BA
-seg015                     .text    23EEC  26F5A
-seg015                     .data    3D2C6  3D552
-seg016                     .text    26F5A  27196  complete
-seg016                     .data    3D552  3D5C8  complete
-c27196                     .text    27196  27392
-seg020                     .text    27392  28CB0
-seg020                     .data    3D838  3DB08
+seg015                     .text    244FC  26AC8  data-pinned
+seg015                     .data    3D2BA  3D50A  data-pinned
+seg015                     .rodata  3F344  3F348  data-pinned
+seg016                     .text    26AC8  27196  complete
+seg016                     .data    3D50A  3D5C8  complete
+seg020                     .text    27196  28CB0  complete
+seg020                     .data    3D838  3DB08  complete
 c28CB0                     .text    28CB0  28D2A
 c28CB0                     .data    3DB08  3DB16
 seg021                     .text    28D2A  29AC0
@@ -204,7 +204,6 @@ far/seg004                 .data    3B0E0  3B3E0
 far/seg005                 .data    3B3E0  3B870
 data/d3B870                .data    3B870  3B8B2
 data/d3CF58                .data    3CF58  3CF5A
-data/d3D2BA                .data    3D2BA  3D2C6
 data/d3D5C8                .data    3D5C8  3D838
 data/d3E9AE                .data    3E9AE  3EB68
 data/d3EC18                .data    3EC18  3EC60
@@ -212,8 +211,9 @@ data/d3EC82                .data    3EC82  3EDC4
 data/d3EE38                .data    3EE38  3F1B6
 data/d3F1B8                .data    3F1B8  3F1F8
 data/d3F21B                .data    3F21B  3F28E
-data/d3F290                .rodata  3F290  3F314
-data/d3F344                .rodata  3F344  3F502
+data/d3F290                .rodata  3F290  3F2B8
+data/d3F30C                .rodata  3F30C  3F314
+data/d3F348                .rodata  3F348  3F502
 data/d3F502                .bss     3F502  41B7C
 data/d41B96                .bss     41B96  48360
 data/stack                 .bss     48360  49650

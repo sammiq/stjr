@@ -12,7 +12,7 @@ int buttons;
 unsigned long ticks;
 
 void Fatal(char *fmt, ...);     /* fatal error */
-void MsgBox(char *title, char *msg, int a, int b, int c, int d);    /* seg008: message box */
+void MsgBox(char *title, char *msg, int a, int b, int c, unsigned d);  /* seg008: message box (d: not int in the sequel) */
 void QuitMenu(int a, int b);       /* seg019: quit dialog */
 
 /* seg027: joystick */
@@ -47,24 +47,22 @@ int shift_key;
 
 int last_mx = 160;
 int last_my = 100;
-unsigned long key_tick0;
-void (_interrupt _far *old_kbd)(void);
+extern unsigned long key_tick0;
+extern void (_interrupt _far *old_kbd)(void);
 
 int input_dev;
 
 int joy_recal = 0;
 int poll_busy = 0;                      /* new: no warnings from PollInput */
-int key_accel;                          /* held keypad arrows speed up */
-unsigned long last_key_tick;
+extern int key_accel;                   /* held keypad arrows speed up */
+extern unsigned long last_key_tick;
 
 void EventInit(void)
 {
     ev_read = ev_write = ev_queue;
     tick_pending = move_pending = 0;
     MouseInit();
-    mouse_y = last_my;
-    mouse_x = last_mx;
-    SetPointer(mouse_x, mouse_y);
+    SetPointer(mouse_x = last_mx, mouse_y = last_my);
     mouse_present = input_dev == INPUT_MOUSE;
 }
 
@@ -220,9 +218,9 @@ void PollKeys(void)
             SetMusicOn(!music_on);
         else if (key_code == 0x1910)
             getch();
-        else if (key_code == 0x1011)
+        else if (!poll_busy && key_code == 0x1011)
             QuitMenu(300, 199);
-        else if (!mouse_present && key_code == 0x240A) {
+        else if (!poll_busy && !mouse_present && key_code == 0x240A) {
             joy_present = 1;
             joy_recal = 1;
         } else if (key_code) {
@@ -260,14 +258,13 @@ void MouseInit(void)
             mov mouse_hires, 1
             mov ax, 3
             int 33h
-            cmp cx, 27Fh
-            je l_hires
             cmp cx, 27Eh
-            je l_hires
+            mov cx, 140h
+            jae l_hires
             dec mouse_hires
+            mov cx, 0A0h
         l_hires:
             mov ax, 4
-            mov cx, 140h
             mov dx, 64h
             int 33h
             mov ax, 1
@@ -291,6 +288,9 @@ void MouseInit(void)
 
 /* Read the pointer position and buttons from the keypad, mouse or
  * joystick. */
+/* Near match (97.7%): the original multiplies dx * hw unsigned (mul, not
+ * imul) and keeps dy in cx; making hw/hh or dx/dy unsigned, or a cast,
+ * gives mul but moves the sums out of cx/bx. */
 int ReadPointer(void)
 {
     int keys;
@@ -589,3 +589,10 @@ void MouseReset(void)
         int 33h
     }
 }
+
+/* (defined here, after the literals, in the original's data order) */
+int key_accel = 1;
+unsigned long key_tick0 = 0;
+unsigned long key_unused = 0;
+unsigned long last_key_tick = 0;
+void (_interrupt _far *old_kbd)(void) = 0;

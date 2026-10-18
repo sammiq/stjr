@@ -213,7 +213,8 @@ class Analysis:
             table = self.dgroup + ins.memory_displacement
         targets = []
         t = table
-        while len(targets) < 256:
+        limit = self.switch_bound(ea)
+        while len(targets) < limit:
             if t in self.insns or (targets and t in self.tables) or t + 2 - LOAD_BASE > len(self.exe.image):
                 break
             v = frame + self.word(t)
@@ -227,6 +228,23 @@ class Analysis:
             self.tables[table] = targets
             self.drefs.setdefault(ea, set()).add(table)
         return targets
+
+    def switch_bound(self, ea: int) -> int:
+        """The entry count from the switch's range check just before the
+        indirect jump (cmp reg, n; ja default / jbe in range; then shl,
+        mov/xchg bx: n + 1 entries); 256 if there isn't one."""
+        for back in range(4, 24):
+            a = ea - back
+            if a not in self.insns:
+                continue
+            ins = self.decode(a)
+            if ins.mnemonic != ix.Mnemonic.CMP or ins.op1_kind not in (
+                    ix.OpKind.IMMEDIATE16, ix.OpKind.IMMEDIATE8TO16, ix.OpKind.IMMEDIATE8):
+                continue
+            j = self.decode(a + ins.len)
+            if j.mnemonic in (ix.Mnemonic.JA, ix.Mnemonic.JBE):
+                return ins.immediate(1) + 1
+        return 256
 
     def run(self) -> None:
         entry = lin(self.exe.cs, self.exe.ip)
@@ -325,8 +343,9 @@ class Analysis:
         heads = {ea: (n, "C") for ea, n in self.insns.items()}
         names: dict[int, str] = {f: f"sub_{f:X}" for f in self.funcs}
         for t, targets in self.tables.items():
-            for k in range(len(targets)):
+            for k, target in enumerate(targets):
                 heads[t + 2 * k] = (2, "D")
+                self.drefs.setdefault(t + 2 * k, set()).add(target)     # the entry points there
             names.setdefault(t, f"off_{t:X}")
         used: set[str] = set(names.values())
         for t, s in sorted(self.strings.items()):

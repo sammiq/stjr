@@ -24,7 +24,7 @@ void CentreLine(char *out, char *title);                             /* seg008 *
 void SaveGameState(void);               /* seg008: write the game state */
 void LoadGameState(void);               /* seg008: read the game state */
 void Fatal(char *fmt, ...);     /* fatal error */
-void sub_1EE58(int a, char *msg);   /* seg008 (unidentified): show msg */
+void CrewSay(int a, char *msg);   /* seg008 (unidentified): show msg */
 char *InputDescription(void);       /* seg002 */
 
 SaveDir save_dir;
@@ -43,36 +43,6 @@ void SaveWrite(void *p, unsigned n);
 void SaveRead(void *p, unsigned n);
 int SaveGame(void);
 void LoadGame(int verbose);
-int SaveGame(void)
-{
-    if ((save_fp = fopen(save_path, "wb")) == NULL)
-        return 0;
-    SaveWrite(save_desc, 25);
-    save_version = SAVE_VERSION;
-    SaveWrite(&save_version, 2);
-    SaveGameState();
-    fclose(save_fp);
-    return 1;
-}
-
-void LoadGame(int verbose)
-{
-    if ((save_fp = fopen(save_path, "rb")) == NULL) {
-        if (verbose)
-            sub_1EE58(-1, "Unable to load game.");
-        return;
-    }
-    SaveRead(save_desc, 25);
-    SaveRead(&save_version, 2);
-    if (save_version != SAVE_VERSION) {
-        if (verbose)
-            MsgBox("Load Game", "Unable to load game.  Game was saved by an older version of this program.",
-                   20, 20, 9, 0);
-    } else
-        LoadGameState();
-    fclose(save_fp);
-}
-
 void SaveClose(void);
 int SaveVersion(void);
 void SaveNew(void);
@@ -90,6 +60,43 @@ void TextModeMenu(int ask);
 int ReadTextMode(void);
 int WriteTextMode(int mode);
 
+int save_dir_loaded = 0;
+
+void LoadSaveDir(void)
+{
+    char path[128];
+    FILE *f;
+
+    if (save_dir_loaded)
+        return;
+    save_dir_loaded = 1;
+    sprintf(path, "%ssavegame.dir", save_prefix);
+    if (access(path, 0) == -1) {
+        save_dir.count = 0;
+        save_dir.used = 0;
+    } else {
+        f = fopen(path, "rb");
+        fread(&save_dir, 1, sizeof(save_dir), f);
+        fclose(f);
+    }
+}
+
+void SaveSaveDir(void)
+{
+    char path[128];
+    FILE *f;
+
+    sprintf(path, "%ssavegame.dir", save_prefix);
+    f = fopen(path, "wb");
+    fwrite(&save_dir, 1, sizeof(save_dir), f);
+    fclose(f);
+}
+
+void SavePath(int n)
+{
+    sprintf(save_path, "%ssavegame.%d", save_prefix, save_dir.slot[n]);
+}
+
 void SaveWrite(void *p, unsigned n)
 {
     fwrite(p, 1, n, save_fp);
@@ -98,6 +105,36 @@ void SaveWrite(void *p, unsigned n)
 void SaveRead(void *p, unsigned n)
 {
     fread(p, 1, n, save_fp);
+}
+
+int SaveGame(void)
+{
+    if ((save_fp = fopen(save_path, "wb")) == NULL)
+        return 0;
+    SaveWrite(save_desc, 25);
+    save_version = SAVE_VERSION;
+    SaveWrite(&save_version, 2);
+    SaveGameState();
+    fclose(save_fp);
+    return 1;
+}
+
+void LoadGame(int verbose)
+{
+    if ((save_fp = fopen(save_path, "rb")) == NULL) {
+        if (verbose)
+            CrewSay(-1, "Unable to load game.");
+        return;
+    }
+    SaveRead(save_desc, 25);
+    SaveRead(&save_version, 2);
+    if (save_version != SAVE_VERSION) {
+        if (verbose)
+            MsgBox("Load Game", "Unable to load game.  Game was saved by an older version of this program.",
+                   20, 20, 9, 0);
+    } else
+        LoadGameState();
+    fclose(save_fp);
 }
 
 void SaveClose(void)

@@ -72,7 +72,7 @@ void BlitEGA(Rect *r);
 void DrawTestPattern(void);
 void BlitTandy(Rect *r);
 void BlitToScreen(Rect *r);
-Sprite *SpriteAt(int x, int y);
+Sprite *SpriteAt(int x, int y, int masked);
 void SpriteSetPos(Sprite *s, int x, int y, unsigned z);
 void SpriteSetBitmap(Sprite *s, MemHandle h);
 void SpriteAddRect(Sprite *s, MemHandle h, int x0, int y0, int x1, int y1);

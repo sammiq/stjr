@@ -19,11 +19,10 @@ typedef struct MenuSave {
     Sprite *sprites;        /* 00 */
     int *ids;               /* 02 */
     long disabled;          /* 04 */
-    MemHandle handle;       /* 08 */
-    int count;              /* 0A */
-    int sel;                /* 0C */
-    struct MenuSave *next;  /* 0E */
-} MenuSave;
+    int count;              /* 08 */
+    int sel;                /* 0A */
+    struct MenuSave *next;  /* 0C */
+} MenuSave;                 /* 0E (the sequel no longer keeps the .mnu loaded) */
 
 /* Menu directions for MenuMove */
 #define MENU_NEXT   0       /* right arrow: the next button in reading order */

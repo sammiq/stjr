@@ -37,7 +37,7 @@ extern BitmapHdr space_bmp;         /* the view's bitmap header */
 extern MemHandle space_bmp_handle;
 extern Rect screen_rect;
 extern char voc_path[];
-extern unsigned char byte_45B3C[];
+extern unsigned char ship_detail;   /* draw ships in full (off in the intro) */
 
 void Intro(void);
 void PlaceObj(Obj3D *o, int a0, int r0, int a1, int r1, int frames);

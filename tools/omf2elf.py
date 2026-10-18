@@ -65,7 +65,23 @@ def load_aliases(path: Path = Path(__file__).resolve().parent.parent / "config/a
 ALIASES = load_aliases()
 
 
-def convert(mod: omf.Module) -> ElfWriter:
+def literal_offsets(unit: str) -> set[int] | None:
+    """Offsets in unit's .data where config/symbols.txt has a string
+    literal (a generated name): where the target side names a literal."""
+    import re
+    from project import UNITS, SymbolTable, load_units
+    try:
+        u = next(x for x in load_units(UNITS) if x.name == unit)
+    except StopIteration:
+        return None
+    if ".data" not in u.ranges:
+        return None
+    lo, hi = u.ranges[".data"]
+    gen = re.compile(r"^_?a[A-Z0-9]|^_?asc(_\d+)?$")
+    return {s.addr - lo for s in SymbolTable.load().in_range(lo, hi) if gen.match(s.name)}
+
+
+def convert(mod: omf.Module, unit: str | None = None) -> ElfWriter:
     w = ElfWriter()
     counter: dict[str, int] = {}
     secname: dict[int, str] = {}
@@ -109,15 +125,27 @@ def convert(mod: omf.Module) -> ElfWriter:
         own_group = mod.group_of(seg.index)
         for f in seg.fixups:
             _apply_fixup(w, mod, seg, sec, own_group, f, secname, public_loc)
-    _name_data_targets(w)
+    lits = literal_offsets(unit) if unit else None
+    unit = module_basename(mod.name).rsplit(".", 1)[0]
+    _name_data_targets(w, unit, lits)
     return w
 
 
-def _name_data_targets(w: ElfWriter) -> None:
+def _long_literal(data, off: int) -> bool:
+    """A string literal starts at off, and isn't a single character (more
+    likely a field of a struct, like an int under 0x100)."""
+    if not data or not literal_name(data, off):
+        return False
+    end = bytes(data).find(b"\0", off)
+    return end - off != 1
+
+
+def _name_data_targets(w: ElfWriter, unit: str = "", lits: set[int] | None = None) -> None:
     """Give unnamed data (string literals, statics) local symbols.
 
     References to them are section relative. Each referenced offset gets a
-    symbol ($rodata_00AC) so relocations compare by address like the target's
+    symbol ($rodata_00AC, and $bss_<unit>_0014 so the target can name a
+    static by the unit it belongs to) so relocations compare by address like the target's
     named symbols, and offset 0 always gets one: objdiff only compares data
     up to the end of the last symbol in a section.
     """
@@ -131,8 +159,9 @@ def _name_data_targets(w: ElfWriter) -> None:
             if sym in targets and rtype != R_386_PC16:
                 # (but not a string literal that the variable's size runs over:
                 # a public's size goes to the next public, past any literals)
-                inside = [s for s in named if s.section == sym and s.value < addend < s.value + s.size
-                          and not literal_name(w.sections[sym].data, addend)]
+                inside = [s for s in named if s.section == sym and s.value <= addend < s.value + s.size
+                          and not (s.value < addend and ((lits is not None and sym == ".data" and addend in lits)
+                                                         or _long_literal(w.sections[sym].data, addend)))]
                 if inside:
                     sec.relocs[i] = (off, rtype, inside[0].name, addend - inside[0].value)
     for sec in w.sections.values():
@@ -146,7 +175,8 @@ def _name_data_targets(w: ElfWriter) -> None:
         taken = {s.value for s in w.symbols.values() if s.section == name}
         offs = sorted(o for o in offs if 0 <= o < size and o not in taken)
         # string literals are named by their text (elf16.literal_name), the rest by offset
-        names = number_duplicates([(literal_name(data, o) if data else None) or f"${name[1:]}_{o:04X}"
+        names = number_duplicates([(literal_name(data, o) if data else None) or (f"${name[1:]}_{unit}_{o:04X}" if name.startswith(".bss") and unit
+                                       else f"${name[1:]}_{o:04X}")
                                    for o in offs])
         allofs = sorted(set(offs) | taken)
         for off, local in zip(offs, names):

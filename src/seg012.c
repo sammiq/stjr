@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <setjmp.h>
+#include <signal.h>
 #include <dos.h>
 #define FindCD FindCD_
 #include "mem.h"
@@ -25,6 +26,19 @@ int getch(void);
 void FindCD(char *argv0);
 
 void Intro(void);                   /* seg017 */
+void sub_2B60C(char *name);         /* (c2B980) */
+void Fatal();
+void LockScreen(void);
+void UnlockScreen(void);
+
+Bitmap far *backbuf;
+Bitmap far *screen;
+unsigned char far *mask_buf;
+unsigned char far *screen_base;
+int in_title;
+extern int gfx_mode;               /* (seg007?) set while in a graphics mode */
+int _getch(void);
+void TextMode(void);
 void InitDummyPlanet(void);         /* seg006 */
 void AddR3(Obj3D *o);
 int SelectView(Obj3D *o);
@@ -48,6 +62,73 @@ void LoadRoom(char *mission, int n);
 void EnterRoom(int a);
 void FreeRoom(void);
 void MsgBox(char *title, char *msg, int a, int b, int c, int d);    /* seg008: message box */
+
+/* Ctrl-C: ignored (and re-armed). New in the sequel. */
+void BreakHandler(int sig)
+{
+    signal(SIGINT, BreakHandler);
+}
+
+/* New in the sequel. */
+void PlayTitle(void)
+{
+    in_title = 1;
+    sub_2B60C("title");
+    in_title = 0;
+}
+
+void InitScreens(void)
+{
+    backbuf = PushMem(0xFDE8);
+    backbuf->x = backbuf->y = 0;
+    backbuf->w = 320;
+    backbuf->h = 200;
+    mask_buf = PushMem(0x7E00);
+}
+
+/* The sequel keeps the screen bitmap (after a 0x300 byte palette) in EMS
+ * when it can; LockScreen/UnlockScreen map it in around its use. */
+MemHandle screen_handle = 0;
+int screen_locks = 0;
+
+void InitScreen(void)
+{
+    if ((screen_handle = EMSAllocHandle(0xFD08L)) == 0) {
+        screen_base = PushMem(0xFD08);
+        screen = (Bitmap far *)(screen_base + 0x300);
+    }
+    LockScreen();
+    screen->x = 0;
+    screen->y = 0;
+    screen->w = 320;
+    screen->h = 200;
+    MemSet(screen_base, 0x300, 0);
+    UnlockScreen();
+}
+
+void LockScreen(void)
+{
+    if (++screen_locks <= 1 && screen_handle) {
+        screen_base = LockMem(screen_handle);
+        screen = (Bitmap far *)(screen_base + 0x300);
+    }
+}
+
+void UnlockScreen(void)
+{
+    if (--screen_locks < 0)
+        Fatal("BkLockCount < 0");
+    if (screen_locks <= 0 && screen_handle) {
+        UnlockMem(screen_handle);
+        screen_base = 0;
+        screen = 0;
+    }
+}
+
+/* Does nothing. */
+void Nop(void)
+{
+}
 
 void main(int argc, char **argv);
 void InitScreens(void);
@@ -99,13 +180,42 @@ void Fatal(fmt, a, b, c, d)
 char *fmt;
 int a, b, c, d;
 {
-    SetFade(cur_palette, 100);
+    if (gfx_mode) {             /* new: show it on the graphics screen first */
+        SetFade(cur_palette, 100);
+        printf("Internal error:\n");
+        printf(fmt, a, b, c, d);
+        printf("\n");
+        printf("Game aborted...\n");
+        _getch();
+        TextMode();
+    }
     printf("Internal error:\n");
     printf(fmt, a, b, c, d);
     printf("\n");
     printf("Game aborted...\n");
-    getch();
     exit(1);
+}
+
+void InitPlayerShip(void)
+{
+    ShipDesc desc;
+
+    LoadFilePacked("enterpri", "dsc", (unsigned char far *)&desc);
+    MemSet(&player_ship, sizeof(player_ship), 0);
+    MatIdentity(&player_ship.orient);
+    player_ship.visible = R3_SHIP;
+    player_ship.draw = SelectView;
+    player_ship.free = ReleaseShipShape;
+    player_ship.kind = desc.kind;
+    player_ship.reach = desc.reach;
+    player_ship.size = desc.size;
+    MemCpy(player_ship.shields, desc.shields, sizeof(player_ship.shields));
+    MemCpy(player_ship.systems, desc.systems, sizeof(player_ship.systems));
+    player_ship.mo = desc.mo;
+    player_ship.range = desc.range;
+    player_ship.has_shields = desc.has_shields;
+    MemCpy(player_ship.weapons, desc.weapons, sizeof(player_ship.weapons));
+    AddR3(&player_ship);
 }
 
 /* Move the pointer sprite with the mouse. */

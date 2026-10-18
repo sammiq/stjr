@@ -35,6 +35,8 @@ typedef struct GTLEntry {
 typedef struct SeqNode {
     Node node;                  /* 00 */
     int slot;                   /* 04 */
+    int seq;                    /* 06 the sequel's */
+    int kind;                   /* 08 0 free, 1 XMIDI, 2 voice, 4 raw */
 } SeqNode;
 
 /* Digital output request (seg 2505 driver). */
@@ -85,7 +87,9 @@ void PlaySeq(unsigned slot, int seq);
 int MusicPlaying(void);
 void StopVoc(void);
 void StopAllSound(void);
-void LoadMusic(char *name);
+void LoadMusic(char *name, char var);
+void LoadMusicData(char *name, char var);
+int PurgeSound(void);
 int SoundShutdown(void);
 void PlayMusic(int seq, int next);
 int ReadVoc(char far *buf, int len);

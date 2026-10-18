@@ -103,9 +103,14 @@ def main() -> None:
                  f"{MSC}\\BIN\\CL.EXE /c /nologo {' '.join(flags)} /Fo{dos_path(obj)} {dos_path(src)}"]
     # C 7.00's DOS extender occasionally fails to start under load (run-time
     # error R69xx: no memory, no DPMI); that is worth another try
+    # (or produces nothing at all, now and then): that is worth another try
+    def produced_obj():
+        return next((p for p in obj.parent.iterdir() if p.name.lower() == obj.name.lower()), None)
+
     for _attempt in range(4):
         log = run_dos(lines, tag)
-        if "run-time error R69" not in log:
+        failed = any(" error " in ln.lower() for ln in log.splitlines())
+        if "run-time error R69" not in log and (produced_obj() is not None or failed):
             break
     for leftover in tmp.iterdir():
         leftover.unlink()
@@ -122,7 +127,7 @@ def main() -> None:
         produced.rename(obj)
 
     mod = omf.parse_obj(obj.read_bytes())
-    omf2elf.convert(mod).write(str(out))
+    omf2elf.convert(mod, out.stem).write(str(out))
 
 
 if __name__ == "__main__":

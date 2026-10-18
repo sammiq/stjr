@@ -6,7 +6,7 @@
 #include "list.h"
 #include "mem.h"
 
-#define CACHE_ENTRIES 256
+#define CACHE_ENTRIES   200
 
 /* A cached file: the packed data as read from DATA.001 and/or the unpacked
  * data. Entries are kept in most recently used order. */
@@ -85,8 +85,6 @@ void ReleaseR3S(MemHandle h);
 MemHandle LoadSpriteBitmap(char *name, int scale);
 void FreeSpriteBitmap(MemHandle h, int scale);
 int NameHash(char *s);
-void StreamInit(void);
-void StreamFill(void);
 MemHandle LoadEMSFile(char *name, char *ext);
 void far *EMSMapAddr(void far *handle);
 void far *MapHandle(MemHandle h);

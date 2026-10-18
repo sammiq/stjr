@@ -27,6 +27,7 @@ typedef struct ShipPart {
     int unk;                            /* 00 */
     int max;                            /* 02 */
     int cur;                            /* 04 */
+    int strength;                       /* 06 new in the sequel: a weapon's damage */
 } ShipPart;
 
 /* A ship's weapon mount. */
@@ -60,11 +61,11 @@ typedef struct ShipDesc {
     int reach;                  /* 02 */
     int size;                   /* 04 */
     ShipPart shields[6];        /* 06 */
-    ShipPart systems[10];       /* 2A */
-    Motion mo;                  /* 66 */
-    long range;                 /* A8 */
-    int has_shields;            /* AC */
-    Weapon weapons[4];          /* AE */
+    ShipPart systems[10];       /* 36 */
+    Motion mo;                  /* 86 */
+    long range;                 /* C8 */
+    int has_shields;            /* CC */
+    Weapon weapons[4];          /* CE */
 } ShipDesc;
 
 /* The fields every object in the view has. */
@@ -91,12 +92,14 @@ typedef struct ShipDesc {
     MemHandle r3s;                      /* 68 bitmap drawn for the object */ \
     int r3s_type;                       /* 6A offset of its header */ \
     Matrix rot;                         /* 6C orientation the bitmap shows */ \
-    int mirror;                         /* 7E bitmap drawn mirrored */ \
-    double inv[4];                      /* 80 screen to bitmap matrix */
+    int mirror;                         /* 7E bitmap drawn mirrored */
+/* (ST25 had double inv[4] here for every object; the sequel's ships put
+ * their shields at 80, and their ShipParts are 8 bytes) */
 
 /* A shot (only these 0xA8 bytes; see Obj3D). */
 typedef struct Shot {
     R3_FIELDS
+    double inv[4];                      /* 80 screen to bitmap matrix */
     Obj3D *owner;                       /* A0 */
     int life;                           /* A2 frames left; animates explosions */
     int damage;                         /* A4 */
@@ -107,6 +110,7 @@ struct Obj3D {
     R3_FIELDS
     union {
         struct {                        /* planets */
+            double inv[4];              /* 80 screen to bitmap matrix (shots too) */
             int radius;                 /* A0 */
             int small;                  /* A2 32x32 texture instead of 128x128 */
             char name[10];              /* A4 */
@@ -115,14 +119,15 @@ struct Obj3D {
             int palette;                /* B2 */
         };
         struct {                        /* shots, as Shot */
+            double inv_[4];             /* 80 */
             Obj3D *owner;               /* A0 */
             int life;                   /* A2 */
             int damage;                 /* A4 */
             int color;                  /* A6 */
         };
         struct {                        /* ships */
-            ShipPart shields[6];        /* A0 by side (FindSide) */
-            ShipPart systems[10];       /* C4 SYS_ */
+            ShipPart shields[6];        /* 80 by side (FindSide) */
+            ShipPart systems[10];       /* B0 SYS_ */
             Motion mo;                  /* 100 */
             int power;                  /* 142 left this frame */
             int shields_req;            /* 144 power wanted for shields */

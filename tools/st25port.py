@@ -527,6 +527,7 @@ def restore_data(path: Path, ref: str) -> None:
         have = {n: x for n, x, _y in top_level_functions(text)}
         nxt = next((have[n] for fa, n in ref_funcs if fa > a and n in have), None)
         at = nxt if nxt is not None else len(text)
+        at = text.rfind("\n", 0, at) + 1 if at < len(text) and at and text[at - 1] != "\n" else at
         path.write_text(text[:at] + ref[a:b].rstrip("\n") + "\n\n" + text[at:])
         print(f"  restored {', '.join(names)}")
 

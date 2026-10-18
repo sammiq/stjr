@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "mem.h"
 #include "bitmap.h"
 #include "cache.h"
@@ -25,10 +26,11 @@ typedef struct DmgEntry {
 
 void Fatal(char *fmt, ...);     /* fatal error */
 void MsgBox(char *title, char *msg, int a, int b, int c, int d);    /* seg008: message box */
+void CrewSay(int who, char *text);                                   /* seg008: a crew member speaks */
 void PostRoomMsg(int msg, int who, int a, int b);                     /* seg008: report */
 void BridgeSfx(int n);              /* seg001: sound effect */
 void RepairAll(Obj3D *o);           /* seg001 */
-long sub_3A35E(long x, long y, long z);  /* seg027: length */
+long VecLen3(long x, long y, long z);    /* seg027: length (ST25 sub_3A35E) */
 void Vec32Add(Vec32 *a, Vec32 *b);  /* seg027 */
 
 /* seg006 */
@@ -44,7 +46,9 @@ extern Obj3D player_ship;
 extern Obj3D ships[4];
 Shot shots[MAX_SHOTS];
 extern unsigned long blink_count;
-extern int under_attack;
+void SetUnderAttack(int on);    /* (ST25 set under_attack itself) */
+int enemy_count;                /* ships to keep in the fight */
+char enemy_name[10];            /* their .dsc */
 extern char *crew_names[8];
 extern int kbd_mouse;
 extern Obj3D *last_target;          /* last ship the player hit */
@@ -57,21 +61,24 @@ int boost_time;
 int FireShot(Obj3D *o, Weapon *w, Vec32 *dir, ShipPart *p);
 void UpdateShots(void);
 void ClearShots(void);
+void SetEnemies(char *name, int count);
 void UpdateShips(void);
 void ShipAI(Obj3D *o);
 int ShotHit(Shot *s, Obj3D *t);
 int PixelHit(Shot *s, Obj3D *t);
 void SetVec32(Vec32 *v, long x, long y, long z);
 void SetSpeed(Obj3D *o, long speed);
-void InitShips(char *name);
+int InitShips(char *name);
 void ShotExplode(Shot *s, Obj3D *t);
 void UpdatePower(Obj3D *o);
 void HitShip(Obj3D *t, Shot *s);
+void ClearShips(void);
 int FindSide(Vec32 *v);
 int DamageShip(Obj3D *t, DmgEntry *tab, int n, int dmg);
 int WeakestSide(ShipPart *p);
 void SetRepair(int sys);
 void Repair(Obj3D *o);
+void RestoreShip(Obj3D *o);
 void MoveShip(Obj3D *o);
 void Bearing(Obj3D *o, Vec32 *to, int *pitch, int *yaw);
 void AiWander(Obj3D *o);
@@ -84,6 +91,95 @@ void BoostInit(void);
 int BoostStart(void);
 void BoostEnd(void);
 void SetPower(int shields, int weapons);
+
+void (far *ai_moves[3])(Obj3D *o) = { AiTurn, AiLoop, AiStrafe };
+
+/* Which system a hit on each side damages: the d100 roll's range. */
+DmgEntry dmg_t0[10] = {
+    { 0, 19, 9 }, { 20, 24, 8 }, { 25, 34, 7 }, { 35, 39, 1 }, { 40, 49, 6 },
+    { 50, 51, 4 }, { 52, 54, 5 }, { 55, 56, 2 }, { 57, 59, 3 }, { 60, 99, 0 }
+};
+DmgEntry dmg_t1[4] = {
+    { 0, 24, 9 }, { 25, 49, 8 }, { 50, 64, 7 }, { 65, 99, 0 }
+};
+DmgEntry dmg_t2[10] = {
+    { 0, 19, 8 }, { 20, 24, 9 }, { 25, 34, 7 }, { 35, 39, 1 }, { 40, 49, 6 },
+    { 50, 51, 5 }, { 52, 54, 4 }, { 55, 56, 3 }, { 57, 59, 2 }, { 60, 99, 0 }
+};
+DmgEntry dmg_t3[9] = {
+    { 0, 9, 8 }, { 10, 19, 9 }, { 20, 24, 1 }, { 25, 39, 6 }, { 40, 44, 5 },
+    { 45, 49, 4 }, { 50, 54, 3 }, { 55, 59, 2 }, { 60, 99, 0 }
+};
+DmgEntry dmg_t4[7] = {
+    { 0, 19, 8 }, { 20, 39, 9 }, { 40, 49, 7 }, { 50, 54, 1 }, { 55, 56, 3 },
+    { 57, 59, 2 }, { 60, 99, 0 }
+};
+DmgEntry dmg_t5[9] = {
+    { 0, 14, 8 }, { 15, 29, 9 }, { 30, 34, 7 }, { 35, 44, 6 }, { 45, 49, 5 },
+    { 50, 54, 4 }, { 55, 57, 3 }, { 58, 59, 2 }, { 60, 99, 0 }
+};
+DmgEntry *dmg_tables[6] = { dmg_t0, dmg_t1, dmg_t2, dmg_t3, dmg_t4, dmg_t5 };
+int dmg_counts[6] = { 10, 4, 10, 9, 7, 9 };
+
+/* Fire weapon w of o, along dir or straight ahead, using system p.
+ * Returns 1 if a shot went. */
+int FireShot(Obj3D *o, Weapon *w, Vec32 *dir, ShipPart *p)
+{
+    int i;
+    Shot *s;
+    Vec32 v;
+    Vec32 unused;
+    long len;
+    int damage;
+
+    if (p->cur < p->max >> 1 || w->next > blink_count || p->unk == 0 || o->weapons_pwr == 0)
+        return 0;
+    damage = p->strength;
+    for (i = 0, s = shots; i != MAX_SHOTS; ++i, ++s) {
+        if (s->visible == 0) {
+            MemSet(s, sizeof(Shot), 0);
+            s->pos = o->pos;
+            MatTVecMul32(&w->ofs, &o->orient, &v);
+            Vec32Add(&s->pos, &v);
+            if (dir == 0)
+                s->orient = o->orient;
+            else {
+                len = (unsigned)VecLen32(&dir->x);
+                if (len == 0)
+                    len = 1;
+                s->orient.e[2][0] = FixDiv(dir->x, len);
+                s->orient.e[2][1] = FixDiv(dir->y, len);
+                s->orient.e[2][2] = FixDiv(dir->z, len);
+            }
+            s->visible = R3_SHOT;
+            s->kind = w->kind;
+            s->reach = 60;
+            s->size = 3;
+            SetSpeed((Obj3D *)s, ((long)w->speed << 16) + o->mo.speed);
+            s->draw = LoadShotShape;
+            s->free = FreeShotShape;
+            s->owner = o;
+            s->life = w->life;
+            s->damage = damage;
+            switch (o->kind) {
+            case 2:
+                s->color = 0xB1;
+                break;
+            case 1:
+                s->color = 0xB8;
+                break;
+            case 0:
+            case 4:
+                s->color = 0xA1;
+                break;
+            }
+            w->next = w->delay + blink_count;
+            AddR3((Obj3D *)s);
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void UpdateShots(void)
 {
@@ -130,6 +226,136 @@ void ClearShots(void)
     for (i = 0, s = shots; i != MAX_SHOTS; ++i, ++s)
         if (s->visible == R3_SHOT)
             DelR3((Obj3D *)s);
+}
+
+/* An enemy ship's turn: fight the player, run a manoeuvre, or flee. */
+/* New in the sequel: keep count (at most 4) of name's ships fighting. */
+void SetEnemies(char *name, int count)
+{
+    if (count > 4)
+        count = 4;
+    enemy_count = count;
+    strncpy(enemy_name, name, 10);
+    enemy_name[9] = 0;
+}
+
+/* Run the ships, and bring in more while fewer than enemy_count are
+ * fighting (ships that flee don't count). */
+void UpdateShips(void)
+{
+    Obj3D *o;
+    int n;
+
+    n = 0;
+    for (o = ships; o != &ships[4]; o++)
+        if (o->visible) {
+            if (o->flee == 0)
+                n++;
+            ShipAI(o);
+        }
+    SetUnderAttack(n != 0);
+    for (; n < enemy_count; n++)
+        InitShips(enemy_name);
+}
+
+void ShipAI(Obj3D *o)
+{
+    Matrix mt;
+    Vec32 v;
+    Vec32 d;
+    long dist;
+    long spd;
+    int pitch;
+    int yaw;
+    int n;
+
+    if (o->expl) {
+        MoveShip(o);
+        return;
+    }
+    UpdatePower(o);
+    Repair(o);
+    if (o->has_shields)
+        o->shields_up = o->flee != 2;
+    n = o->systems[SYS_SENSORS].max * 3 >> 2;
+    if (rand() % n > o->systems[SYS_SENSORS].cur) {
+        MoveShip(o);
+        return;
+    }
+    d = player_ship.pos;
+    Vec32Sub(&d, &o->pos);
+    MatTranspose(&o->orient, &mt);
+    MatTVecMul32(&d, &mt, &v);
+    dist = VecLen3(d.x, d.y, d.z);
+    o->ddist = dist - o->dist;
+    o->dist = dist;
+    if (o->has_shields) {
+        long ax;
+        long ay;
+
+        ax = ABS(v.x);
+        ay = ABS(v.y);
+        if (max(ax, ay) << 2 < v.z)
+            o->shields_up = 0;
+        if (o->shield_glow == 0)
+            FireAll(o, v, &d);
+    } else
+        FireAll(o, v, &d);
+    if (o->flee == 1) {
+        if (o->dist > 12000) {
+            DelR3(o);
+            o->visible = 0;
+            return;
+        }
+        pitch = FixASin(FixDiv(v.y, dist));
+        yaw = -FixAtan2(v.x, v.z);
+        o->mo.target_speed = o->mo.max_speed;
+        o->mo.turn_target[0] = (long)pitch << 16;
+        o->mo.turn_target[1] = (long)yaw << 16;
+        o->mo.turn_target[2] = 0;
+        MoveShip(o);
+        return;
+    }
+    if (o->flee == 3) {
+        DelR3(o);
+        o->visible = 0;
+        return;
+    }
+    if (o->flee == 4 && o->expl == 0) {
+        o->expl = 1;
+        o->expl_frame = -1;
+        o->shields_on = o->shields_up = 0;
+    }
+    if (o->mo.speed_limit < o->mo.target_speed >> 2) {
+        spd = 0;
+        o->ai_busy = 0;
+    } else {
+        if (o->ai_busy) {
+            o->ai(o);
+            return;
+        }
+        if (dist <= o->range) {
+            o->ai_busy = 1;
+            o->ai = ai_moves[rand() % 3];
+            o->ai_state = 0;
+            return;
+        }
+        if (dist > o->range << 2)
+            spd = o->mo.max_speed >> 0;
+        else if (dist > o->range * 3)
+            spd = o->mo.max_speed >> 0;
+        else if (dist > o->range << 1)
+            spd = o->mo.max_speed >> 1;
+        else
+            spd = o->mo.max_speed >> 2;
+    }
+    pitch = -FixASin(FixDiv(v.y, dist));
+    yaw = FixAtan2(v.x, v.z);
+    o->mo.target_speed = spd;
+    o->mo.turn_target[0] = (long)pitch << 16;
+    o->mo.turn_target[1] = (long)yaw << 16;
+    o->mo.turn_target[2] = 0;
+    MoveShip(o);
 }
 
 /* Is shot s within t's reach on every axis? */
@@ -182,7 +408,46 @@ void SetSpeed(Obj3D *o, long speed)
     o->vz = FixMul(s, o->orient.e[2][2]);
 }
 
-char *side_names[6] = { "starboard", "aft", "port", "forward", "upper", "lower" };
+/* Put the ship described by name.dsc in a free slot near the player;
+ * returns the slot, or -1 (the sequel returns it). */
+int InitShips(char *name)
+{
+    Obj3D *o;
+    int i;
+    ShipDesc desc;
+
+    for (i = 0, o = ships; o != &ships[4]; i++, o++)
+        if (o->visible == 0) {
+            MemSet(o, sizeof(Obj3D), 0);
+            o->pos = player_ship.pos;
+            o->pos.x += (64 - (rand() & 0x7F)) * 16;
+            o->pos.y += (64 - (rand() & 0x7F)) * 16;
+            o->pos.z += (64 - (rand() & 0x7F)) * 16;
+            LoadFilePacked(name, "dsc", (unsigned char far *)&desc);
+            MatIdentity(&o->orient);
+            o->visible = R3_SHIP;
+            o->draw = SelectView;
+            o->free = ReleaseShipShape;
+            o->kind = desc.kind;
+            o->reach = desc.reach;
+            o->size = desc.size;
+            MemCpy(o->shields, desc.shields, sizeof(o->shields));
+            MemCpy(o->systems, desc.systems, sizeof(o->systems));
+            o->mo = desc.mo;
+            o->range = desc.range;
+            o->has_shields = desc.has_shields;
+            MemCpy(o->weapons, desc.weapons, sizeof(o->weapons));
+            o->weapons_req = o->shields_req = 1;
+            o->shield_glow = 1;
+            o->flee = 0;
+            AddR3(o);
+            return i;
+        }
+    return -1;
+}
+
+/* (ST25 had side_names here; the sequel has 4 bytes of zeros nothing uses) */
+long side_unused = 0;
 
 /* Turn shot s into a small explosion moving with t. */
 void ShotExplode(Shot *s, Obj3D *t)
@@ -197,7 +462,112 @@ void ShotExplode(Shot *s, Obj3D *t)
     s->vz = t->vz;
 }
 
-/* The side of a ship facing v (ship coordinates), for side_names. */
+/* Share out the engines' power: shields, weapons, then speed. */
+void UpdatePower(Obj3D *o)
+{
+    int unused;
+    int p;
+    int q;
+
+    o->power = o->systems[SYS_WARP_PORT].cur + o->systems[SYS_WARP_STBD].cur
+        + o->systems[SYS_IMPULSE].cur;
+    if (o == &player_ship && boost_count) {
+        o->power += boost_amount;
+        boost_count--;
+    }
+    if (o->shields_req) {
+        if (o->power >= 10) {
+            o->power -= 10;
+            o->shields_pwr = 1;
+        } else if (o->shields_pwr) {
+            PostRoomMsg(2, o != &player_ship, 0, 0);
+            o->shields_pwr = 0;
+        }
+    } else
+        o->shields_pwr = 0;
+    if (o->shields_up) {
+        if (o->power >= 20) {
+            if (o->shields_on == 0)
+                o->shield_glow = 0;
+            o->power -= 20;
+            o->shields_on = 1;
+        } else
+            o->shields_on = 0;
+    } else
+        o->shields_on = 0;
+    if (o->weapons_req && (o == &player_ship || o->flee == 0)) {
+        if (o->power >= 10) {
+            o->power -= 10;
+            o->weapons_pwr = 1;
+        } else if (o->weapons_pwr) {
+            PostRoomMsg(3, o != &player_ship, 0, 0);
+            o->weapons_pwr = 0;
+        }
+    } else
+        o->weapons_pwr = 0;
+    p = min(o->power, 70);
+    q = o->mo.target_speed * 70 / o->mo.max_speed;
+    if (q > p) {
+        o->mo.speed_limit = o->mo.max_speed * p / 70;
+        o->power -= p;
+    } else {
+        o->mo.speed_limit = o->mo.target_speed;
+        o->power -= q;
+    }
+}
+
+/* The side of a ship facing v (ship coordinates). */
+/* Shot s hit ship t: the shield on that side soaks up what it can, the
+ * rest damages systems; a ship that breaks up explodes. */
+void HitShip(Obj3D *t, Shot *s)
+{
+    Vec32 d;
+    Vec32 v;
+    Matrix m;
+    int side;
+    int a;
+    int b;
+    ShipPart *sp;
+
+    d = s->pos;
+    Vec32Sub(&d, &t->pos);
+    MatTranspose(&t->orient, &m);
+    MatTVecMul32(&d, &m, &v);
+    side = FindSide(&v);
+    if (t->shields_pwr == 0)
+        ;
+    else {
+        sp = &t->shields[side];
+        a = sp->cur;
+        b = min(s->damage, a);
+        sp->cur -= b;
+        s->damage -= s->damage * a / sp->max;
+    }
+    b = DamageShip(t, dmg_tables[side], dmg_counts[side], s->damage);
+    if (b == 1 && t->expl == 0) {
+        if (t == &player_ship)
+            PlayMusic(11, 0xFE);
+        else
+            PlayMusic(8, -1);
+        t->expl = 1;
+        t->expl_frame = -1;
+        t->shields_up = 0;
+        t->shields_on = 0;
+    }
+}
+
+/* New in the sequel. */
+void ClearShips(void)
+{
+    Obj3D *o;
+
+    ClearShots();
+    SetUnderAttack(0);
+    for (o = ships; o != &ships[4]; o++)
+        if (o->visible)
+            DelR3(o);
+}
+
 int FindSide(Vec32 *v)
 {
     if (ABS(v->x) >= ABS(v->y) && ABS(v->x) >= ABS(v->z)) {
@@ -219,6 +589,260 @@ int FindSide(Vec32 *v)
             return 3;
     }
     Fatal("this is in FindSide and is impossible.");
+}
+
+char *system_names[10] = {
+    "Hull",
+    "Bridge",
+    "port torpedoes",
+    "starboard torpedoes",
+    "port phasers",
+    "starboard phasers",
+    "sensors",
+    "impulse engines",
+    "port warp engine",
+    "starboard warp engine"
+};
+
+/* Damage a system picked from tab; returns 1 if the hull gives out. */
+int DamageShip(Obj3D *t, DmgEntry *tab, int n, int dmg)
+{
+    char unused[80];
+    ShipPart *sp;
+    int r;
+    int i;
+
+    r = rand() % 100;
+    for (i = 0; i != n; ++i, ++tab) {
+        if (r >= tab->lo && r <= tab->hi) {
+            sp = &t->systems[tab->sys];
+            r = min(sp->cur, dmg);
+            sp->cur -= r;
+            dmg -= r;
+            if (dmg) {
+                if ((t->systems[SYS_HULL].cur -= dmg) <= 0)
+                    return 1;
+            }
+            return 0;
+        }
+    }
+}
+
+/* The weakest of the starboard, port, upper and lower shields. */
+int WeakestSide(ShipPart *p)
+{
+    int i;
+    int best;
+    int least;
+
+    least = 0x7FFF;
+    for (i = 0; i != 6; ++i, ++p) {
+        if (i == 1 || i == 3)
+            continue;
+        if (p->cur < least) {
+            best = i;
+            least = p->cur;
+        }
+    }
+    return best;
+}
+
+int repair_sys = -1;                /* what the player's crew repairs first */
+
+/* Order repairs to system sys (0x7FFF: the shields; -1: none). The sequel
+ * has the engineer answer, and say so when there's nothing to repair. */
+void SetRepair(int sys)
+{
+    char buf[80];
+    int old;
+    char *name;
+    int i;
+    int n;
+    ShipPart *p;
+    int left;
+
+    old = repair_sys;
+    if (sys != -1 && old == sys) {
+        CrewSay(7, "#BRID_S26#Damage control standing by, Sir.");
+        return;
+    }
+    repair_sys = sys;
+    if (sys == -1)
+        return;
+    switch (repair_sys) {
+    case 0:
+        name = "hull";
+        goto one;
+    case 1:
+        name = "bridge";
+        goto one;
+    case 6:
+        name = "sensors";
+    one:
+        p = &player_ship.systems[repair_sys];
+        if (p->max == p->cur)
+            break;
+        goto aye;
+    case 2:
+        name = "torpedoes";
+        p = &player_ship.systems[SYS_TORP_PORT], n = 2;
+        goto several;
+    case 4:
+        name = "phasers";
+        p = &player_ship.systems[SYS_PHASER_PORT], n = 2;
+        goto several;
+    case 7:
+        name = "engines";
+        p = &player_ship.systems[SYS_IMPULSE], n = 3;
+        goto several;
+    case 0x7FFF:
+        name = "shields";
+        p = player_ship.shields;
+        n = 6;
+    several:
+        left = n;
+        for (i = 0; i != n; ++p, ++i)
+            if (p->cur == p->max)
+                --left;
+        if (left)
+            goto aye;
+        break;
+    default:
+    aye:
+        if (old != -1)
+            sprintf(buf, "#BRID_S22#Aye Sir.");
+        else
+            sprintf(buf, "#BRID_S22#Aye Sir.");
+        CrewSay(7, buf);
+        return;
+    }
+    CrewSay(7, "#BRID_S26#Damage control standing by, Sir.");
+    repair_sys = -1;
+}
+
+/* Every 32 frames: recharge the shields and repair the systems a little. */
+void Repair(Obj3D *o)
+{
+    int left;
+    int i;
+    int n;
+    ShipPart *p;
+
+    if ((blink_count & 0x1F) != 7)
+        return;
+    for (p = o->shields, n = 0; n != 6; ++p, ++n)
+        p->cur = min(p->cur + 1, p->max);
+    for (p = o->systems, n = 0; n != 10; ++n, ++p)
+        p->cur = min(p->cur + 1, p->max);
+    if (o == &player_ship) {
+        switch (repair_sys) {
+        case 0:
+        case 1:
+        case 6:
+            p = &o->systems[repair_sys];
+            if (p->cur == p->max) {
+                PostRoomMsg(5, repair_sys, 0, 0);
+                repair_sys = -1;
+            } else
+                p->cur = min(p->cur + 1, p->max);
+            break;
+        case 2:
+            p = &o->systems[SYS_TORP_PORT], n = 2;
+            goto several;
+        case 4:
+            p = &o->systems[SYS_PHASER_PORT], n = 2;
+            goto several;
+        case 7:
+            p = &o->systems[SYS_IMPULSE], n = 3;
+            goto several;
+        case 0x7FFF:
+            p = o->shields;
+            n = 6;
+        several:
+            left = n;
+            for (i = 0; i != n; ++p, ++i)
+                if (p->cur == p->max)
+                    --left;
+                else
+                    p->cur = min(p->cur + 1, p->max);
+            if (left == 0) {
+                PostRoomMsg(5, repair_sys, 0, 0);
+                repair_sys = -1;
+            }
+            break;
+        }
+    }
+}
+
+/* Turn a ship towards its target rates, then move it. Shots just move. */
+/* New in the sequel: every shield and system back to full. */
+void RestoreShip(Obj3D *o)
+{
+    ShipPart *p;
+    int i;
+
+    for (i = 0, p = o->shields; i != 6; i++, p++)
+        p->cur = p->max;
+    for (i = 0, p = o->systems; i != 10; i++, p++)
+        p->cur = p->max;
+}
+
+void MoveShip(Obj3D *o)
+{
+    long d;
+    long k;
+
+    if (o->visible == R3_SHOT) {
+        o->pos.x += o->vx;
+        o->pos.y += o->vy;
+        o->pos.z += o->vz;
+        return;
+    }
+    k = ((long)o->systems[SYS_BRIDGE].cur << 16) / o->systems[SYS_BRIDGE].max;
+    if ((d = o->mo.turn_target[0] - o->mo.turn_rate[0]) != 0) {
+        d = min(o->mo.turn_accel, d);
+        d = max(-o->mo.turn_accel, d);
+        d = (d >> 16) * k;
+        o->mo.turn_rate[0] += d;
+        o->mo.turn_rate[0] = max(o->mo.turn_rate[0], -o->mo.turn_max);
+        o->mo.turn_rate[0] = min(o->mo.turn_rate[0], o->mo.turn_max);
+    }
+    if ((d = o->mo.turn_target[1] - o->mo.turn_rate[1]) != 0) {
+        d = min(o->mo.turn_accel, d);
+        d = max(-o->mo.turn_accel, d);
+        d = (d >> 16) * k;
+        o->mo.turn_rate[1] += d;
+        o->mo.turn_rate[1] = max(o->mo.turn_rate[1], -o->mo.turn_max);
+        o->mo.turn_rate[1] = min(o->mo.turn_rate[1], o->mo.turn_max);
+    }
+    if ((d = o->mo.turn_target[2] - o->mo.turn_rate[2]) != 0) {
+        d = min(o->mo.turn_accel, d);
+        d = max(-o->mo.turn_accel, d);
+        d = (d >> 16) * k;
+        o->mo.turn_rate[2] += d;
+        o->mo.turn_rate[2] = max(o->mo.turn_rate[2], -o->mo.turn_max);
+        o->mo.turn_rate[2] = min(o->mo.turn_rate[2], o->mo.turn_max);
+    }
+    if ((d = o->mo.turn_rate[0] >> 16) != 0) {
+        MatRotXSC(d < 0 ? -sin_small[-d] : sin_small[d],
+                  d < 0 ? cos_small[-d] : cos_small[d], &o->orient);
+        o->mo.turn_sum[0] += ang_small[ABS(d)];
+    }
+    if ((d = o->mo.turn_rate[1] >> 16) != 0) {
+        MatRotYSC(d < 0 ? -sin_small[-d] : sin_small[d],
+                  d < 0 ? cos_small[-d] : cos_small[d], &o->orient);
+        o->mo.turn_sum[1] += ang_small[ABS(d)];
+    }
+    if ((d = o->mo.turn_rate[2] >> 16) != 0) {
+        MatRotZSC(d < 0 ? -sin_small[-d] : sin_small[d],
+                  d < 0 ? cos_small[-d] : cos_small[d], &o->orient);
+        o->mo.turn_sum[2] += ang_small[ABS(d)];
+    }
+    o->mo.timer--;
+    SetSpeed(o, o->mo.speed_limit);
+    o->pos.x += o->vx;
+    o->pos.y += o->vy;
+    o->pos.z += o->vz;
 }
 
 /* The pitch and yaw that would turn o towards to. */
@@ -414,6 +1038,25 @@ void AiStrafe(Obj3D *o)
         break;
     }
     MoveShip(o);
+}
+
+/* Fire everything at the player if they are ahead (v in ship coordinates). */
+void FireAll(Obj3D *o, Vec32 v, Vec32 *dir)
+{
+    int i;
+    int fired;
+    ShipPart *p;
+
+    v.x = ABS(v.x);
+    v.y = ABS(v.y);
+    if (max(v.x, v.y) << 2 < v.z) {
+        fired = 0;
+        p = &o->systems[SYS_TORP_PORT];
+        for (i = 0; i != 4; ++i, ++p)
+            fired |= FireShot(o, &o->weapons[i], dir, p);
+        if (fired)
+            BridgeSfx(5);
+    }
 }
 
 int WeaponsReady(Obj3D *o)

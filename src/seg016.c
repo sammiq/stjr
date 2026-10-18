@@ -15,7 +15,199 @@
 int tolower(int c);
 void Fatal(char *fmt, ...);             /* fatal error */
 unsigned ReadVoc(void far *buf, long len); /* seg015: read stream data */
-void DigiShutdown(void);                       /* seg015 */
+CacheEntry cache_entries[CACHE_ENTRIES];
+
+List cache_list;
+
+void DigiShutdown(void);                       void CacheInit(void)
+{
+    int i;
+    CacheEntry *e;
+
+    ListInit(&cache_list);
+    for (e = cache_entries, i = 0; i != CACHE_ENTRIES; ++i, ++e) {
+        MemSet(e, sizeof(CacheEntry), 0);
+        ListAdd(&cache_list, &e->node);
+    }
+}
+
+/* Find a file in the cache, loading it into the least recently used free
+ * entry if needed (and if load is set). With unpack the unpacked data is
+ * returned and the entry stays locked until ReleaseCache. */
+MemHandle CacheGet(char *name, char *ext, int ems, int load, int unpack)
+{
+    int i;
+    int hash;
+    CacheEntry *e;
+
+    hash = NameHash(name) + NameHash(ext);
+    for (i = 0, e = (CacheEntry *)cache_list.tail.next; i != CACHE_ENTRIES;
+            ++i, e = (CacheEntry *)e->node.next) {
+        if (e->hash == hash && strncmp(e->name, name, 10) == 0 && strncmp(e->ext, ext, 4) == 0)
+            goto found;
+    }
+    if (load == 0)
+        return 0;
+    for (i = 0, e = (CacheEntry *)cache_list.head.prev; i != CACHE_ENTRIES;
+            ++i, e = (CacheEntry *)e->node.prev) {
+        if (e->lock == 0) {
+            if (e->packed)
+                FreeMem(e->packed);
+            if (e->data)
+                FreeMem(e->data);
+            GetFileSizes(name, ext, &e->size, &e->packed_size);
+            e->lock++;
+            e->packed = AllocMemAbort(e->packed_size, 0);
+            e->lock--;
+            LoadFile(name, ext, LockMem(e->packed));
+            UnlockMem(e->packed);
+            strncpy(e->name, name, 10);
+            strncpy(e->ext, ext, 4);
+            e->data = 0;
+            e->hash = hash;
+            goto found;
+        }
+    }
+    Fatal("Cache overflow.");
+found:
+    ListRemove(&cache_list, &e->node);
+    ListAdd(&cache_list, &e->node);
+    if (unpack) {
+        e->lock++;
+        if (e->data == 0 && e->packed != 0) {
+            e->data = AllocMemAbort(e->size, ems);
+            UnpackAll(LockMem(e->packed), LockMem(e->data), e->packed_size);
+            UnlockMem(e->packed);
+            UnlockMem(e->data);
+            if (e->size < (e->packed_size >> 2) + e->packed_size) {
+                FreeMem(e->packed);
+                e->packed = 0;
+            }
+        }
+        return e->data;
+    } else
+        return 0;
+}
+
+/* Put an existing block into the cache under name.ext (locked). */
+void CacheStore(char *name, char *ext, MemHandle h)
+{
+    int i;
+    int hash;
+    CacheEntry *e;
+
+    hash = NameHash(name) + NameHash(ext);
+    for (i = 0, e = (CacheEntry *)cache_list.head.prev; i != CACHE_ENTRIES;
+            ++i, e = (CacheEntry *)e->node.prev) {
+        if (e->lock == 0) {
+            if (e->packed)
+                FreeMem(e->packed);
+            if (e->data)
+                FreeMem(e->data);
+            e->lock++;
+            ListRemove(&cache_list, &e->node);
+            ListAdd(&cache_list, &e->node);
+            e->data = h;
+            e->packed = 0;
+            strncpy(e->name, name, 10);
+            strncpy(e->ext, ext, 4);
+            e->hash = hash;
+            return;
+        }
+    }
+    Fatal("Cache overflow.");
+}
+
+void ReleaseCache(MemHandle h)
+{
+    int i;
+    CacheEntry *e;
+
+    e = (CacheEntry *)cache_list.tail.next;
+    for (i = 0; i != CACHE_ENTRIES; ++i, e = (CacheEntry *)e->node.next) {
+        if (e->data == h) {
+            if (--e->lock < 0)
+                Fatal("ReleaseCache: too many releases. %s", e->name);
+            return;
+        }
+    }
+}
+
+/* Free some cached memory; returns 0 if nothing could be freed. Unless
+ * ems is set, memory in EMS is left alone. */
+int CachePurge(int ems)
+{
+    CacheEntry *e;
+    int i;
+    MemHandle h;
+
+    /* unlocked entries: drop the packed or unpacked copy */
+    e = (CacheEntry *)cache_list.head.prev;
+    for (i = 0; i != CACHE_ENTRIES; ++i, e = (CacheEntry *)e->node.prev) {
+        if (e->lock == 0 && e->data != 0) {
+            if (e->packed != 0) {
+                if (!ems && IsMemEMS(e->data)) {
+                    if (IsMemEMS(e->packed))
+                        continue;
+                    FreeMem(e->packed);
+                    e->packed = 0;
+                } else {
+                    FreeMem(e->data);
+                    e->data = 0;
+                }
+                return 1;
+            } else if (e->ext[0] == '$') {
+                if (!ems && IsMemEMS(e->data))
+                    continue;
+                FreeMem(e->data);
+                ListRemove(&cache_list, &e->node);
+                MemSet(e, sizeof(CacheEntry), 0);
+                ListAdd(&cache_list, &e->node);
+                return 1;
+            }
+        }
+    }
+    /* unlocked entries: drop the entry */
+    e = (CacheEntry *)cache_list.head.prev;
+    for (i = 0; i != CACHE_ENTRIES; ++i, e = (CacheEntry *)e->node.prev) {
+        if (e->lock == 0 && (e->data != 0 || e->packed != 0)) {
+            h = e->data ? e->data : e->packed;
+            if (!ems && IsMemEMS(h))
+                continue;
+            FreeMem(h);
+            ListRemove(&cache_list, &e->node);
+            MemSet(e, sizeof(CacheEntry), 0);
+            ListAdd(&cache_list, &e->node);
+            return 1;
+        }
+    }
+    /* locked entries: drop the packed copy */
+    e = (CacheEntry *)cache_list.head.prev;
+    for (i = 0; i != CACHE_ENTRIES; ++i, e = (CacheEntry *)e->node.prev) {
+        if (e->lock != 0 && e->packed != 0 && e->data != 0) {
+            if (!ems && IsMemEMS(e->packed))
+                continue;
+            FreeMem(e->packed);
+            e->packed = 0;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/* New in the sequel: purge everything that can be. */
+void CachePurgeAll(void)
+{
+    while (CachePurge(1))
+        ;
+}
+
+MemHandle LoadBitmap(char *name)
+{
+    return CacheLoad(name, "bmp");
+}
+
+/* seg015 */
 
 void ReleaseBitmap(MemHandle h)
 {

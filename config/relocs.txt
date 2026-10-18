@@ -21,3 +21,272 @@
 211F8  _tan_table+0x102   # InitTrig: the end of the array
 11E30  _bans+0x40   # LoadBan: the end of the array
 16E1D  _ev_queue+0x380   # NextEvent: the end of the queue
+21E57  _BreakHandler   # its own address, for signal()
+2939F  _shade_table   # DrawGlyph: ss:shade_table[bx]
+2934B  _glyph_colors+0x28   # DrawGlyph: entry 5
+3DB18  _sprite_array    # sprite_list = sprite_array
+3DB1A  _sprite_count0   # sprite_count = &sprite_count0
+3BF78  aData_1          # data_dir = "data/"
+3BF7A  aUncompDir       # uncomp_dir = "uncomp/"
+15FC4  $bss_seg003_0000 # LocateFile's struct return buffer
+160B2  $bss_seg003_000A # OpenLooseFile's
+164EA  $bss_seg003_0014 # FindFile's
+
+# From ST25 functions that compile to the sequel's code (tools/st25port.py relocs)
+11E4F  _bans+0x2   # _LoadBan
+11E4B  _bans   # _LoadBan
+11E24  _bans   # _LoadBan
+11F3E  _bans   # _UpdateBans
+16DF2  _ev_queue   # _FlushEvents
+17902  _r3_list   # _ClearR3List
+178E5  _r3_list   # _ClearR3List
+17913  _r3_list   # _AddR3
+1793C  _r3_list   # _DelR3
+199BA  _r3_list   # _OrthoR3
+1AC17  _save_desc   # _SaveVersion
+1AC07  _save_path   # _SaveVersion
+1ADEF  _save_desc   # _SlotName
+1AD9D  _save_desc   # _SlotName
+1AD86  _save_desc   # _SlotName
+1AD76  _save_path   # _SlotName
+273CF  _r3_list   # _UpdateShots
+27398  _shots   # _UpdateShots
+27468  _shots   # _ClearShots
+27398  _shots   # _UpdateShots
+27468  _shots   # _ClearShots
+2740B  _player_ship
+2741D  _player_ship
+27443  _player_ship
+2756B  _player_ship
+27A45  _player_ship
+27BF7  _player_ship
+27C3D  _player_ship
+27C91  _player_ship
+27CBD  _player_ship
+27E1E  _player_ship
+28169  _player_ship
+2777A  _ai_moves   # _ShipAI
+2777E  _ai_moves+0x2   # _ShipAI
+27A18  _ships   # _InitShips
+27A26  _ships+0x738   # _InitShips
+27A5F  none   # _InitShips: 64 * 16, not a string
+27A7A  none   # _InitShips
+27A96  none   # _InitShips
+2749F  _enemy_name   # _SetEnemies
+274B2  _ships   # _UpdateShips
+274D0  _ships+0x738   # _UpdateShips
+274EB  _enemy_name   # _UpdateShips
+27E66  _ships   # _ClearShips
+27E7C  _ships+0x738   # _ClearShips
+28086  _player_ship+0xc0   # _SetRepair: systems[SYS_TORP_PORT]
+2808E  _player_ship+0xd0   # _SetRepair: systems[SYS_PHASER_PORT]
+2809B  _player_ship+0xb0   # _SetRepair: systems
+280A8  _player_ship+0xe8   # _SetRepair: systems[SYS_IMPULSE]
+280B0  _player_ship+0x80   # _SetRepair: shields
+3D9B2  aHull   # system_names[0]
+3D9B4  aBridge_5   # system_names[1]
+3D9B6  aPortTorpedoes   # system_names[2]
+3D9B8  aStarboardTorped   # system_names[3]
+3D9BA  aPortPhasers   # system_names[4]
+3D9BC  aStarboardPhaser   # system_names[5]
+3D9BE  aSensors   # system_names[6]
+3D9C0  aImpulseEngines   # system_names[7]
+3D9C2  aPortWarpEngine   # system_names[8]
+3D9C4  aStarboardWarpEn   # system_names[9]
+3D96A  _dmg_t0   # dmg_tables[0]
+3D96C  _dmg_t1   # dmg_tables[1]
+3D96E  _dmg_t2   # dmg_tables[2]
+3D970  _dmg_t3   # dmg_tables[3]
+3D972  _dmg_t4   # dmg_tables[4]
+3D974  _dmg_t5   # dmg_tables[5]
+221F3  _player_ship+0xc   # _InitPlayerShip: &player_ship.orient
+22204  _SelectView   # _InitPlayerShip: player_ship.draw
+22210  _ReleaseShipShape   # _InitPlayerShip: player_ship.free
+2223A  _player_ship+0x80   # _InitPlayerShip: shields
+2224E  _player_ship+0xb0   # _InitPlayerShip: systems
+22259  _player_ship+0x100   # _InitPlayerShip: mo
+22284  _player_ship+0x15c   # _InitPlayerShip: weapons
+19AD7  none   # _DrawBeam: 99, not a string
+19B06  none   # _DrawBeam
+19651  _dither   # _DrawR3Shape
+17A25  _cam_matrix   # _RenderR3
+17A28  _cam_orient   # _RenderR3
+17A42  _r3_sorted   # _RenderR3
+17A85  _r3_sorted   # _RenderR3: &r3_list[MAX_R3]
+17A99  _CompareR3   # _RenderR3: qsort's compare
+17A9F  _r3_sorted   # _RenderR3
+17AB1  _r3_sorted   # _RenderR3
+17F87  none   # _SelectView: 0xF00, not a string
+18166  _shape_names   # _SelectView
+3C2AC  aEnt   # shape_names[0]
+3C2AE  aKlg   # shape_names[1]
+3C2B0  aOri   # shape_names[2]
+3C2B2  aRom   # shape_names[3]
+3C2B4  aFkr   # shape_names[4]
+124B4  _player_ship+0xc   # _BridgeLoop
+124CF  _cam_ofs   # _BridgeLoop
+129D4  _player_ship+0xc   # _BridgeEnter
+12D5C  _ships+0x738   # _DrawRadar
+130D0  _blip_bmp+0x8   # _InitBlip
+130E0  _bspr6   # _InitBlip
+130EB  _bspr6   # _InitBlip
+130FC  _bspr6   # _InitBlip
+1310F  _blip_bmp   # _InitBlip
+13121  _bspr6   # _InitBlip
+136CF  _station_menus   # _ClickCrew
+13C22  _msg_queue   # _PeekMsg
+147C4  _shot_obj   # _ShuttleFlyby
+14823  _shot_obj   # _ShuttleFlyby
+14839  _player_ship+0xc   # _ShuttleFlyby
+14849  _shot_obj   # _ShuttleFlyby
+149B3  _player_ship+0xc   # _CutScene
+149BE  _player_ship+0xc   # _CutScene
+14A0B  _cut_sprite   # _CutScene
+14F2A  none   # _HLine: mov ax, 320 (asm)
+147CF  _shot_obj+0xc   # _ShuttleFlyby
+147EF  _shot_obj+0x5c   # _ShuttleFlyby
+1480B  _LoadShotShape   # _ShuttleFlyby: shot_obj.draw
+14817  _FreeShotShape   # _ShuttleFlyby: shot_obj.free
+13699  _actors   # _ClickCrew
+13C4E  _player_ship+0xc   # _SetViewDir
+13D5A  _cam_orient+0xc   # _SetViewDir
+13D78  _cam_pos+0xc   # _SetViewDir
+13E21  _cam_orient+0xc   # _SetViewDir
+13E3D  _cam_orient+0xc   # _SetViewDir
+13E5E  _cam_orient+0xc   # _SetViewDir
+13E75  _cam_orient+0xc   # _SetViewDir
+13E8D  _cam_orient+0xc   # _SetViewDir
+13EA1  _cam_orient+0x6   # _SetViewDir
+13EAB  _cam_orient+0xc   # _SetViewDir
+13EBA  _cam_orient+0x6   # _SetViewDir
+13EC0  _cam_orient+0x6   # _SetViewDir
+13ED2  _cam_orient+0xc   # _SetViewDir
+13EFB  _player_ship+0xc   # _SetViewDir
+13F59  _player_ship+0xc   # _SetViewDir
+13F67  _cam_orient+0xc   # _SetViewDir
+13F7E  _cam_pos+0xc   # _SetViewDir
+1422A  _ships+0x738   # _CrewOrder
+3B91E  aCaptainKirk_1   # crew_names[0]
+3B920  aMrSpock_1   # crew_names[1]
+3B922  aDrMccoy   # crew_names[2]
+3B924  aSecurityOfficer_1   # crew_names[3]
+3B926  aMrSulu   # crew_names[4]
+3B928  aMrChekov_1   # crew_names[5]
+3B92A  aLieutenantUhura   # crew_names[6]
+3B92C  aMrScott_1   # crew_names[7]
+3BB52  aScotshieShields   # BridgeMsg repair_names[0]
+3BB56  aScothullHull   # BridgeMsg repair_names[1]
+3BB5A  aScotbridBridge   # BridgeMsg repair_names[2]
+3BB5E  aScotsensSensors   # BridgeMsg repair_names[3]
+3BB62  aScottorpTorpedo   # BridgeMsg repair_names[4]
+3BB66  aScotphasPhasers   # BridgeMsg repair_names[5]
+3BB6A  aScotengiEngines   # BridgeMsg repair_names[6]
+13BC2  _station_menus+0x82   # _BridgeMsg
+13BDF  _station_menus+0x84   # _BridgeMsg
+13BD2  aBridS45TheShiel   # _BridgeMsg: the table's end
+26ACA  _cache_list   # _CacheInit
+26AD5  _cache_entries   # _CacheInit
+26AEA  _cache_list   # _CacheInit
+26B90  _cache_list   # _CacheGet
+26B9C  _cache_list   # _CacheGet
+26D40  _cache_list   # _CacheStore
+26D4C  _cache_list   # _CacheStore
+26EA2  _cache_list   # _CachePurge
+26EBC  _cache_list   # _CachePurge
+24591  _music_name   # _SoundInit
+245A4  _seq_list   # _SoundInit
+245B2  _seq_ids+0x2   # _SoundInit
+245B7  _seq_nodes+0xe   # _SoundInit
+245CA  _seq_list   # _SoundInit
+245E4  _seq_nodes+0x54   # _SoundInit
+247F9  _seq_state   # _SoundInit
+2483B  _midi_suffix   # _SoundInit
+24864  _midi_suffix   # _SoundInit
+248A5  _midi_suffix   # _SoundInit
+24A48  _music_name   # _LoadMusicData
+24A74  _music_name   # _LoadMusicData
+24A91  _music_name   # _LoadMusicData
+24AB7  _music_name   # _LoadMusicData
+24ABD  _music_file   # _LoadMusicData
+24ACA  _music_name   # _LoadMusicData
+24AD0  _music_file   # _LoadMusicData
+24AF8  _midi_suffix   # _LoadMusicData
+24AFB  _music_file   # _LoadMusicData
+24B18  _midi_suffix   # _LoadMusicData
+24B1B  _music_file   # _LoadMusicData
+24EB4  _sfx_name   # _PlayDigi
+2674D  _mixes   # _MixRaw
+26870  _mixes   # _MixRaw
+24F6B  _sfx_stream   # _DigiStatus
+24F72  _sfx_stream+0x2   # _DigiStatus
+24F79  _sfx_stream+0x4   # _DigiStatus
+25A28  _vccs+0x58   # _CloseVCC
+2570E  aEmpty_1501   # _StreamOpen
+25711  aEmpty_1502   # _StreamOpen
+259A4  _vccs+0x58   # _SaveVCCs
+259BF  _vccs+0x2   # _SaveVCCs
+25035  aSemicolon_15   # _OpenSearch
+25055  aEmpty_1500   # _OpenSearch
+250D4  _vccs+0x58   # _FindVCC
+25AFB  aEmpty_1504   # _OpenVCC
+25BA8  aEmpty_1505   # _OpenVCC
+25A69  _vccs+0x58   # _OpenVCC
+25390  _StreamRead   # _StreamRewind
+2556F  _StreamRead   # _StreamInit
+26547  aEmpty_1506   # _BridgeSfx
+25E9E  _sfx_stream+0x2   # _MusicTick
+25EE4  _sfx_stream   # _MusicTick
+25EF8  _sfx_stream   # _MusicTick
+25F18  _sfx_stream   # _MusicTick
+25F2A  _sfx_stream+0x12   # _MusicTick
+25F4D  _sfx_stream+0x2   # _MusicTick
+25F65  _sfx_stream+0x2   # _MusicTick
+25F6C  _voice_stream   # _MusicTick
+26028  _voice_stream   # _MusicTick
+2608B  _voice_stream+0x12   # _MusicTick
+24522  aPCSPKR4   # _SoundInit
+24527  aADLIB   # _SoundInit
+2452C  aADLIBG   # _SoundInit
+24531  aALGDIG   # _SoundInit
+24536  aSBFM   # _SoundInit
+2453B  aSBDIG   # _SoundInit
+24540  aSBP1FM   # _SoundInit
+24545  aSBPDIG   # _SoundInit
+2454A  aSBP2FM   # _SoundInit
+2454F  aSBPDIG_0   # _SoundInit
+24554  aPASFM   # _SoundInit
+24559  aPASDIG   # _SoundInit
+2455E  aPASOPL   # _SoundInit
+24563  aPASDIG_0   # _SoundInit
+24568  aMT32MPU   # _SoundInit
+2456D  aMT32MPU_0   # _SoundInit
+24596  aEmpty_1507   # _SoundInit
+1FF78  _inv_sprite   # _FindObject
+1FF86  _item_sprite   # _FindObject
+20872  _timers+0x9b   # _WalkToHit
+206F8  _action_masks-0x2   # _HiliteCursor
+209D7  _items-0x27f   # _ShowInvIcon
+1EE01  aEmpty_0801   # _MsgBox
+1EE4D  _MsgChoice   # _MsgBox
+1EE8D  aEmpty_0802   # _CrewSay
+1EF09  _crew_tlk   # _CrewSay
+1EF33  _MsgChoice   # _CrewSay
+1DC3C  _panels+0xe   # _ClosePanel
+1EB3D  _actors+0x4b   # _TalkChoice
+3CDE8  aTlk066   # seg008 data
+3CDEA  aTlk067   # seg008 data
+3CDEC  aNoanim   # seg008 data
+3CDEE  aNoanim_1   # seg008 data
+3CDF0  aTlk068   # seg008 data
+3CDF2  aTlk065   # seg008 data
+3CDF4  aTlk069   # seg008 data
+3CDF6  aTlk064   # seg008 data
+3CDF8  aNoanim_2   # seg008 data
+3CE72  aLookh0   # seg008 data
+3CE74  aLookh0_1   # seg008 data
+3CE76  aLookh0_2   # seg008 data
+3CE78  aLookh0_3   # seg008 data
+3CE7A  aLookh0_4   # seg008 data
+3CE7C  aLookh1   # seg008 data
+3CE7E  aLookh2   # seg008 data
+3CE80  aLookh3   # seg008 data
