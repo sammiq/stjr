@@ -1154,8 +1154,7 @@ yes:
 }
 
 /* Find (and unless test, run) the scripts for (a, b, c), of kind 0, then
- * kinds 1-3 (2 only unless wild; 3 only when neither). (99.8%: frame slot
- * order.) */
+ * kinds 1-3 (2 only unless wild; 3 only when neither). */
 int FindScript(unsigned char test, unsigned char wild, unsigned char a, unsigned char b,
                unsigned char c)
 {
@@ -2145,8 +2144,7 @@ char *TalkChoice(unsigned n, int *list, char *title)
     return buf;
 }
 
-/* Set crew member n's icon letter (for "i?use"). (76%: the target puts
- * &actors[n] in di through cx.) */
+/* Set crew member n's icon letter (for "i?use"). */
 void SetCrewIcon(int n, char c)
 {
     register Actor *a;
@@ -2157,17 +2155,16 @@ void SetCrewIcon(int n, char c)
     }
 }
 
-/* Make actor n a speaker, from the record at off in the talk data. (81%:
- * the target keeps the actor pointer in si, n in memory.) */
+/* Make actor n a speaker, from the record at off in the talk data. */
 void SetSpeaker(int n, unsigned off)
 {
     Speaker far *sp;
     Actor *a;
 
     if (n >= 0 && n < 32) {
+        a = &actors[n];
         talk_data = LockMem(talk_handle);
         sp = (Speaker far *)(talk_data + off);
-        a = &actors[n];
         a->x = sp->x;
         a->y = sp->y;
         a->color = sp->color;
