@@ -10,6 +10,7 @@ __pycache__/
 orig/
 tools/C600/
 tools/C700/
+tools/C700_orig/
 tools/MASM50/
 
 # Locally built tools

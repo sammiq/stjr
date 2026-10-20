@@ -875,7 +875,7 @@
 33B10  func   00003E  _printf  lib
 33B4E  func   000028  _strncpy  lib
 33B76  func   00003A  _strncmp  lib
-33BB0  func   000004  _atoi
+33BB0  func   000004  _atoi  lib
 33BB4  func   00000B  __tolower  lib
 33BC0  func   000016  _tolower  lib
 33BD6  func   000073  _fgets  lib
@@ -934,101 +934,111 @@
 34766  func   000024  __fstrupr  lib
 3478A  func   00006B  __fstrstr  lib
 347F6  func   000014  _sub_347F6
-3480A  func   000022  _sub_3480A  near
-3482C  func   00002A  __aFflds
-34856  func   000024  _sub_34856  near
-3487A  func   00002F  __aFfldd
-348A9  func   000006  _sub_348A9  near
-348AF  func   000034  _sub_348AF  near
-348E3  func   00000D  _sub_348E3  near
-348F0  func   00000A  _sub_348F0  near
-348FA  func   000007  __aFfldl
-34901  func   000057  __aFfldw
-34958  func   00002F  _sub_34958  near
-34987  func   000026  _sub_34987  near
-349AD  func   000004  _sub_349AD  near
-349B1  func   000014  __aFfsts
-349C5  func   000004  _sub_349C5  near
-349C9  func   000004  __aFfstsp
-349CD  func   00002E  _sub_349CD
-349FB  func   000004  _sub_349FB  near
-349FF  func   000014  __aFfstd
-34A13  func   000004  _sub_34A13
-34A17  func   00002D  __aFfstdp
-34A44  func   000004  _sub_34A44
-34A48  func   000013  _sub_34A48
-34A5B  func   000004  _sub_34A5B
-34A5F  func   000023  _sub_34A5F
-34A82  func   000008  _sub_34A82
-34A8A  func   000008  _sub_34A8A
-34A92  func   000012  _sub_34A92
+3480A  func   000022  __aFslds  lib near
+3480E  func   000000  __aFelds  lib
+3482C  func   00002A  __aFflds  lib
+34856  func   000024  __aFsldd  lib near
+3485A  func   000000  __aFeldd  lib
+3487A  func   00002F  __aFfldd  lib
+348A9  func   000006  __aFsldt  lib near
+348AF  func   000034  __aFfldt  lib near
+348E3  func   00000D  __aFsldl  lib near
+348E7  func   000000  __aFeldl  lib
+348F0  func   00000A  __aFsldw  lib near
+348F4  func   000000  __aFeldw  lib
+348FA  func   000007  __aFfldl  lib
+34901  func   000057  __aFfldw  lib
+34903  func   000000  B$FIL2  lib
+34904  func   000000  B$FILD  lib
+34958  func   00002F  __aFfdup  lib near
+34987  func   000026  __aFfldz  lib near
+349AD  func   000004  __aFssts  lib near
+349B1  func   000014  __aFfsts  lib
+349B5  func   000000  __aFests  lib
+349C5  func   000004  __aFsstsp  lib near
+349C9  func   000004  __aFfstsp  lib
+349CD  func   00002E  __aFestsp  lib
+349FB  func   000004  __aFsstd  lib near
+349FF  func   000014  __aFfstd  lib
+34A03  func   000000  __aFestd  lib
+34A13  func   000004  __aFsstdp  lib
+34A17  func   00002D  __aFfstdp  lib
+34A1B  func   000000  __aFestdp  lib
+34A44  func   000004  __aFsstt  lib
+34A48  func   000013  __aFfstt  lib
+34A5B  func   000004  __aFssttp  lib
+34A5F  func   000023  __aFfsttp  lib
+34A82  func   000008  B$FIS2  lib
+34A8A  func   000008  B$FIST  lib
+34A92  func   000012  B$FUST  lib
 34AA4  func   000005  _sub_34AA4  near
 34AA9  func   000005  _sub_34AA9  near
 34AAE  func   000019  _sub_34AAE  near
-34AC7  func   000039  __aFftol
-34B00  func   00002D  _sub_34B00
-34B2D  func   00000F  _sub_34B2D
-34B3C  func   000038  __aFfchs
-34B74  func   000008  _sub_34B74  near
-34B7C  func   000007  _sub_34B7C  near
-34B83  func   000009  __aFfsubs
-34B8C  func   000008  _sub_34B8C  near
-34B94  func   000007  _sub_34B94  near
-34B9B  func   000009  __aFfsubsr
-34BA4  func   000008  _sub_34BA4  near
-34BAC  func   000007  _sub_34BAC  near
-34BB3  func   000009  __aFfmuls
-34BBC  func   000008  _sub_34BBC  near
-34BC4  func   000007  _sub_34BC4  near
-34BCB  func   000009  __aFfdivs
-34BD4  func   000008  _sub_34BD4  near
-34BDC  func   000007  _sub_34BDC  near
-34BE3  func   000009  __aFfdivsr  near
-34BEC  func   000008  _sub_34BEC  near
-34BF4  func   000007  _sub_34BF4  near
-34BFB  func   000038  __aFfadds
-34C33  func   000008  _sub_34C33  near
-34C3B  func   000007  _sub_34C3B  near
-34C42  func   000009  __aFfsubd
-34C4B  func   000008  _sub_34C4B  near
-34C53  func   000007  _sub_34C53  near
-34C5A  func   000009  __aFfsubdr
-34C63  func   000008  _sub_34C63  near
-34C6B  func   000007  _sub_34C6B  near
-34C72  func   000009  __aFfmuld
-34C7B  func   000008  _sub_34C7B  near
-34C83  func   000007  _sub_34C83  near
-34C8A  func   000009  _sub_34C8A
-34C93  func   000008  _sub_34C93  near
-34C9B  func   000007  _sub_34C9B  near
-34CA2  func   000009  __aFfdivdr
-34CAB  func   000008  _sub_34CAB  near
-34CB3  func   000007  _sub_34CB3  near
-34CBA  func   00001F  __aFfaddd
-34CD9  func   000005  __aFfsub
-34CDE  func   000005  __aFfsubr
-34CE3  func   000005  __aFfmul
-34CE8  func   000005  __aFfdiv
-34CED  func   000005  __aFfdivr
-34CF2  func   000005  __aFfadd
-34CF7  func   000005  __aFfcompp
-34CFC  func   00008E  _sub_34CFC
-34D8A  func   00000E  _sub_34D8A
-34D98  func   000026  _sub_34D98
-34DBE  func   000018  __aFdcvt
-34DD6  func   000015  _sub_34DD6  near
-34DEB  func   00006F  __aFfldq
-34E5A  func   000009  _sub_34E5A  near
-34E63  func   000009  __aFCIsqrt
-34E6C  func   000009  _sub_34E6C  near
-34E75  func   000009  __aFCIsin
-34E7E  func   000009  _sub_34E7E  near
-34E87  func   000009  __aFCIcos
-34E90  func   000009  _sub_34E90  near
-34E99  func   000009  __aFCItan
-34EA2  func   000009  __aFfld1
-34EAC  func   00001A  __aFCIfloor
-34EC6  func   00001F  __aFCIceil
+34AC7  func   000039  __aFftol  lib
+34B00  func   00002D  __aFftst  lib
+34B2D  func   00000F  __aFfabs  lib
+34B3C  func   000038  __aFfchs  lib
+34B74  func   000008  __aFssubs  lib near
+34B7C  func   000007  __aFesubs  lib near
+34B83  func   000009  __aFfsubs  lib
+34B8C  func   000008  __aFssubsr  lib near
+34B94  func   000007  __aFesubsr  lib near
+34B9B  func   000009  __aFfsubsr  lib
+34BA4  func   000008  __aFsmuls  lib near
+34BAC  func   000007  __aFemuls  lib near
+34BB3  func   000009  __aFfmuls  lib
+34BBC  func   000008  __aFsdivs  lib near
+34BC4  func   000007  __aFedivs  lib near
+34BCB  func   000009  __aFfdivs  lib
+34BD4  func   000008  __aFsdivsr  lib near
+34BDC  func   000007  __aFedivsr  lib near
+34BE3  func   000009  __aFfdivsr  lib near
+34BEC  func   000008  __aFsadds  lib near
+34BF4  func   000007  __aFeadds  lib near
+34BFB  func   000038  __aFfadds  lib
+34C33  func   000008  __aFssubd  lib near
+34C3B  func   000007  __aFesubd  lib near
+34C42  func   000009  __aFfsubd  lib
+34C4B  func   000008  __aFssubdr  lib near
+34C53  func   000007  __aFesubdr  lib near
+34C5A  func   000009  __aFfsubdr  lib
+34C63  func   000008  __aFsmuld  lib near
+34C6B  func   000007  __aFemuld  lib near
+34C72  func   000009  __aFfmuld  lib
+34C7B  func   000008  __aFsdivd  lib near
+34C83  func   000007  __aFedivd  lib near
+34C8A  func   000009  __aFfdivd  lib
+34C93  func   000008  __aFsdivdr  lib near
+34C9B  func   000007  __aFedivdr  lib near
+34CA2  func   000009  __aFfdivdr  lib
+34CAB  func   000008  __aFsaddd  lib near
+34CB3  func   000007  __aFeaddd  lib near
+34CBA  func   00001F  __aFfaddd  lib
+34CD9  func   000005  __aFfsub  lib
+34CDE  func   000005  __aFfsubr  lib
+34CE3  func   000005  __aFfmul  lib
+34CE8  func   000005  __aFfdiv  lib
+34CED  func   000005  __aFfdivr  lib
+34CF2  func   000005  __aFfadd  lib
+34CF7  func   000005  B$FCMP  lib
+34CFC  func   00008E  __aFfcmp  lib
+34D8A  func   00000E  __aFfxchq  lib
+34D98  func   000026  __aFfxch  lib
+34DBE  func   000018  __aFdcvt  lib
+34DD6  func   000015  __aFsldq  lib near
+34DDA  func   000000  __aFeldq  lib
+34DEB  func   00006F  __aFfldq  lib
+34E5A  func   000009  _pow  lib near
+34E63  func   000009  __aFCIpow  lib
+34E6C  func   000009  _log  lib near
+34E75  func   000009  __aFCIlog  lib
+34E7E  func   000009  _log10  lib near
+34E87  func   000009  __aFCIlog10  lib
+34E90  func   000009  _exp  lib near
+34E99  func   000009  __aFCIexp  lib
+34EA2  func   000009  __aFfld1  lib
+34EAC  func   00001A  __aFCIfloor  lib
+34EC6  func   00001F  __aFCIceil  lib
 34EE5  func   00004A  _sub_34EE5  near
 34F30  func   000022  __FF_MSGBANNER  lib
 34F52  func   000006  __fptrap  lib near
@@ -1082,92 +1092,105 @@
 36852  func   000000  __catox  lib
 368A6  func   00001C  __itoa  lib
 368C2  func   00002C  _memcpy  lib
-368EE  func   00002E  _sub_368EE
-3691C  func   00000B  _sub_3691C
-36927  func   000016  _sub_36927  near
-3693D  func   000018  _sub_3693D  near
-36955  func   00000C  _sub_36955  near
-36961  func   000003  _sub_36961  near
-36964  func   00003F  _sub_36964  near
-369A3  func   000041  _sub_369A3  near
-369E4  func   000082  _sub_369E4  near
-36A66  func   00000A  _sub_36A66  near
-36A70  func   00000C  _sub_36A70  near
-36A7C  func   00001A  _sub_36A7C  near
-36A96  func   00000A  _sub_36A96  near
-36AA0  func   00000C  _sub_36AA0  near
-36AAC  func   00001F  _sub_36AAC  near
-36ACB  func   000005  _sub_36ACB  near
-36AD0  func   000005  _sub_36AD0  near
-36AD5  func   000005  _sub_36AD5  near
-36ADA  func   00000D  _sub_36ADA  near
-36AE7  func   000005  _sub_36AE7  near
-36AEC  func   000005  _sub_36AEC  near
-36AF1  func   00000D  _sub_36AF1  near
-36AFE  func   000005  _sub_36AFE  near
-36B03  func   000005  _sub_36B03  near
-36B08  func   000005  _sub_36B08  near
-36B0D  func   000020  _sub_36B0D  near
-36B2D  func   000005  _sub_36B2D  near
-36B32  func   00001C  _sub_36B32  near
+368EE  func   00002E  __fpmath  lib
+3691C  func   00000B  __FPNumStack  lib
+36927  func   000016  __smovtmpesbx  lib near
+36929  func   000000  __smovtmpessi  lib
+3693D  func   000018  __dmovtmpesbx  lib near
+3693F  func   000000  __dmovtmpessi  lib
+36955  func   00000C  __dcvtst0  lib near
+36961  func   000003  __dcvtst0a  lib near
+36964  func   00003F  __dcvtdisi  lib near
+369A3  func   000041  $i8_4  lib near
+369E4  func   000082  $i4_8  lib near
+36A66  func   00000A  $i4_w  lib near
+36A68  func   000000  $i4_q  lib
+36A70  func   00000C  $i4_s  lib near
+36A7C  func   00001A  $i4_l  lib near
+36A96  func   00000A  $i8_w  lib near
+36A98  func   000000  $i8_q  lib
+36AA0  func   00000C  $i8_s  lib near
+36AAC  func   00001F  $i8_l  lib near
+36ACB  func   000005  $i4_to_s  lib near
+36AD0  func   000005  $i4_to_sirnd  lib near
+36AD5  func   000005  $i8_to_s  lib near
+36ADA  func   00000D  $i8_to_srnd  lib near
+36AE7  func   000005  $i4_to_w  lib near
+36AEC  func   000005  $i4_to_wrnd  lib near
+36AF1  func   00000D  $i8_to_w  lib near
+36AF6  func   000000  $i8_to_wrnd  lib
+36AFE  func   000005  $i4_to_lirnd  lib near
+36B03  func   000005  $i8_to_lirnd  lib near
+36B08  func   000005  $i4_to_l  lib near
+36B0D  func   000020  $i8_to_l  lib near
+36B2D  func   000005  $i4_to_qirnd  lib near
+36B32  func   00001C  $i8_to_qirnd  lib near
 36B4E  func   000003  _sub_36B4E  near
-36B51  func   000035  _sub_36B51  near
-36B86  func   000079  _sub_36B86  near
+36B51  func   000035  $i8_to_q  lib near
+36B86  func   000079  $i4_to_q  lib near
 36BFF  func   000003  _sub_36BFF  near
-36C02  func   000023  _sub_36C02  near
-36C4C  func   000010  _sub_36C4C  near
-36C5C  func   000011  _sub_36C5C  near
+36C02  func   000023  $i8_fixirnd  lib near
+36C28  func   000000  $i4_fixirnd  lib
+36C4C  func   000010  $i8_fix  lib near
+36C5C  func   000011  $i4_fix  lib near
 36C6D  func   000045  _sub_36C6D  near
 36CB2  func   000089  _sub_36CB2  near
 36D3B  func   00003B  _sub_36D3B  near
 36D76  func   00000A  _sub_36D76  near
 36D80  func   000003  _sub_36D80  near
 36D83  func   000006  _sub_36D83  near
-36DDC  func   000052  _sub_36DDC  near
-36E2E  func   00000A  _sub_36E2E  near
-36E38  func   0000D2  _sub_36E38  near
-36F0A  func   00002E  _sub_36F0A  near
-36F38  func   00005D  _sub_36F38  near
+36D89  func   000000  $i4_cmp  lib
+36DDC  func   000052  $i8_cmp  lib near
+36E2E  func   00000A  $i4_subrev  lib near
+36E30  func   000000  $i4_sub  lib
+36E38  func   0000D2  $i4_add  lib near
+36F0A  func   00002E  $i4_norm  lib near
+36F38  func   00005D  $i4_round  lib near
 36F95  func   000005  _sub_36F95  near
-36F9A  func   000084  _sub_36F9A  near
-3701E  func   000073  _sub_3701E  near
+36F9A  func   000084  $i4_mul  lib near
+3701E  func   000073  $i4_divrev  lib near
+37020  func   000000  $i4_div  lib
 37091  func   000004  _sub_37091  near
 37095  func   00001D  _sub_37095  near
-37128  func   000002  _sub_37128  near
-3712A  func   000023  _sub_3712A  near
-3714D  func   000133  _sub_3714D  near
-37280  func   000055  _sub_37280  near
-372D5  func   00005F  _sub_372D5  near
+37128  func   000002  $i8_subrev  lib near
+3712A  func   000023  $i8_sub  lib near
+3714D  func   000133  $i8_add  lib near
+37280  func   000055  $i8_norm  lib near
+372D5  func   00005F  $i8_round  lib near
 37334  func   00001F  _sub_37334  near
-37353  func   00005E  _sub_37353  near
+37353  func   00005E  $i8_mul  lib near
 373B1  func   000003  _sub_373B1  near
-373B4  func   000002  _sub_373B4  near
-373B6  func   0000CF  _sub_373B6  near
+373B4  func   000002  $i8_divrev  lib near
+373B6  func   0000CF  $i8_div  lib near
 37485  func   000084  _sub_37485  near
 37509  func   00015C  _sub_37509  near
 376E8  func   000005  _sub_376E8  near
 376ED  func   000011  _sub_376ED  near
-376FE  func   0000BE  _sub_376FE  near
-377BC  func   00002C  _sub_377BC  near
-377E8  func   00001A  _sub_377E8  near
-37802  func   000019  _sub_37802  near
-3781B  func   000080  _sub_3781B  near
-378A6  func   000027  _sub_378A6  near
-378CD  func   00003B  _sub_378CD  near
-37908  func   000018  _sub_37908
-37920  func   0000D2  _sub_37920
-379F2  func   000039  _sub_379F2
-37A5A  func   000069  _sub_37A5A
-37AC4  func   00006D  _sub_37AC4
-37B32  func   000028  _sub_37B32
-37B5A  func   000046  _sub_37B5A
-37BA0  func   00012F  _sub_37BA0
-37CD0  func   000025  _sub_37CD0
-37CF6  func   000100  _sub_37CF6
-37DF6  func   000022  _sub_37DF6
-37E18  func   0000B5  _sub_37E18
-37ECE  func   000051  _sub_37ECE
-37F20  func   00002A  _sub_37F20  near
+376FE  func   0000BE  $i8_sqr  lib near
+377BC  func   00002C  $i8_tan  lib near
+377E8  func   00001A  $i8_ctn  lib near
+37802  func   000019  $i8_cos  lib near
+3781B  func   000080  $i8_sin  lib near
+3789C  func   000000  $i8_errpinf  lib
+378A6  func   000027  $i8_errdiv0  lib near
+378B0  func   000000  $i8_errinvld  lib
+378BA  func   000000  $i8_errstack  lib
+378CD  func   00003B  __fpsignal  lib near
+37908  func   000018  __ctrandisp2  lib
+37920  func   0000D2  __ctrandisp1  lib
+379F2  func   000039  __cintrindisp2  lib
+37A2B  func   000000  __cintrindisp1  lib
+37A5A  func   000069  __forcdecpt  lib
+37AC4  func   00006D  __cropzeros  lib
+37B32  func   000028  __positive  lib
+37B5A  func   000046  __fassign  lib
+37BA0  func   00012F  __cftoe  lib
+37CD0  func   000025  _cftoe_g  lib
+37CF6  func   000100  __cftof  lib
+37DF6  func   000022  _cftof_g  lib
+37E18  func   0000B5  __cftog  lib
+37ECE  func   000051  __cfltcvt  lib
+37F20  func   00002A  _shift  lib near
 37F4A  func   000025  __myalloc  lib near
 37F70  func   000016  __endstdio  lib
 37F86  func   000043  __getbuf  lib near
@@ -1191,25 +1214,36 @@
 385CE  func   00001B  __wrt2err  lib
 385EA  func   000020  __aFNaulmul  lib
 3860A  func   00001D  __aFNalshl  lib
-38627  func   00000A  _sub_38627  near
-38631  func   00000A  _sub_38631  near
-3863B  func   00000A  _sub_3863B  near
-38645  func   00000A  _sub_38645  near
-3864F  func   00000A  _sub_3864F  near
-38659  func   00000A  _sub_38659  near
-38663  func   000010  _sub_38663  near
-38673  func   000019  _sub_38673  near
-38690  func   00000B  _sub_38690  near
-3869B  func   00000B  _sub_3869B  near
-386A6  func   000005  _sub_386A6  near
-386AB  func   000004  _sub_386AB  near
-386AF  func   00000E  _sub_386AF  near
-386BD  func   000005  _sub_386BD  near
-386C2  func   000012  _sub_386C2  near
-386D4  func   000045  _sub_386D4  near
-38719  func   000036  _sub_38719  near
-38796  func   000009  _sub_38796  near
-3879F  func   00001C  _sub_3879F  near
+38627  func   00000A  $i8_addf  lib near
+3862B  func   000000  $i8_addfsi  lib
+38631  func   00000A  $i8_subf  lib near
+38635  func   000000  $i8_subfsi  lib
+3863B  func   00000A  $i8_mulf  lib near
+3863F  func   000000  $i8_mulfsi  lib
+38645  func   00000A  $i8_divf  lib near
+38649  func   000000  $i8_divfsi  lib
+3864F  func   00000A  $i8_subr  lib near
+38653  func   000000  $i8_subrdi  lib
+38659  func   00000A  $i8_divr  lib near
+3865D  func   000000  $i8_divrdi  lib
+38663  func   000010  $i8_clearac  lib near
+38673  func   000019  $i8_movac  lib near
+3867C  func   000000  $i8_movac_arg  lib
+3868C  func   000000  $i8_movarg_ac  lib
+38690  func   00000B  $i8_movarg  lib near
+3869B  func   00000B  $i8_movtemp  lib near
+386A6  func   000005  $i8_psharg  lib near
+386AB  func   000004  $i8_pshac  lib near
+386AF  func   00000E  $i8_pshsi  lib near
+386BD  func   000005  $i8_poparg  lib near
+386C2  func   000012  $i8_popac  lib near
+386C6  func   000000  $i8_popsi  lib
+386D4  func   000045  $i8_poly  lib near
+38719  func   000036  $i8_even  lib near
+3874F  func   000000  $i8_p_q  lib
+38785  func   000000  $i8_z2p_q  lib
+38796  func   000009  $i8_z3p_q  lib near
+3879F  func   00001C  $i8_reduce  lib near
 387BC  func   000046  __fltout  lib
 38802  func   000009  __matherr  lib
 3880B  func   000006  _sub_3880B
@@ -1220,11 +1254,11 @@
 3887A  func   000036  _sub_3887A  near
 388B0  func   000002  _sub_388B0  near
 388D6  func   000100  $i8_output  lib near
-389D6  func   000027  _sub_389D6
+389D6  func   000027  __fltinf  lib
 389FD  func   000013  __fltin  lib
 38A10  func   000030  _sub_38A10  near
 38A40  func   00004C  _sub_38A40  near
-38A8C  func   0000F5  _sub_38A8C  near
+38A8C  func   0000F5  $i8_input  lib near
 38B81  func   000003  _sub_38B81  near
 38B84  func   000022  _sub_38B84  near
 38BA6  func   000035  _sub_38BA6  near
@@ -1237,12 +1271,12 @@
 38CCA  func   000005  _sub_38CCA  near
 38CE0  func   00002C  _sub_38CE0  near
 38D0C  func   000076  _sub_38D0C  near
-38D82  func   0000B2  _sub_38D82  near
+38D82  func   0000B2  $i8_tmul  lib near
 38E3B  func   000038  _sub_38E3B  near
 38E73  func   00000C  _sub_38E73  near
 38E7F  func   00000C  _sub_38E7F  near
 38E8B  func   00001F  _sub_38E8B  near
-38EE8  func   000024  _sub_38EE8  near
+38EE8  func   000024  $i8_tpwr10  lib near
 38F0C  func   000004  __getche  lib
 38F10  func   000028  __getch  lib
 38F38  func   000017  __tell  lib
@@ -2058,7 +2092,8 @@
 3EBE8  data   000002  __csigtab0  lib
 3EBEA  data   000016  _word_3EBEA
 3EC00  data   000002  _word_3EC00
-3EC02  data   000032  _word_3EC02
+3EC02  data   000016  _word_3EC02
+3EC18  data   00001C  OpTab  lib
 3EC34  data   000003  _byte_3EC34
 3EC37  data   000006  aSqrt
 3EC3D  data   000005  aSin
@@ -2084,25 +2119,31 @@
 3EE50  data   000004  _dword_3EE50
 3EE54  data   000002  __sigintseg  lib
 3EE56  data   000106  __sigintoff  lib
-3EF5C  data   000002  _word_3EF5C
-3EF5E  data   000180  _word_3EF5E
-3F0DE  data   00000A  _word_3F0DE
-3F0E8  data   000002  _byte_3F0E8
+3EF5C  data   000002  __fpsigadr  lib
+3EF5E  data   000002  _word_3EF5E
+3EF60  data   00016A  __fctmp  lib
+3F0CA  data   000014  __fctopst  lib
+3F0DE  data   00000A  $i8_result  lib
+3F0E8  data   000001  $i4_round_flag  lib
+3F0E9  data   000001  $i4_round_exp  lib
 3F0EA  data   000001  _byte_3F0EA
-3F0EB  data   000002  _word_3F0EB
-3F0ED  data   000007  _word_3F0ED
+3F0EB  data   000002  $i4_ac_hi  lib
+3F0ED  data   000002  _word_3F0ED
+3F0EF  data   000005  $i4_ac_lo  lib
 3F0F4  data   000002  _word_3F0F4
 3F0F6  data   000002  _word_3F0F6
 3F0F8  data   000002  _word_3F0F8
 3F0FA  data   000002  _word_3F0FA
 3F0FC  data   000002  _word_3F0FC
 3F0FE  data   000002  _word_3F0FE
-3F100  data   000001  _byte_3F100
-3F101  data   000013  _word_3F101
+3F100  data   000001  $i8_round_flag  lib
+3F101  data   000002  $i8_round_exp  lib
+3F103  data   000008  $i8_ac_hi  lib
+3F10B  data   000009  $i8_ac_lo  lib
 3F114  data   000060  _byte_3F114
 3F174  data   000002  _word_3F174
 3F176  data   000002  _word_3F176
-3F178  data   000002  _word_3F178
+3F178  data   000002  __fcsp  lib
 3F17A  data   000002  _word_3F17A
 3F17C  data   000019  _word_3F17C
 3F195  data   000010  _byte_3F195
@@ -2113,12 +2154,21 @@
 3F1AB  data   000007  aE000
 3F1B2  data   000002  __cflush  lib
 3F1B4  data   000002  __commode  lib
-3F1B6  data   00006E  __amblksiz  lib
+3F1B6  data   000002  __amblksiz  lib
+3F1B8  data   000008  $i8_half  lib
+3F1C0  data   000008  $i8_one  lib
+3F1C8  data   000008  $i8_two  lib
+3F1D0  data   000008  $i8_arg  lib
+3F1D8  data   000008  $i8_temp  lib
+3F1E0  data   000008  $i8_z  lib
+3F1E8  data   000008  $i8_zz  lib
+3F1F0  data   00002C  $i8_pzz  lib
+3F21C  data   000008  __HUGE  lib
 3F224  data   000003  __matherr_flag  lib
 3F227  data   000001  _byte_3F227
 3F228  data   000032  __lseekchk  lib
-3F25A  data   000001  _byte_3F25A
-3F25B  data   000003  _byte_3F25B
+3F25A  data   000001  $i8_input_ws  lib
+3F25B  data   000003  $i8_implicit_exp  lib
 3F25E  data   000002  _word_3F25E
 3F260  data   000002  _word_3F260
 3F262  data   000002  _word_3F262

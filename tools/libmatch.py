@@ -22,8 +22,9 @@ from omf2elf import ABSOLUTE_SYMBOLS  # noqa: E402
 from project import LOAD_BASE, ROOT, Exe, IdaExport, lin  # noqa: E402
 
 # Search order matters: a module name is only placed once, from the first library.
-# MLIBCE is C 7.00's combined medium model library with the 8087 emulator.
-LIBS = ["MLIBCE.LIB", "GRAPHICS.LIB", "PGCHART.LIB"]
+# MLIBCE is C 7.00's combined medium model library with the 8087 emulator; the game
+# was built with /FPa, so the alternate math modules come from MLIBCA.
+LIBS = ["MLIBCE.LIB", "MLIBCA.LIB", "GRAPHICS.LIB", "PGCHART.LIB"]
 LIB_DIR = ROOT / "tools/C700/LIB"
 MIN_FIXED = 12       # minimum non-wildcard bytes for a standalone match
 

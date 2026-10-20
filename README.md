@@ -11,7 +11,7 @@ Judgment Rites is the sequel to Star Trek: 25th Anniversary, whose finished deco
 | Compiler | Microsoft C/C++ 7.00 (`tools/C700`), runtime "Copyright (c) 1992" |
 | Memory model | Medium (`/AM`): far code, near data |
 | Game code flags | `/AM /G2 /Ox /Zp1` (`/Zp1` is carried over from ST25, not yet confirmed) |
-| Runtime | `MLIBCE.LIB` (medium model, 8087 emulator) |
+| Runtime | `MLIBCA.LIB` (medium model, alternate math, `/FPa`); C 7.00's setup only builds it when alternate math is chosen. `tools/libmatch.py` also searches `MLIBCE.LIB`, which shares the non-floating-point modules |
 | Link | `/EXEPACK /PACKCODE /FARCALLTRANSLATION` |
 
 Differences from ST25 (C 6.00A `/qc`) that the tooling deals with:
@@ -66,8 +66,8 @@ Addresses are linear, with the load module at paragraph 1000h: `seg001:6056` is 
 
 - **`segNNN`**: the sequel's version of ST25's `ref/st25/src/segNNN.c`, from its first to its last function that still matches (`tools/st25port.py units`). `src/segNNN.c` started as the ST25 file with the non-matching functions taken out (`tools/st25port.py src`).
 - **`c<addr>`**: game code between two files' runs: new code, or the changed functions of a neighbouring file. Move code from these into a file's unit by editing `config/units.txt` (or carve out a new file with `tools/splitunit.py`) as it's identified. Unit names must be 8.3, as the compiler runs under DOS.
-- **`lib/<module>`**: C runtime modules (`tools/libmatch.py`), built straight from `MLIBCE.LIB`. Their target relocations come from the library's own fixups, so they match 100%.
-- **`asm/tXXXXX`**: code in the runtime's `_TEXT` that isn't from the library: about 9 KB of hand-written assembly (interrupt handlers, sound).
+- **`lib/<module>`**: C runtime modules (`tools/libmatch.py`), built straight from `MLIBCE.LIB` or `MLIBCA.LIB`. Their target relocations come from the library's own fixups, so they match 100%.
+- **`asm/tXXXXX`**: hand-written assembly that isn't from a library: `t2D688` (`PlayDelta`). `t390D0` is data the analysis took for code.
 - **`far/segNNN`, `data/dXXXXX`, `data/stack`**: far data segments and the DGROUP pieces not yet given to a unit.
 
 ## Carrying ST25 code over

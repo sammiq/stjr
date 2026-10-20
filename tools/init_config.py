@@ -113,7 +113,7 @@ def build_symbols(ida: IdaExport, rec: libmatch.Recovered, old: SymbolTable | No
                 for inner in syms.in_range(o.addr + 1, o.addr + o.size):
                     if DUMMY_NAME.match(inner.name):
                         del syms.by_addr[inner.addr]
-        syms._sorted = None
+                        syms._sorted = None
 
     # Data sizes run to the next symbol in the same segment
     addrs = syms.sorted_addrs()
