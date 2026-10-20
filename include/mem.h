@@ -48,7 +48,7 @@ int IsMemEMS(MemHandle h);
 void far *LockMem(MemHandle h);
 void UnlockMem(MemHandle h);
 void FreeMem(MemHandle h);
-void far *MemSet(void far *dst, unsigned n, int c);
+void far *MemSet(void far *dst, unsigned n, unsigned char c);
 void MemCpy(void far *dst, void far *src, unsigned n);
 void MemCpyNZ(void far *dst, void far *src, unsigned n);
 

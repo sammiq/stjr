@@ -345,49 +345,30 @@ void DrawSprite(Sprite *s, Rect *clip)
     dstskip = 320 - w;
     if (s->type == SPRITE_TEXT) {
         MemHandle font_h;
-        char far *font;
+        unsigned char far *font;
         Rect r;
 
-        font_h = CacheLoad("font", "fon");
+        font_h = CacheLoadEMS("font", "fon");
         font = LockMem(font_h);
         r = *clip;
         bmp = LockMem(s->handle);
-        r.x0 = (r.x0 - s->ox) >> 3;
-        r.y0 = (r.y0 - s->oy) >> 3;
-        r.x1 = (r.x1 - s->ox) >> 3;
-        r.y1 = (r.y1 - s->oy) >> 3;
+        r.x0 = (r.x0 - s->ox) / 8;
+        r.y0 = (r.y0 - s->oy) / 11;
+        r.x1 = (r.x1 - s->ox) / 8;
+        r.y1 = (r.y1 - s->oy) / 11;
         w = r.x1 - r.x0 + 1;
         h = r.y1 - r.y0 + 1;
         prio = s->z;
-        dst = backbuf->data + s->oy * 320 + s->ox + (r.y0 << 3) * 320 + (r.x0 << 3);
-        dstskip = 2560 - (w << 3);
-        src = bmp->data + r.x0 + r.y0 * (bmp->w >> 3);
+        dst = backbuf->data + (((r.y0 * 11 + s->oy) * 40 + r.x0) << 3) + s->ox;
+        dstskip = (440 - w) << 3;
+        src = bmp->data + (bmp->w >> 3) * r.y0 + r.x0;
         srcskip = (bmp->w >> 3) - w;
         while (h--) {
             n = w;
             while (n--) {
-                char far *glyph;
-                int gy;
-                int gx;
-                char colour;
-
-                colour = (*src >= 0x10 && *src <= 0x1A) ? 0xB3 : s->colour;
-                glyph = font + *src * 64;
-                for (gy = 0; gy != 8; gy++) {
-                    for (gx = 0; gx != 8; gx++) {
-                        if (*glyph == 0)
-                            *dst = shade_table[*dst];
-                        else if (*glyph == 'x')
-                            *dst = colour;
-                        else
-                            *dst = *glyph;
-                        glyph++;
-                        dst++;
-                    }
-                    dst += 312;
-                }
+                DrawGlyph(font, *src, dst, s->colour);
                 src++;
-                dst -= 2552;
+                dst += 8;
             }
             src += srcskip;
             dst += dstskip;

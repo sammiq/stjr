@@ -24,7 +24,7 @@ int tolower(int c);
 
 void Fatal(char *fmt, ...);             /* fatal error */
 void Nop(char *fmt, ...);               /* (debug message, compiled out) */
-void sub_103AE(int a, char *s, int b, int c, int d, int e);   /* seg000 */
+void StartTalk(int a, char *s, int b, int c, int d, int e);   /* seg000 */
 
 /* A sound stream (far data): a voice file on disk or in EMS. */
 typedef struct Stream {
@@ -149,7 +149,7 @@ char music_file[9];
 SeqNode seq_nodes[NUM_SEQ];
 List seq_list;
 
-int word_3D2BA = 1;
+int back_sound = 1;
 int music_on = 1;
 int sfx_on = 1;
 int sound_purged = 0;                   /* no sound (no driver, or purged) */
@@ -179,8 +179,8 @@ void SoundShutdownAIL(void)
 }
 
 /* Load the music and speech drivers for the configured cards. */
-/* (91%: the target places the digital driver's success path out of line,
- * inside the MIDI code after its register call, and no_digi before it.) */
+/* (99.97%: in the timbre loop the target copies the directory pointer
+ * from di where this copies it from ax.) */
 void SoundInit(void)
 {
     char *drivers[12][2] = {
@@ -224,24 +224,29 @@ void SoundInit(void)
     }
     if (digi_loaded) {
         if ((digi_handle = AIL_register_driver(digi_drv)) == -1) {
-        no_digi:
             PopMem();
             PopMem();
             digi_loaded = 0;
         } else {
             desc = AIL_describe_driver(digi_handle);
-            io = cfg_io ? cfg_io : desc->default_IO;
+            i = cfg_io ? cfg_io : desc->default_IO;
             irq = cfg_irq ? cfg_irq : desc->default_IRQ;
             dma = cfg_dma ? cfg_dma : desc->default_DMA;
-            if (desc->drvr_type != DSP_DRVR)
-                goto no_digi;
-            if (AIL_detect_device(digi_handle, io, irq, dma, dma) == 0)
-                goto no_digi;
-            AIL_init_driver(digi_handle, io, irq, dma, dma);
+            if (desc->drvr_type == DSP_DRVR && AIL_detect_device(digi_handle, i, irq, dma, dma))
+                AIL_init_driver(digi_handle, i, irq, dma, dma);
+            else {
+                PopMem();
+                PopMem();
+                digi_loaded = 0;
+            }
         }
     }
-    if ((midi_handle = AIL_register_driver(midi_drv)) == -1)
-        goto fail;
+    if ((midi_handle = AIL_register_driver(midi_drv)) == -1) {
+        SoundShutdownAIL();
+        SoundStartup();
+        sound_purged = 1;
+        return;
+    }
     desc = AIL_describe_driver(midi_handle);
     io = cfg_mio ? cfg_mio : desc->default_IO;
     if (desc->drvr_type != XMIDI_DRVR)
@@ -862,7 +867,7 @@ void PlayVoice(char *name)
 {
     char buf[14];
 
-    if (word_3D2BA) {
+    if (back_sound) {
         StopVoice();
         strcpy(buf, name);
         strcat(buf, "");
@@ -1291,7 +1296,7 @@ void BridgeSfx(int n)
             UnlockMem(suite_handle);
             SfxSlot(n, kind, keep);
             PlayDigi(name, vol, pan, 0);
-            sub_103AE(-2, "", 0, 0, 0, 0);
+            StartTalk(-2, "", 0, 0, 0, 0);
             return;
         }
     }

@@ -96,7 +96,6 @@ typedef struct Item {
     char name[9];               /* 01 bitmap name */
 } Item;
 
-extern Item items[64];                  /* 0x40-0x7F */
 int ItemHave(int id);
 
 /* Deferred messages: posted when the crew member walking there arrives. */
@@ -119,7 +118,8 @@ extern int word_45AB2;
 extern int word_45AB4;
 extern int view_dir;
 extern int word_45ABA;
-char mission[16];
+char mission_name[16];
+char room_name[16];                    /* room_mission and its number */
 extern int boost_active[6];
 extern int last_mission;
 extern int mission_ranks[7];
@@ -163,10 +163,9 @@ Panel panels[6];
 extern int msg_action;                  /* the message being handled, for */
 extern int msg_target;                  /* the scripts */
 extern int msg_target2;
-extern int word_3CCCC;
 extern unsigned line_width;             /* of the draw buffer */
 extern char far *draw_buf;
-void RoomTick(void);                    /* seg007 */
+void RoomTick(void);
 int FixAtan2(long a, long b);           /* seg010 */
 void ShowPanel(int i);
 
@@ -188,20 +187,19 @@ typedef struct FlagBits {
     unsigned char b0 : 1;
     unsigned char b1 : 1;
 } FlagBits;
-void sub_1088E(int a, int b, int c);
-int sub_20D42(int a);
-void sub_20D58(int a);
-void sub_11C32(char *name);
-int sub_2229E(int a, int b);
+void StartEffect(int a, int b, int c);
+int ItemGive(int a);
+void ItemTake(int a);
+void LoadWalkGraph(char *name);
+int Turbolift(int a, int b);
 void sub_1C266(int src, int a, int b);
 void sub_1C20A(int src, int a);
 void sub_1C2FA(void);
-void sub_1C430(void);
-void sub_11D2A(int a);
+void BeamUp(void);
+void EndOrStand(int a);
 unsigned sub_20AD4(int a, int b);
-char *sub_20D08(int a);
-void sub_2D458(char *name);
-void sub_1BCC2(void);
+char *ItemName(int a);
+void PlayDemScene(char *name);
 void LoadNamed(char *name, int a);
 void Computer(void);
 void PlayVoice(char *name);
@@ -210,14 +208,10 @@ void LockScreen(void);
 void UnlockScreen(void);
 extern jmp_buf room_jmp;
 extern jmp_buf game_jmp;
-extern int word_47A92;
-extern int word_47A94;
-extern int menu_open;
+extern int mission_max;
+extern int mission_score;
 extern unsigned char sfx_vol_next;
 extern unsigned char sfx_pan_next;
-extern char byte_3CA22;
-extern char byte_3CA23;
-extern char byte_3CA24;
 extern char bg_name[10];
 extern char pri_name[10];
 extern char map_name[10];
@@ -232,16 +226,16 @@ extern int word_3CE3A;
 extern char cd_path[];
 int PlayDigiSfx(char *name, int vol, int pan, int loop);   /* seg015 */
 extern char byte_47A87;                 /* busy: the wait pointer */
+extern char byte_47A86;                 /* the crew can't walk */
 extern unsigned char room_action;       /* 1 walk, 2 use, 3 get, 4 look, 5 talk */
 extern unsigned char room_target;       /* object acted on */
 extern unsigned char room_target2;      /* used on this */
 int hit_valid;                          /* the object hit has a walk-to point */
-extern int cur_region;                  /* the region the pointer is in */
 int cur_exit;
 Timer timers[31];                       /* deferred actions */
 void WalkActorTo(int n, int a, int b, int x, int y, unsigned msg);  /* seg000 */
 extern int room_timers[8];
-int AnyActorBusy(void);                 /* seg007 */
+int AnyActorBusy(void);
 int hit_x;
 int hit_y;
 
@@ -282,7 +276,7 @@ long TextBox(char *(far *fn)(int, void *, char *), void *arg, int x, int y,
                int color, int choice, int maxl, int flag);
 long MsgBox(char *title, char *text, int x, int y, int color, int msg);
 extern int full_view;
-void sub_103AE(int a, char *s, int b, int c, int d, int e);   /* seg000 */
+void StartTalk(int a, char *s, int b, int c, int d, int e);   /* seg000 */
 char *SkipVoice(char *p);
 char *PlayVoiceTag(char *p);
 int WrapCount(char *s);
@@ -308,13 +302,763 @@ int CantAct(int obj, int action);
 void StunTick(void);
 void ShowInvIcon(int on);
 void HideInvIcon(void);
+void CloseAllPanels(void);
 int AwayInput(void);
-void LoadRoom(char *mission, int n, int a);
+void LoadRoom(char *mission, int n, int first);
 void EnterRoom(int entry);
 void BeamUp(void);
 void FreeRoom(void);
 void SaveRoom(void);
 void RestoreRoom(void);
+
+extern int room_num;
+extern int word_47A82;
+extern int word_47A84;
+void ActorPos(int i, int x, int y, int z);  /* seg000 */
+extern long room_ticks;
+extern int word_3B936;
+void SavePanels(void);
+void LoadPanels(void);
+void SaveSound(void);                   /* seg015 */
+void LoadSound(void);
+void OpenMissionArchive(void);          /* seg003 */
+void SpaceSave(void);                   /* (c2B980) */
+void SpaceLoad(void);
+void SaveActors(void);                   /* seg000 */
+void LoadActors(void);
+void ShowCrew(char *name, int a);      /* (c2D688) */
+void SetSteering(int on);               /* seg001 */
+MemHandle getanyfileems(char *name, char *ext);
+
+typedef struct Name10 {
+    char s[10];
+} Name10;
+extern Name10 crew_name;               /* seg001 */
+
+int word_3CA46 = 0;
+int word_3CA48 = -1;
+Item items[64] = {                      /* 0x40-0x7F */
+    { 1, "iphasers" }, { 1, "iphaserk" }, { 1, "istricor" },
+    { 1, "imtricor" }, { 1, "icomm" }, { 1, "imedkit" }
+};
+int menu_open = 0;
+int word_3CCCC = 0;
+int cur_region = -1;                    /* the region the pointer is in */
+
+/* Save the room's state. */
+void SaveRoom(void)
+{
+    SaveWrite(room_mission, 16);
+    SaveWrite(&room_num, 2);
+    SaveWrite(&room_ticks, 4);
+    SaveWrite(bg_name, 10);
+    SaveWrite(pri_name, 10);
+    SaveWrite(map_name, 10);
+    SaveWrite(&hit_valid, 2);
+    SaveWrite(&hit_x, 2);
+    SaveWrite(&hit_y, 2);
+    SaveWrite(timers, sizeof(timers));
+    SaveWrite(gates, sizeof(gates));
+    SaveWrite(&ngates, 2);
+    SavePanels();
+    SaveWrite(&cur_region, 2);
+}
+
+/* Write the game state to the save file. */
+void SaveGameState(void)
+{
+    SaveWrite(&game_mode, 2);
+    SaveSpace();
+    SaveWrite(&blink_count, 4);
+    SaveWrite(&kbd_mouse, 2);
+    SaveWrite(&in_orbit, 2);
+    SaveWrite(&bridge_tick, 2);
+    SaveWrite(&bridge_ticks, 4);
+    SaveWrite(&word_3B936, 2);
+    SaveWrite(&view_dir, 2);
+    SaveWrite(mission_name, 16);
+    SaveWrite(boost_active, 12);
+    SpaceSave();
+    if (game_mode == 2)
+        SaveRoom();
+    SaveWrite(&blink_count, 4);
+    if (game_mode != -1)
+        SaveActors();
+    SaveWrite(room_timers, 0x12A);
+    SaveWrite(msg_queue, sizeof(msg_queue));
+    SaveWrite(&msg_head, 2);
+    SaveWrite(&msg_tail, 2);
+    SaveWrite(items, sizeof(items));
+    SaveSound();
+}
+
+/* Load the room saved by SaveRoom. */
+void RestoreRoom(void)
+{
+    FadeOut();
+    SaveRead(room_mission, 16);
+    SaveRead(&room_num, 2);
+    LoadRoom(room_mission, room_num, 0);
+    SaveRead(&room_ticks, 4);
+    SaveRead(bg_name, 10);
+    SaveRead(pri_name, 10);
+    SaveRead(map_name, 10);
+    LockScreen();
+    LoadFilePacked(bg_name, "bgd", screen_base);
+    MemCpy(backbuf->data, screen->data, 64000);
+    UnlockScreen();
+    BlitToScreen(&screen_rect);
+    LoadFilePacked(pri_name, "pri", mask_buf);
+    FreeAnyFile(map_handle);
+    map_handle = getanyfileems(map_name, "map");
+    LoadWalkGraph(map_name);
+    room_action = 1;
+    SaveRead(&hit_valid, 2);
+    SaveRead(&hit_x, 2);
+    SaveRead(&hit_y, 2);
+    SaveRead(timers, sizeof(timers));
+    SaveRead(gates, sizeof(gates));
+    SaveRead(&ngates, 2);
+    LoadPanels();
+    SaveRead(&cur_region, 2);
+}
+
+/* Read the game state back from the save file. */
+void LoadGameState(void)
+{
+    Name10 seq;
+
+    if (prev_mode == 1)
+        BridgeLeave();
+    else if (prev_mode == 2)
+        FreeRoom();
+    SaveRead(&game_mode, 2);
+    LoadSpace();
+    SaveRead(&blink_count, 4);
+    SaveRead(&kbd_mouse, 2);
+    SaveRead(&in_orbit, 2);
+    SaveRead(&bridge_tick, 2);
+    SaveRead(&bridge_ticks, 4);
+    SaveRead(&word_3B936, 2);
+    SaveRead(&view_dir, 2);
+    SaveRead(mission_name, 16);
+    OpenMissionArchive();
+    SaveRead(boost_active, 12);
+    SpaceLoad();
+    prev_mode = game_mode;
+    FadeOut();
+    if (game_mode == 2)
+        RestoreRoom();
+    else if (game_mode == -1) {
+        BridgeEnter(1);
+        prev_mode = 1;
+    } else
+        BridgeEnter(0);
+    SaveRead(&blink_count, 4);
+    if (game_mode != -1) {
+        LoadActors();
+        seq = crew_name;
+        crew_name.s[0] = 0;
+        if (seq.s[0]) {
+            ShowCrew(seq.s, -1);
+            SetSteering(0);
+        }
+    }
+    SaveRead(room_timers, 0x12A);
+    SaveRead(msg_queue, sizeof(msg_queue));
+    SaveRead(&msg_head, 2);
+    SaveRead(&msg_tail, 2);
+    SaveRead(items, sizeof(items));
+    LoadSound();
+    SaveClose();
+    longjmp(game_jmp, game_mode == 2 ? 2 : 1);
+}
+
+/* Drop src's gate blocks (all of them for table -1). */
+void sub_1C20A(int src, int table)
+{
+    int n;
+    int i;
+
+    for (i = n = 0; i < ngates; i++) {
+        if (gates[i].source == src && (table == -1 || gates[i].table == table))
+            continue;
+        gates[n++] = gates[i];
+    }
+    ngates = n;
+}
+
+/* Add a gate block, keeping them in order of unk04. */
+void sub_1C266(int src, int table, int unk)
+{
+    int i;
+
+    sub_1C20A(src, table);
+    if (ngates == 7)
+        Fatal("Too many gate blocks");
+    for (i = ngates; i >= 1; i--) {
+        if (unk > gates[i - 1].unk04)
+            break;
+        gates[i] = gates[i - 1];
+    }
+    gates[i].source = src;
+    gates[i].table = table;
+    gates[i].unk04 = unk;
+    ngates++;
+}
+
+void sub_1C2FA(void)
+{
+    if (menu_open)
+        MenuClose();
+    menu_open = 0;
+}
+
+/* Start the away mission. */
+void sub_1C30E(void)
+{
+    LockScreen();
+    MemSet(screen, 64000, 0xDF);
+    UnlockScreen();
+    LoadMusic(mission_name, 0x67);
+    LoadRoom(mission_name, word_3CA46, 1);
+    EnterRoom(word_3CA48);
+    word_3CA48 = -1;
+    ActorPos(0, 20, 20, word_3CA46 = 0);
+    ActorPos(1, 20, 20, 0);
+    ActorPos(6, 20, 20, 0);
+    ActorPos(5, 20, 20, 0);
+    ActorPos(4, 20, 20, 0);
+    ActorPos(7, 20, 20, 0);
+    ActorPos(2, 20, 20, 0);
+    ActorPos(3, 20, 20, 0);
+    ActorPos(8, 20, 20, 0);
+}
+
+/* The away mission's main loop. */
+void AwayLoop(void)
+{
+    setjmp(room_jmp);
+    for (;;) {
+        while (msg_tail != msg_head)
+            RoomMsg();
+        RoomTick();
+        word_47A82 = mouse_x;
+        word_47A84 = mouse_y;
+    }
+}
+
+void EndAway(void)
+{
+    FreeRoom();
+}
+
+/* Beam the landing party up. */
+void BeamUp(void)
+{
+    int i;
+    int done;
+    Actor *a;
+
+    byte_47A87 = 1;
+    sub_1C2FA();
+    for (i = 0, a = actors; i != MAX_ACTORS; i++, a++) {
+        if ((a->flags & 1) == 1) {
+            ((ActorBits *)a)->b3 = 0;
+            StartAnim(i, "?teled", -1, -1, -1);
+        }
+    }
+    BridgeSfx(4);
+    for (;;) {
+        done = 1;
+        for (i = 0, a = actors; i != MAX_ACTORS; i++, a++)
+            if ((a->flags & 1) == 1 && a->loops == 0) {
+                done = 0;
+                break;
+            }
+        if (done)
+            break;
+        RoomTick();
+    }
+    byte_47A87 = 0;
+    PlayMusic(0xFE, 0xFE);
+    longjmp(game_jmp, 4);
+}
+
+/* The offset of b from a. */
+int sub_1C4C8(char far *a, char far *b)
+{
+    return b - a;
+}
+
+/* The header of an .rdf: the mission's data.rdf, the episode's and the
+ * room's. */
+typedef struct RdfHdr {
+    long (far *service)();      /* 00 callback for the scripts */
+    int *state;                 /* 04 the room state */
+    int version;                /* 06 */
+    int y0;                     /* 08 gate table (data, episode); room: depth range */
+    int y1;                     /* 0A item names (data, episode) */
+    unsigned z0;                /* 0C their end */
+    unsigned z1;                /* 0E episode: its first free actor */
+    unsigned table;             /* 10 room: gate table */
+    char unk12[12];             /* 12 */
+    unsigned bans;              /* 1E names of the .ban animations */
+    unsigned bans_end;          /* 20 */
+    unsigned walk_in;           /* 22 how the crew enter the room */
+    unsigned walk_in_end;       /* 24 */
+} RdfHdr;
+
+extern int word_47E18;
+extern long word_47832;                 /* depth scale */
+
+/* Load room n of the episode: its pictures, the mission's, episode's and
+ * room's .rdf (first: also their item names and gate blocks). */
+void LoadRoom(char *mission, int n, int first)
+{
+    RdfHdr far *g;
+    RdfHdr far *h;
+    int id;
+    int i;
+    char far *p;
+    char far *end;
+    char far *q;
+    char far *qend;
+    unsigned off;
+    unsigned last;
+    char name[12];
+    Actor *a;
+    int k;
+
+    key_accel = 1;
+    strcpy(room_mission, mission);
+    room_num = n;
+    room_ticks = 0;
+    byte_47A87 = 0;
+    cur_region = -1;
+    FadeOut();
+    sprintf(room_name, "%s%d", room_mission, n);
+    strcpy(bg_name, room_name);
+    LockScreen();
+    LoadFilePacked(room_name, "bgd", screen_base);
+    UnlockScreen();
+    LoadFilePacked(room_name, "pri", mask_buf);
+    strcpy(pri_name, room_name);
+    LoadPalette("palette");
+    LockScreen();
+    MemCpy(backbuf->data, screen->data, 64000);
+    UnlockScreen();
+    BlitToScreen(&screen_rect);
+
+    mission_handle = CacheLoadEMS("data", "rdf");
+    g = LockMem(mission_handle);
+    if (g->version != 0x211)
+        Fatal("Incorrect game header version");
+    g->service = ScriptService;
+    g->state = room_timers;
+    if (first) {
+        gates[0].source = 2;
+        gates[0].table = g->y0;
+        gates[0].unk04 = 0x7FFF;
+        ngates = 1;
+        i = 6;
+        for (p = (char far *)g + g->y1, end = (char far *)g + g->z0; p != end;
+             p += _fstrlen(p) + 1) {
+            _fstrncpy(items[i].name, p, 8);
+            items[i].name[8] = 0;
+            items[i].have = 1;
+            i++;
+        }
+        id = i + 0x40;
+    }
+    UnlockMem(mission_handle);
+
+    global_handle = CacheLoadEMS(room_mission, "rdf");
+    g = LockMem(global_handle);
+    switch (g->version) {
+    case 0x211:
+        word_47E18 = 0;
+        break;
+    case 0x212:
+        UnlockMem(global_handle);
+        word_47E18 = getanyfileems(room_name, "rtf");
+        g = LockMem(global_handle);
+        break;
+    default:
+        Fatal("Incorrect Episode header version:%d", g->version);
+    }
+    g->service = ScriptService;
+    g->state = room_timers;
+    if (first) {
+        sub_1C266(1, g->y0, 1000);
+        i = id - 0x40;
+        for (q = (char far *)g + g->y1, qend = (char far *)g + g->z0; q != qend;
+             q += _fstrlen(q) + 1) {
+            _fstrncpy(items[i].name, q, 8);
+            items[i].name[8] = 0;
+            i++;
+        }
+    }
+    for (i = g->z1; i < MAX_ACTORS; i++) {
+        actors[i].letter = 0;
+        actors[i].flags = 0;
+        ((ActorBits *)&actors[i])->b3 = 0;
+    }
+    UnlockMem(global_handle);
+
+    rdf_handle = getanyfileems(room_name, "rdf");
+    h = LockMem(rdf_handle);
+    switch (h->version) {
+    case 0x111:
+        text_handle = 0;
+        break;
+    case 0x112:
+        UnlockMem(rdf_handle);
+        text_handle = getanyfileems(room_name, "rtf");
+        h = LockMem(rdf_handle);
+        break;
+    default:
+        Fatal("Incorrect room header version");
+    }
+    h->service = ScriptService;
+    h->state = room_timers;
+    sub_1C20A(0, -1);
+    sub_1C266(0, h->table, 0);
+    UnlockMem(rdf_handle);
+    room_action = 1;
+    ActionCursor(1, 0);
+    strcpy(map_name, room_name);
+    map_handle = getanyfileems(map_name, "map");
+    LoadWalkGraph(map_name);
+    FreeActors();
+    for (a = actors, k = MAX_ACTORS; k; k--, a++)
+        if ((a->flags & 8) == 8)
+            ((ActorBits *)a)->b3 = 1;
+    h = LockMem(rdf_handle);
+    word_47832 = (long)((double)(h->z1 - h->z0) / (double)(h->y0 - h->y1 + 1) * 256.0);
+    if (h->bans != h->bans_end) {
+        for (off = h->bans, last = h->bans_end; off != last; ) {
+            p = (char far *)h + off;
+            _fstrcpy(name, p);
+            do
+                off++;
+            while (*p++);
+            UnlockMem(rdf_handle);
+            LoadBan(name);
+            h = LockMem(rdf_handle);
+        }
+    }
+    UnlockMem(rdf_handle);
+    msg_head = msg_tail = 0;
+    if (first)
+        PostRoomMsg(11, 0, 0, 0);
+    for (i = 0; i != 8; i++)
+        if (room_timers[i] > 0)
+            room_timers[i] = 0;
+}
+
+/* Bring the landing party in by entrance entry (-1: beam in, -2: just
+ * post message 12). Each walk-in record is an actor, where it appears,
+ * then (entrance, x, y, x2, y2) pairs ending in -1. */
+/* (99.2%: the target tests next != end before moving next into off.) */
+void EnterRoom(int entry)
+{
+    RdfHdr far *h;
+    unsigned off;
+    unsigned end;
+    unsigned next;
+    int n;
+    int x;
+    int y;
+    int x2;
+    int y2;
+    int far *p;
+    int e;
+
+    PostRoomMsg(0, 0, 0, 0);
+    if (entry == -2) {
+        PostRoomMsg(12, 0, 0, 0);
+        return;
+    }
+    h = LockMem(rdf_handle);
+    for (off = h->walk_in, end = h->walk_in_end; off != end; off = next) {
+        p = (int far *)((char far *)h + off);
+        n = *p;
+        x = *++p;
+        y = *++p;
+        p++;
+        x2 = x;
+        y2 = y;
+        while ((e = *p++) != -1) {
+            if (e == entry) {
+                x = p[0];
+                y = p[1];
+                x2 = p[2];
+                y2 = p[3];
+            }
+            p += 4;
+        }
+        next = sub_1C4C8((char far *)h, (char far *)p);
+        if (n >= 0 && n < MAX_ACTORS && (actors[n].flags & 4) == 4) {
+            UnlockMem(rdf_handle);
+            if (entry == -1) {
+                StartAnim(n, "?tele", x, y, -1);
+                if (n == 0)
+                    actors[n].notify = 0xFF;
+            } else
+                WalkActorTo(n, x, y, x2, y2, (n == 0 ? -1 : 0) & 0xFF);
+            if (n == 0)
+                byte_47A87 = 1;
+            h = LockMem(rdf_handle);
+        }
+    }
+    UnlockMem(rdf_handle);
+    if (entry == -1)
+        BridgeSfx(6);
+}
+
+/* 1 while a landing party member is busy. */
+int AnyActorBusy(void)
+{
+    int i;
+    Actor *a;
+
+    for (a = actors, i = 0; i != MAX_ACTORS; i++, a++)
+        if ((a->flags & 4) == 4 && (actors[i].flags & 6) == 6)
+            return 1;
+    return 0;
+}
+
+void sub_1CC76(void)
+{
+    if (inv_sprite.type == 2)
+        SpriteErase(&inv_sprite);
+    UpdateSprites();
+    if (inv_sprite.type == 2) {
+        DelSprite(&inv_sprite);
+        inv_sprite.type = 0;
+        CacheRelease(inv_sprite.handle);
+    }
+}
+
+/* Handle the next event in the room. */
+void RoomTick(void)
+{
+    Event ev;
+    int obj;
+    Actor *a;
+    int k;
+
+    sub_1C2FA();
+    if (!GetEvent(&ev))
+        return;
+    switch (ev.type) {
+    case EV_TICK:
+        if (room_action == 2 && room_target < MAX_ACTORS
+                && (actors[room_target].flags & 0x12) == 0x12) {
+            HideInvIcon();
+            room_action = 1;
+            break;
+        }
+        UpdateActors();
+        StunTick();
+        HiliteCursor();
+        DrawBans();
+        UpdateSprites();
+        UpdateBans();
+        MusicTick();
+        RoomTimers();
+        blink_count++;
+        if (word_3CCCC == 0 || room_ticks < 2) {
+            room_ticks++;
+            PostRoomMsg(0, (unsigned char)room_ticks, (unsigned char)(room_ticks >> 8), 0);
+        }
+        if (room_ticks >= 2)
+            FadeUp();
+        break;
+    case EV_MOVE:
+        SpriteSetPos(&mouse_sprite, ev.x, ev.y, 15);
+        break;
+    case EV_KEY:
+        if (byte_47A87)
+            break;
+        switch ((unsigned char)((unsigned)ev.key >> 8)) {
+        case 0x1C:
+        case 0x3B:
+            goto click;
+        case 0x01:
+        case 0x39:
+        case 0x3C:
+            goto menu;
+        case 0x11:
+            HideInvIcon();
+            room_action = 1;
+            break;
+        case 0x14:
+            HideInvIcon();
+            room_action = 5;
+            goto action;
+        case 0x26:
+            HideInvIcon();
+            room_action = 4;
+            goto action;
+        case 0x22:
+            HideInvIcon();
+            room_action = 3;
+            goto action;
+        case 0x16:
+            HideInvIcon();
+            room_action = 2;
+            goto action;
+        case 0x17:
+            if (room_action == 2) {
+                sub_1CC76();
+                obj = PickItem(50, 50, 1);
+                goto use_item;
+            } else {
+                HideInvIcon();
+                room_action = 4;
+                obj = PickItem(50, 50, 1);
+                goto look_item;
+            }
+        case 0x18:
+            OptionsMenu(0xA0, 0x19);
+            return;
+        }
+        return;
+    case EV_DOWN1:
+    click:
+        if (byte_47A87)
+            break;
+        switch (room_action) {
+        case 1:
+            if (byte_47A86)
+                break;
+            for (a = actors, k = MAX_ACTORS; k; k--, a++)
+                if ((a->flags & 0x10) == 0x10)
+                    a->sprite.type = 1;
+            obj = FindObject(mouse_x, mouse_y);
+            for (a = actors, k = MAX_ACTORS; k; k--, a++)
+                if ((a->flags & 0x10) == 0x10)
+                    a->sprite.type = 0;
+            if (WalkToHit())
+                break;
+            if (obj < 0x40 && obj > 0)
+                PostRoomMsg(1, obj, 0, 0);
+            else
+                WalkActorTo(0, -1, -1, mouse_x, mouse_y, 0);
+            break;
+        case 2:
+            if (room_target < MAX_ACTORS && (actors[room_target].flags & 0x12) == 0x12) {
+                HideInvIcon();
+                room_action = 1;
+                break;
+            }
+            obj = FindObject(mouse_x, mouse_y);
+            if (obj == -10) {
+                sub_1CC76();
+                obj = PickItem(50, 50, 0);
+            use_item:
+                if (obj == -1)
+                    obj = -2;
+            }
+            HideInvIcon();
+            room_target2 = obj;
+            if (WalkToHit())
+                break;
+            if (obj != -2)
+                PostRoomMsg(room_action, room_target, room_target2, 0);
+            if ((actors[0].flags & 2) == 2)
+                break;
+            ShowInvIcon(1);
+            break;
+        case 3:
+        case 4:
+        case 5:
+            obj = FindObject(mouse_x, mouse_y);
+            if (CantAct(obj, room_action))
+                break;
+            HideInvIcon();
+            if (obj == -10) {
+                obj = PickItem(50, 50, 0);
+            look_item:
+                if (obj == -1)
+                    obj = -2;
+            }
+            room_target = obj;
+            if (WalkToHit())
+                break;
+            if (obj != -2)
+                PostRoomMsg(room_action, room_target, 0, 0);
+            if (room_action != 4)
+                break;
+            if ((actors[0].flags & 2) == 2)
+                break;
+            ShowInvIcon(0);
+            break;
+        }
+        break;
+    case EV_DOWN2:
+    menu:
+        if (byte_47A87)
+            break;
+        HideInvIcon();
+        BridgeSfx(2);
+        room_action = ActionPanel();
+    action:
+        if (room_action == 2) {
+            obj = PickUseTarget();
+            if (obj == -1) {
+                room_action = 1;
+                break;
+            }
+            room_target = obj;
+        }
+        if (room_action == 2 && room_target == 0x44 && (actors[0].flags & 2) != 2) {
+            if (WalkToHit())
+                break;
+            PostRoomMsg(room_action, room_target, 0, 0);
+            room_action = 1;
+            break;
+        }
+        if (room_action == 4 || (room_action == 2 && (actors[0].flags & 2) != 2))
+            ShowInvIcon(room_action == 2);
+        break;
+    }
+}
+
+void FreeRoom(void)
+{
+    sub_1C2FA();
+    FadeOut();
+    HideInvIcon();
+    FreeActors();
+    CloseAllPanels();
+    if (word_47E18)
+        FreeAnyFile(word_47E18);
+    if (text_handle)
+        FreeAnyFile(text_handle);
+    FreeAnyFile(rdf_handle);
+    rdf_handle = 0;
+    CacheRelease(global_handle);
+    CacheRelease(mission_handle);
+    FreeAnyFile(map_handle);
+}
+
+/* The scale (in 256ths) of an actor at y. */
+int DepthScale(int y)
+{
+    RdfHdr far *h;
+
+    if (rdf_handle == 0)
+        return 0x100;
+    h = LockMem(rdf_handle);
+    y = h->y0 > y ? y : h->y0;
+    y = h->y1 < y ? y : h->y1;
+    y = (int)(((long)(y - h->y1) * word_47832) >> 8) + h->z0;
+    UnlockMem(rdf_handle);
+    return y;
+}
 
 /* The priority at y. */
 int DepthPri(int y)
@@ -418,12 +1162,11 @@ int FindScript(unsigned char test, unsigned char wild, unsigned char a, unsigned
     char saved;
     unsigned char any;
     unsigned long key;
-    char r;
 
     key = (unsigned long)a | (unsigned long)b << 8 | (unsigned long)c << 16;
     saved = byte_47A8E;
     any = test == 0 && wild == 0 ? 1 : 0;
-    byte_47A8E = r = !any;
+    byte_47A8E = !any;
     if (ScanScripts(0, key, 1)) {
         byte_47A8E = saved;
         return any;
@@ -431,7 +1174,7 @@ int FindScript(unsigned char test, unsigned char wild, unsigned char a, unsigned
     byte_47A8E = 0;
     if (ScanScripts(1, key, !test))
         goto found;
-    byte_47A8E = r;
+    byte_47A8E = !any;
     if (!wild && ScanScripts(2, key, 1))
         goto found;
     if (any && ScanScripts(3, key, 1))
@@ -903,15 +1646,15 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         GETNAME(name, a2);
         if (full_view)
             break;
-        sub_103AE(a1, name, -1, -1, -1, 0);
+        StartTalk(a1, name, -1, -1, -1, 0);
         break;
     }
     case 45:
         if (a3 == 0xFE) {
-            sub_1088E(a1, a2, 0);
+            StartEffect(a1, a2, 0);
             WaitActor(a1);
         } else
-            sub_1088E(a1, a2, a3);
+            StartEffect(a1, a2, a3);
         break;
     case 2:
         SetCrewIcon(a1, a2);
@@ -923,7 +1666,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         result = Converse(a1);
         break;
     case 5:
-        result = sub_20D42(a1);
+        result = ItemGive(a1);
         break;
     case 6:
         if (AnyActorBusy())
@@ -934,7 +1677,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         EnterRoom(a2);
         longjmp(room_jmp, 1);
     case 7:
-        sub_20D58(a1);
+        ItemTake(a1);
         if (room_action == 2 && room_target == a1) {
             room_action = 1;
             ActionCursor(1, 0);
@@ -978,7 +1721,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         MemCpy(map_name, talk_data + a1, 10);
         UnlockMem(talk_handle);
         map_handle = getanyfileems(map_name, "map");
-        sub_11C32(map_name);
+        LoadWalkGraph(map_name);
         break;
     case 13:
         result = ItemHave(a1);
@@ -1022,14 +1765,14 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         PlayMusic(a1, a2);
         break;
     case 18:
-        word_47A92 = a1;
-        word_47A94 = a2;
-        sub_1C430();
+        mission_max = a1;
+        mission_score = a2;
+        BeamUp();
         break;
     case 19:
         PlayMusic(0xFE, 0xFE);
-        word_47A92 = a1;
-        word_47A94 = a2;
+        mission_max = a1;
+        mission_score = a2;
         sub_1C2FA();
         byte_47A87 = 0;
         longjmp(game_jmp, 1);
@@ -1058,7 +1801,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         break;
     }
     case 22:
-        result = sub_2229E(a1, a2);
+        result = Turbolift(a1, a2);
         break;
     case 23: {
         char d;
@@ -1189,7 +1932,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         a->flags = 0;
     }
     case 0:
-        sub_11D2A(a1);
+        EndOrStand(a1);
         break;
     case 36: {
         Actor *a;
@@ -1250,17 +1993,17 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         result = sub_20AD4(a1, a2);
         break;
     case 48:
-        sub_2D458(sub_20D08(a1));
+        PlayDemScene(ItemName(a1));
         break;
     case 49:
-        n = sub_20D08(a1);
+        n = ItemName(a1);
         strcpy(bg_name, n);
         LockScreen();
         LoadFilePacked(n, "bgd", screen_base);
         UnlockScreen();
         break;
     case 50:
-        n = sub_20D08(a1);
+        n = ItemName(a1);
         strcpy(pri_name, n);
         LoadFilePacked(n, "pri", mask_buf);
         break;
@@ -1277,7 +2020,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         char *n;
         MemHandle h;
 
-        n = sub_20D08(a1);
+        n = ItemName(a1);
         if (a2) {
             MemCpy(cur_palette, LockMem(h = CacheLoadEMS(n, "pal")), 0x300);
             UnlockMem(h);
@@ -1301,12 +2044,12 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         FadeIn();
         break;
     case 55:
-        byte_3CA22 = a1;
-        byte_3CA23 = a2;
-        byte_3CA24 = a3;
+        fade_rgb[0] = a1;
+        fade_rgb[1] = a2;
+        fade_rgb[2] = a3;
         break;
     case 56:
-        LoadNamed(sub_20D08(a1), a2);
+        LoadNamed(ItemName(a1), a2);
     default:
         Fatal("Unknown room command: %u", cmd);
         break;
@@ -1504,15 +2247,15 @@ char *MsgChoice(unsigned n, TextArg *arg, char *title)
     return buf;
 }
 
-int word_3CDE4 = 0;
+int msg_wait = 0;
 
 /* A message box: title (a speaker) and text. */
 long MsgBox(char *title, char *text, int x, int y, int color, int msg)
 {
     TextArg arg;
 
-    if (!full_view && !word_3CDE4)
-        sub_103AE(-2, "", -1, -1, 0x100, 0);
+    if (!full_view && !msg_wait)
+        StartTalk(-2, "", -1, -1, 0x100, 0);
     if (title && *title)
         CentreLine(arg.title, title);
     else
@@ -1543,7 +2286,7 @@ void CrewSay(int who, char *text)
         z = 0;
         arg.title[0] = 0;
         if (!full_view)
-            sub_103AE(-2, "", -1, -1, 0x100, 0);
+            StartTalk(-2, "", -1, -1, 0x100, 0);
     } else {
         a = &actors[who];
         color = a->color;
@@ -1557,7 +2300,7 @@ void CrewSay(int who, char *text)
         else
             arg.title[0] = 0;
         if (who >= 0 && who < 9 && !full_view)
-            sub_103AE(who, crew_tlk[who], -1, -1, 0x100, 1);
+            StartTalk(who, crew_tlk[who], -1, -1, 0x100, 1);
     }
     arg.text = text;
     TextBox(MsgChoice, &arg, x, y, color, 0, z, 0);

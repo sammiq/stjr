@@ -172,7 +172,9 @@ class Splitter:
                         if s is None or not (DUMMY_NAME.match(sym) or sym.startswith("a")):
                             continue                    # a named variable keeps its name
                         o = s.value + addend
-                        if not literal_name(data, o):
+                        # (an "" literal, named aEmpty..., goes by its offset
+                        # as the compiled side's anonymous "" does)
+                        if not literal_name(data, o) and not (sym.startswith("a") and data[o:o + 1] == b"\0"):
                             continue
                     refs.append((secname, i, o))
             offs = sorted({o for _, _, o in refs})
@@ -530,6 +532,14 @@ class Splitter:
             else:
                 base = lin(segv, 0)
                 sym = None
+                # A far function pointer argument: push seg / push off
+                code = self.exe.bytes(at - 1, at + 5)
+                fn = self.syms.by_addr.get(base + _word(code, 4)) if code[0] == code[3] == 0x68 else None
+                if fn is not None and fn.kind == "func":
+                    if not any(start + off == at + 3 for off, *_ in rel):
+                        self._add(w, sec, start, at + 3, R_386_16, fn.name, 0, set())
+                    self._add(w, sec, start, at, R_386_SEG16, fn.name, 0, set())
+                    continue
                 # A neighbouring R_386_16 whose target lives in the same frame
                 best = None
                 for off, rtype, name, add in rel:

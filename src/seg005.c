@@ -46,7 +46,7 @@ int btn_changed;
 int shift_key;
 
 int last_mx = 160;
-int last_my = 100;
+volatile int last_my = 100;              /* volatile: EventInit pushes each SetPointer arg as it goes */
 extern unsigned long key_tick0;
 extern void (_interrupt _far *old_kbd)(void);
 

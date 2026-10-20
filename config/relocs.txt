@@ -290,3 +290,159 @@
 3CE7C  aLookh1   # seg008 data
 3CE7E  aLookh2   # seg008 data
 3CE80  aLookh3   # seg008 data
+2481E  _seq_state+0x20
+2A073  none   # _BlitClipped: 320 - w
+29E04  _stars
+2A52F  _RunScaler+0x18   # offset back
+20DE1  _inv_ents
+20DE6  _items
+20E57  _inv_ents
+20E80  _inv_ents+0xc
+210F2  _inv_ents+0xe
+1AEB8  _save_menu   # _SaveMenu
+1B147  _quit_menu   # _QuitMenu
+1B25B  _start_menu   # _StartMenu
+3C54C  aSaveGame_1   # save_menu[0]
+3C54E  aGener023SaveNew   # save_menu[1]
+3C550  aGener019Replace   # save_menu[2]
+3C552  aGener002DeleteP   # save_menu[3]
+3C554  aGener000Cancel   # save_menu[4]
+3C556  aEmpty_1900   # save_menu[5]
+3C6BC  aQuitGame   # quit_menu[0]
+3C6BE  aGener028YesQuit   # quit_menu[1]
+3C6C0  aGener008NoDoNot   # quit_menu[2]
+3C6C2  aEmpty_1901   # quit_menu[3]
+3C714  aGameOver   # gameover_new_menu[0]
+3C716  aGener020Restart   # gameover_new_menu[1]
+3C718  aGener018QuitThe   # gameover_new_menu[2]
+3C71A  aEmpty_1902   # gameover_new_menu[3]
+3C71C  aGameOver_1   # gameover_menu[0]
+3C71E  aGENER006LoadAPr   # gameover_menu[1]
+3C720  aGener020Restart_1   # gameover_menu[2]
+3C722  aGener018QuitThe_1   # gameover_menu[3]
+3C724  aEmpty_1903   # gameover_menu[4]
+3C7E8  aStartGame   # start_menu[0]
+3C7EA  aGener006LoadAPr   # start_menu[1]
+3C7EC  aGener020Restart_2   # start_menu[2]
+3C7EE  aEmpty_1904   # start_menu[3]
+3C842  aSpaceCombatLeve   # combat_menu[0]
+3C844  aFederationCadet   # combat_menu[1]
+3C846  aAcademyGraduate   # combat_menu[2]
+3C848  aCommissionedOff   # combat_menu[3]
+3C84A  aEmpty_1905   # combat_menu[4]
+3C8B0  aSpeechMusicCard   # sound_menu[0]
+3C8B2  aSoundblaster220   # sound_menu[1]
+3C8B4  aDonTUseASoundCa   # sound_menu[2]
+3C8B6  aEmpty_1906   # sound_menu[3]
+3C906  aPleaseInsertCd   # cd_menu[0]
+3C908  aOk   # cd_menu[1]
+3C90A  aQuit   # cd_menu[2]
+3C90C  aEmpty_1907   # cd_menu[3]
+3C96E  aTextSpeechOptio   # text_menu[0]
+3C970  aSpeechOnly   # text_menu[1]
+3C972  aSpeechWithTextS   # text_menu[2]
+3C974  aDisplayTextSubt   # text_menu[3]
+3C976  aEmpty_1908   # text_menu[4]
+1AE9F  aEmpty_1909   # _SaveMenu
+1B08E  aEmpty_1910   # _LoadGameMenu
+1B10A  aEmpty_1911   # _QuitMenu
+1B12C  aEmpty_1912   # _QuitMenu
+1B184  aEmpty_1913   # _GameOverMenu
+1B230  aEmpty_1914   # _StartMenu
+1B289  aEmpty_1915   # _CombatMenu
+1B2D6  aEmpty_1916   # _SoundCardMenu
+1B317  aEmpty_1917   # _InsertCDMenu
+1B3AE  aEmpty_1918   # _TextModeMenu
+1C621  _ScriptService   # _LoadRoom
+1C74F  _ScriptService   # _LoadRoom
+1C8AE  _ScriptService   # _LoadRoom
+1C825  _actors+0x1140   # _LoadRoom
+1C67F  _items+0x3d   # _LoadRoom
+1C7BB  _items+0x1   # _LoadRoom
+1CA9C  _room_timers+0x10   # _LoadRoom
+2B216  none   # _LoadLbm: 320, not a string
+2E117  _acmp_cur+0x8   # _AcmpFill
+2E914  _acmp_cur+0x116   # _AcmpRead
+2E12C  _acmp_cur+0x8   # _AcmpFill
+2E136  _acmp_cur+0x9   # _AcmpFill
+2E92E  _acmp_cur+0x116   # _AcmpRead
+2D156  _eval_name+0x35   # _Evaluate
+2D16E  _eval_name+0x150   # _Evaluate
+2D186  _eval_name+0x252   # _Evaluate
+2D19E  _eval_name+0x313   # _Evaluate
+2D1AC  _eval_name+0x3ac   # _Evaluate
+2D267  _player_ship+0xc2   # _Evaluate
+2D274  _player_ship+0xe2   # _Evaluate
+2D27A  _player_ship+0x82   # _Evaluate
+2D286  _player_ship+0xb2   # _Evaluate
+2D37D  _episodes+0x2   # _CaptainsLog
+3DEA8  aFed_1   # episodes[0]
+3DEAA  aFederation   # episodes[1]
+3DEAC  aSentnl   # episodes[2]
+3DEAE  aSentinel   # episodes[3]
+3DEB0  aNoman   # episodes[4]
+3DEB2  aNoManSLand   # episodes[5]
+3DEB4  aLight   # episodes[6]
+3DEB6  aLightAndDarknes   # episodes[7]
+3DEB8  aVoids   # episodes[8]
+3DEBA  aVoids_1   # episodes[9]
+3DEBC  aScotty   # episodes[10]
+3DEBE  aMuseumPiece   # episodes[11]
+3DEC0  aMadness   # episodes[12]
+3DEC2  aThoughThisBeMad   # episodes[13]
+3DEC4  aMeth   # episodes[14]
+3DEC6  aYetThereIsMetho   # episodes[15]
+3E396  aTlkadmira   # eval[0]
+3E398  aTlkwoman   # eval[1]
+3E39A  aAdmiralRichards   # eval[2]
+3E39C  aAdmiralCain   # eval[3]
+2BC46  _actors+0x4b   # _StartEpisode
+2BC7C  _actors+0xd5   # _StartEpisode
+2BCAA  _actors+0x15f   # _StartEpisode
+2BCD8  _actors+0x1e9   # _StartEpisode
+2BD07  _actors+0x273   # _StartEpisode
+2BD35  _actors+0x2fd   # _StartEpisode
+2BD64  _actors+0x387   # _StartEpisode
+2BD92  _actors+0x411   # _StartEpisode
+2BDC0  _actors+0x49b   # _StartEpisode
+2BBFA  _items+0x280
+2BC2B  _actors+0x1140
+22492  _screen_locks+0x66   # _Turbolift
+224A8  _screen_locks+0x9c   # _Turbolift
+110BC  none
+11267  none
+110EA  none
+11DAE  _actors+0x1140
+11DD0  _bans+0x40
+29407  none
+2BE70  _SpaceCmd   # LoadSpaceRdf: h->service = SpaceCmd
+25EAB  none   # MusicTick: the constant 0x2B12, not &crew_talk
+25EEF  none   # MusicTick: the constant 0x2B12, not &crew_talk
+2603B  none   # MusicTick: the constant 0x2B12, not &crew_talk
+26052  none   # MusicTick: the constant 0x2B12, not &crew_talk
+26066  none   # MusicTick: the constant 0x2B12, not &crew_talk
+25F59  _snd_buf+0x8 only   # MusicTick: cmp snd_buf.x, 0x2B12
+103FE  _actors+0x10b6   # StartTalk
+12CF1  _radar_colors   # DrawRadar
+131A0  _player_ship+0xc0   # FireWeapons
+13329  _player_ship+0x162   # FireWeapons
+133A8  _player_ship+0xc0   # FireWeapons
+133AF  _player_ship+0x15c   # FireWeapons
+133BF  _player_ship+0xc8   # FireWeapons
+133C6  _player_ship+0x174   # FireWeapons
+133EB  _player_ship+0x192   # FireWeapons
+1346D  _player_ship+0xd0   # FireWeapons
+13474  _player_ship+0x18c   # FireWeapons
+13484  _player_ship+0xd8   # FireWeapons
+1348E  _player_ship+0xc0   # FireWeapons
+134DD  _player_ship+0xc   # FireWeapons
+134EC  _player_ship+0xc   # FireWeapons
+13501  _player_ship+0xc0   # FireWeapons
+13508  _player_ship+0x15c   # FireWeapons
+13518  _player_ship+0xc8   # FireWeapons
+1351F  _player_ship+0x174   # FireWeapons
+13541  _player_ship+0xd0   # FireWeapons
+13548  _player_ship+0x18c   # FireWeapons
+13558  _player_ship+0xd8   # FireWeapons
+1355F  _player_ship+0x1a4   # FireWeapons
+2DFE8  aEmpty_1920   # CfgOpen

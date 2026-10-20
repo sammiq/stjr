@@ -26,6 +26,7 @@ extern unsigned char cur_palette[768];
 extern unsigned char shade_table[256];
 extern unsigned char remap_table[256];
 extern int fade_level;                  /* 0 black .. 100 full */
+extern signed char fade_rgb[3];         /* colour fades start from */
 
 void SetTandyLevel(int level);
 void InitTandyMode(void);
@@ -52,6 +53,7 @@ void VideoNop(void);
 void FadeIn(void);
 void FadeOut(void);
 void SetFade(unsigned char far *pal, int level);
+void sub_1BCC2(void);
 void FadeUp(void);
 void FadeDown(void);
 

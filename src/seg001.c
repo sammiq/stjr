@@ -228,16 +228,16 @@ typedef struct Msg {
 extern Msg msg_queue[16];
 Msg *PeekMsg(void);
 void ActorPos(int i, int x, int y, int z);  /* seg000 */
-void sub_2BE10(void);            /* (c2B980) */
+void LoadSpaceRdf(void);            /* (c2B980) */
 extern Obj3D *last_target;
 void CycleTarget(int dir);
 void CrewSay(int who, char *text);          /* seg008 */
-extern char steer_lock;
+extern char crew_name;
 extern char under_attack;               /* (c2B980) */
-void sub_2BEB0(void);
+void FreeSpaceRdf(void);
 void LockScreen(void);           /* seg012 */
 void UnlockScreen(void);            /* (c2B980) */
-extern char mission[];
+extern char mission_name[];
 int cam_tab1[2][3];
 int cam_tab2[2][3];
 extern Obj3D dummy_planet;
@@ -281,15 +281,14 @@ char *crew_names[8] = {
     "Captain Kirk", "Mr. Spock", "Dr. McCoy", "Security Officer",
     "Mr. Sulu", "Mr. Chekov", "Lieutenant Uhura", "Mr. Scott"
 };
-int word_3B92E = 0;
+unsigned word_3B92E = 0;
 int full_view = 0;              /* the view fills the screen */
 int kbd_mouse = 0;              /* the pointer steers the ship */
 int in_orbit = 0;               /* in orbit */
 int word_3B936 = -1;
 int magnify = 6;                /* magnification */
 int view_dir = 0;               /* view direction, -1 forward */
-char byte_3B93C = 0;
-char byte_3B93D = 0;
+int combat_level = 0;           /* space combat difficulty; 0x8000 once restarted */
 char ship_detail = 1;           /* draw ships in full (off in the intro) */
 char byte_3B93F = 0;
 Rect top_rects[3] = {
@@ -387,7 +386,7 @@ void BridgeLoop(void)
 {
     int unused[3];
     Event ev;
-    int full;
+    unsigned full;
 
     for (;;) {
         while (msg_head != msg_tail)
@@ -584,7 +583,7 @@ void BridgeEnter(int reset)
     BridgeScreen(reset);
     word_3B976 = 0;
     SetSteering(1);
-    sub_2BE10();
+    LoadSpaceRdf();
 }
 
 void BridgeLeave(void)
@@ -595,7 +594,7 @@ void BridgeLeave(void)
         BridgeScreenEnd();
     kbd_mouse = 0;
     key_accel = 1;
-    sub_2BEB0();
+    FreeSpaceRdf();
 }
 
 /* The bridge crew at their stations. */
@@ -661,7 +660,8 @@ void DrawRadar(void)
     p = bmp->data;
     MemSet(p, 17 * 17, 0);
     p[8 * 17 + 8] = 0x81;
-    for (o = ships, i = 0; o != &ships[4]; i++, o++) {
+    for (i = 0; i != 4; i++) {
+        o = &ships[i];
         if (o->visible == 0)
             continue;
         if (o->visible != R3_SHIP)
@@ -850,13 +850,13 @@ void MoveBlip(void)
 
 void FireWeapons(int torps, int phasers)
 {
-    ShipPart *p;
     int fired;
 
     if (!WeaponsReady(&player_ship) || player_ship.weapons_pwr == 0)
         return;
     if (target_on && target_lock == 50) {
         /* locked on: lead the target */
+        ShipPart *p;
         Obj3D *o;
         Vec32 d;
         Vec32 v;
@@ -868,8 +868,8 @@ void FireWeapons(int torps, int phasers)
         int t;
         int i;
 
-        p = &player_ship.systems[SYS_TORP_PORT];
         o = &ships[target_idx];
+        p = &player_ship.systems[SYS_TORP_PORT];
         MemCpy(&d, &o->pos, sizeof(d));
         Vec32Sub(&d, &player_ship.pos);
         v.x = o->vx - player_ship.vx;
@@ -903,6 +903,7 @@ void FireWeapons(int torps, int phasers)
             }
         }
     } else {
+        ShipPart *p;
         Vec32 v;
         Vec32 dir;
         Matrix m;
@@ -1018,7 +1019,7 @@ void BridgeKey(Event e)
             player_ship.mo.target_speed = (k - 2) * player_ship.mo.max_speed / 9;
         break;
     case 15:
-        if (steer_lock == 0) {
+        if (crew_name == 0) {
             SetSteering(kbd_mouse == 0);
             ClampPointer();
         }
@@ -1423,7 +1424,7 @@ void CrewOrder(int cmd)
             FireWeapons(1, 0);
         break;
     case 3:
-        if (steer_lock)
+        if (crew_name)
             break;
         if (full_view)
             ViewBridge();
@@ -1476,7 +1477,7 @@ void CrewOrder(int cmd)
             CrewSay(4, "#b_337#Lowering shields.");
         break;
     case 0x56:
-        if (full_view == 0 && steer_lock == 0) {
+        if (full_view == 0 && crew_name == 0) {
             ViewFull();
             SetSteering(1);
         }
@@ -2084,7 +2085,7 @@ found:
 void SetCursor(void)
 {
     if (kbd_mouse) {
-        if (steer_lock)
+        if (crew_name)
             SpriteSetBitmap(&mouse_sprite, LoadBitmap("blank"));
         else
             SpriteSetBitmap(&mouse_sprite, LoadBitmap(player_ship.weapons_req ? "cursor" : "entcur"));

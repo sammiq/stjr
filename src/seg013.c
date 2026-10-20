@@ -305,7 +305,7 @@ void FreeMem(MemHandle h)
     }
 }
 
-void far *MemSet(void far *dst, unsigned n, int c)
+void far *MemSet(void far *dst, unsigned n, unsigned char c)
 {
     _asm {
         push si

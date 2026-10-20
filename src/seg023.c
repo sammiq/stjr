@@ -50,6 +50,8 @@ MemHandle star_bmp = 0;
 Star stars[NUM_STARS];
 
 void BlitClipped(Bitmap far *bmp, Rect *r, Rect *clip);
+void LockScreen(void);                  /* seg012 */
+void UnlockScreen(void);
 
 void StarsReset(void)
 {
@@ -60,3 +62,121 @@ void StarsReset(void)
     MemSet(stars, sizeof(stars), 0);
 }
 
+void DrawStars(void)
+{
+    int i;
+    int x;
+    int y;
+    int z;
+    Vec32 v;
+    Vec32 v2;
+    long unused1;
+    Star *s;
+    int wr;
+    int hr;
+    int wr2;
+    int hr2;
+    Rect r;
+    Rect rc;
+    char unused2[16];
+    Bitmap far *bmp;
+    char far *base;
+    char far *cur;
+
+    wr = (view_w * 3) >> 1;
+    wr2 = wr / 2;
+    hr = (view_h * 3) >> 1;
+    hr2 = hr / 2;
+    z = proj_dist << 3;
+    star_bmp = CacheLoad("stars", "shp");
+    cur = base = LockMem(star_bmp);
+    LockScreen();
+    for (s = stars, i = 0; i != NUM_STARS; ++i, ++s) {
+        if ((i & 0xF) == 0)
+            cur = base;
+        bmp = (Bitmap far *)cur;
+        cur += bmp->w * bmp->h + 8;
+        if (s->active == 0) {
+            x = rand() % wr - wr2;
+            y = rand() % hr - hr2;
+            Vec32FromScreen(&v, x, y, z);
+            MatVecMul32((int *)cam_matrix, &v, &s->pos);
+            Vec32Add(&s->pos, &cam_pos);
+            s->active = 1;
+        }
+        v = s->pos;
+        Vec32Sub(&v, &cam_pos);
+        MatTVecMul32(&v, (int *)cam_matrix, &v2);
+        if (v2.z > star_near && v2.z < 0x3FFF
+                && (v2.x > 0 ? v2.x : -v2.x) < v2.z
+                && (v2.y > 0 ? v2.y : -v2.y) < v2.z) {
+            r.x0 = Project(v2.x, v2.z) + view_cx;
+            r.y0 = view_cy - Project(v2.y, v2.z);
+            r.x1 = r.x0 + bmp->w - 1;
+            r.y1 = r.y0 + bmp->h - 1;
+            if (ClipRect(&rc, &r, &clip_rect))
+                BlitClipped(bmp, &r, &rc);
+        } else
+            s->active = 0;
+    }
+    UnlockScreen();
+    UnlockMem(star_bmp);
+    CacheRelease(star_bmp);
+    star_bmp = 0;
+}
+
+/* Draw the part clip of bmp placed at r into the screen, skipping 0. */
+void BlitClipped(Bitmap far *bmp, Rect *r, Rect *clip)
+{
+    int w;
+    int h;
+    int x0;
+    int y0;
+    char far *src;
+    char far *dst;
+    int srcskip;
+    int dstskip;
+    int unused;
+
+    x0 = r->x0;
+    y0 = r->y0;
+    r = clip;
+    w = r->x1 - r->x0 + 1;
+    h = r->y1 - r->y0 + 1;
+    src = bmp->data + r->x0 - x0;
+    src += (r->y0 - y0) * bmp->w;
+    srcskip = bmp->w - w;
+    LockScreen();
+    dst = screen->data + r->x0 + r->y0 * 320;
+    dstskip = 320 - w;
+    _asm {
+        push si
+        push di
+        push ds
+        lds si, src
+        les di, dst
+    l_row:
+        dec h
+        js l_done
+        mov cx, w
+    l_pix:
+        lodsb
+        or al, al
+        je l_skip
+        stosb
+        loop l_pix
+        jmp short l_next
+    l_skip:
+        inc di
+        loop l_pix
+    l_next:
+        add si, srcskip
+        add di, dstskip
+        jmp l_row
+    l_done:
+        pop ds
+        pop di
+        pop si
+    }
+    UnlockScreen();
+}

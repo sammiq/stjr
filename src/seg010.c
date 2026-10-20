@@ -211,24 +211,26 @@ void MatIdentity(Matrix *m)
         m->e[i][i] = FIX_ONE;
 }
 
-/* Near matches. In the sequel the first two element stores swapped places
- * (X and Z; that alone makes the *SC versions match). Still different: the
- * original has s and c in each other's stack slots (not declaration order
- * or names), and the Y rotations load c before s. */
+/* The sequel writes the rotation elements through a flat int pointer, in
+ * element order. Stores through a pointer keep source order; with m.e[][]
+ * C 7.00 reorders them, which swaps s and c's stack slots and makes the Y
+ * rotations load s before c. */
 Matrix *MatRotX(int a, Matrix *out)
 {
     long s;
     long c;
     Matrix m;
     Matrix r;
+    int *p;
 
     s = FixSin(a);
     c = FixCos(a);
     MatIdentity(&m);
-    m.e[1][2] = s;
-    m.e[1][1] = c;
-    m.e[2][1] = -s;
-    m.e[2][2] = c;
+    p = m.e[0];
+    p[4] = c;
+    p[5] = s;
+    p[7] = -s;
+    p[8] = c;
     MatMul(out, &m, &r);
     *out = r;
 }
@@ -239,14 +241,16 @@ Matrix *MatRotY(int a, Matrix *out)
     long c;
     Matrix m;
     Matrix r;
+    int *p;
 
     s = FixSin(a);
     c = FixCos(a);
     MatIdentity(&m);
-    m.e[0][0] = c;
-    m.e[0][2] = -s;
-    m.e[2][0] = s;
-    m.e[2][2] = c;
+    p = m.e[0];
+    p[0] = c;
+    p[2] = -s;
+    p[6] = s;
+    p[8] = c;
     MatMul(out, &m, &r);
     *out = r;
 }
@@ -257,14 +261,16 @@ Matrix *MatRotZ(int a, Matrix *out)
     long c;
     Matrix m;
     Matrix r;
+    int *p;
 
     s = FixSin(a);
     c = FixCos(a);
     MatIdentity(&m);
-    m.e[0][1] = s;
-    m.e[0][0] = c;
-    m.e[1][0] = -s;
-    m.e[1][1] = c;
+    p = m.e[0];
+    p[0] = c;
+    p[1] = s;
+    p[3] = -s;
+    p[4] = c;
     MatMul(out, &m, &r);
     *out = r;
 }
@@ -275,14 +281,16 @@ Matrix *MatRotXPre(int a, Matrix *out)
     long c;
     Matrix m;
     Matrix r;
+    int *p;
 
     s = FixSin(a);
     c = FixCos(a);
     MatIdentity(&m);
-    m.e[1][2] = s;
-    m.e[1][1] = c;
-    m.e[2][1] = -s;
-    m.e[2][2] = c;
+    p = m.e[0];
+    p[4] = c;
+    p[5] = s;
+    p[7] = -s;
+    p[8] = c;
     MatMul(&m, out, &r);
     *out = r;
 }
@@ -293,14 +301,16 @@ Matrix *MatRotYPre(int a, Matrix *out)
     long c;
     Matrix m;
     Matrix r;
+    int *p;
 
     s = FixSin(a);
     c = FixCos(a);
     MatIdentity(&m);
-    m.e[0][0] = c;
-    m.e[0][2] = -s;
-    m.e[2][0] = s;
-    m.e[2][2] = c;
+    p = m.e[0];
+    p[0] = c;
+    p[2] = -s;
+    p[6] = s;
+    p[8] = c;
     MatMul(&m, out, &r);
     *out = r;
 }
@@ -311,14 +321,16 @@ Matrix *MatRotZPre(int a, Matrix *out)
     long c;
     Matrix m;
     Matrix r;
+    int *p;
 
     s = FixSin(a);
     c = FixCos(a);
     MatIdentity(&m);
-    m.e[0][1] = s;
-    m.e[0][0] = c;
-    m.e[1][0] = -s;
-    m.e[1][1] = c;
+    p = m.e[0];
+    p[0] = c;
+    p[1] = s;
+    p[3] = -s;
+    p[4] = c;
     MatMul(&m, out, &r);
     *out = r;
 }
@@ -449,12 +461,14 @@ Matrix *MatRotXSC(int s, int c, Matrix *out)
 {
     Matrix m;
     Matrix r;
+    int *p;
 
     MatIdentity(&m);
-    m.e[1][2] = s;
-    m.e[1][1] = c;
-    m.e[2][1] = -s;
-    m.e[2][2] = c;
+    p = m.e[0];
+    p[4] = c;
+    p[5] = s;
+    p[7] = -s;
+    p[8] = c;
     MatMul(&m, out, &r);
     *out = r;
 }
@@ -463,12 +477,14 @@ Matrix *MatRotYSC(int s, int c, Matrix *out)
 {
     Matrix m;
     Matrix r;
+    int *p;
 
     MatIdentity(&m);
-    m.e[0][0] = c;
-    m.e[0][2] = -s;
-    m.e[2][0] = s;
-    m.e[2][2] = c;
+    p = m.e[0];
+    p[0] = c;
+    p[2] = -s;
+    p[6] = s;
+    p[8] = c;
     MatMul(&m, out, &r);
     *out = r;
 }
@@ -477,12 +493,14 @@ Matrix *MatRotZSC(int s, int c, Matrix *out)
 {
     Matrix m;
     Matrix r;
+    int *p;
 
     MatIdentity(&m);
-    m.e[0][1] = s;
-    m.e[0][0] = c;
-    m.e[1][0] = -s;
-    m.e[1][1] = c;
+    p = m.e[0];
+    p[0] = c;
+    p[1] = s;
+    p[3] = -s;
+    p[4] = c;
     MatMul(&m, out, &r);
     *out = r;
 }

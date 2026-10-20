@@ -51,6 +51,9 @@ int enemy_count;                /* ships to keep in the fight */
 char enemy_name[10];            /* their .dsc */
 extern char *crew_names[8];
 extern int kbd_mouse;
+extern int target_on;               /* seg001 */
+extern int target_idx;
+extern int target_lock;
 extern Obj3D *last_target;          /* last ship the player hit */
 int boost_active;            /* extra power from the engines */
 long boost_count;
@@ -1086,3 +1089,29 @@ int BoostStart(void)
         return 0;
 }
 
+
+/* Engine boost over: back to normal power. */
+void sub_28CB0(void)
+{
+    boost_active = 0;
+    RepairAll(&player_ship);
+    SetRepair(-1);
+}
+
+void SetPower(int shields, int weapons)
+{
+    player_ship.weapons_req = weapons;
+    player_ship.shields_req = shields;
+    if (kbd_mouse) {
+        ReleaseBitmap(mouse_sprite.handle);
+        SpriteSetBitmap(&mouse_sprite, LoadBitmap(weapons ? "cursor" : "entcur"));
+    }
+    if (weapons == 0) {
+        target_on = target_lock = 0;
+        target_idx = -1;
+    }
+}
+
+void sub_28D28(void)
+{
+}

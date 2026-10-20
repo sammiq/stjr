@@ -40,6 +40,7 @@ class Gen:
         self.sp = Splitter(self.exe, self.ida, self.syms, self.units, load_overrides())
         self.w = self.sp.split(self.unit)
         self.raw: set[int] = set()          # instruction addresses emitted as DB
+        self.raw |= self.after_286()        # MASM 5.0 here assembles .286 code only
         self.swap: set[int] = set()         # test/xchg with the register operands swapped
         self.fmt = ix.Formatter(ix.FormatterSyntax.MASM)
         self.fmt.hex_suffix = "h"
@@ -48,6 +49,25 @@ class Gen:
         self.fmt.space_after_operand_separator = True
 
     # ------------------------------------------------------------------ helpers
+
+    def after_286(self) -> set[int]:
+        """The unit's instructions that need a 386 or later (a hand-written
+        library's 32-bit moves and FS/GS), which go out as DB from the start."""
+        start, end = self.unit.ranges[".text"]
+        old = {ix.CpuidFeature.INTEL8086, ix.CpuidFeature.INTEL8086_ONLY, ix.CpuidFeature.INTEL186,
+               ix.CpuidFeature.INTEL286, ix.CpuidFeature.INTEL286_ONLY, ix.CpuidFeature.FPU,
+               ix.CpuidFeature.FPU287, ix.CpuidFeature.FPU287XL_ONLY}
+        out = set()
+        for ea, (sz, k) in self.ida.heads.items():
+            if k != "C" or not start <= ea < end:
+                continue
+            ins = ix.Decoder(16, self.exe.bytes(ea, ea + sz)).decode()
+            fsgs = (ix.Register.FS, ix.Register.GS)
+            if (any(f not in old for f in ins.cpuid_features())
+                    or any(ins.op_register(i) in fsgs for i in range(ins.op_count))
+                    or ins.segment_prefix in fsgs):
+                out.add(ea)
+        return out
 
     def relocs(self, sec: str) -> dict[int, tuple[int, str, int]]:
         start = self.unit.ranges[sec][0]

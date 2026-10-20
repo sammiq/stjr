@@ -8,3 +8,4 @@ __aFulmul  __aFlmul
 __chkstk  __aFchkstk
 __aFNalmul  __aFNaulmul
 __strcmpi  __stricmp
+__edata  _walk

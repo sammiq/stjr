@@ -160,8 +160,8 @@ def _name_data_targets(w: ElfWriter, unit: str = "", lits: set[int] | None = Non
                 # (but not a string literal that the variable's size runs over:
                 # a public's size goes to the next public, past any literals)
                 inside = [s for s in named if s.section == sym and s.value <= addend < s.value + s.size
-                          and not (s.value < addend and ((lits is not None and sym == ".data" and addend in lits)
-                                                         or _long_literal(w.sections[sym].data, addend)))]
+                          and not (s.value < addend and ((addend in lits) if lits and sym == ".data"
+                                                         else _long_literal(w.sections[sym].data, addend)))]
                 if inside:
                     sec.relocs[i] = (off, rtype, inside[0].name, addend - inside[0].value)
     for sec in w.sections.values():
