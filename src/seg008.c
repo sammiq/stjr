@@ -2287,9 +2287,11 @@ void CrewSay(int who, char *text)
     } else {
         a = &actors[who];
         color = a->color;
-        if ((x = a->x) == 0)
+        x = a->x;
+        if (x == 0)
             x = 20;
-        if ((y = a->y) == 0)
+        y = a->y;
+        if (y == 0)
             y = 20;
         z = a->z;
         if (a->title[0])

@@ -15,6 +15,8 @@ typedef struct EMSBlock {
     unsigned long size;     /* 06 bytes, a multiple of 16; bit 0 set: in use */
 } EMSBlock;                 /* 0A */
 
+typedef EMSBlock *EMSHandle;
+
 #define EMS_MAX_BLOCKS 256
 #define EMS_USED       1L
 
@@ -31,17 +33,17 @@ extern EMSBlock *ems_free_list;     /* unused EMSBlocks */
 extern unsigned long ems_free;               /* free bytes */
 
 void EMSInit(void);
-EMSBlock *EMSAllocHandle(unsigned long size);
+EMSHandle EMSAllocHandle(unsigned long size);
 void far *EMSLockHandle(EMSBlock *b);
-void EMSUnlockHandle(EMSBlock *b);
-EMSBlock *EMSSave(void);
-void EMSRestore(EMSBlock *b);
-void EMSFreeHandle(EMSBlock *b);
+void EMSUnlockHandle(EMSHandle b);
+EMSHandle EMSSave(void);
+void EMSRestore(EMSHandle b);
+void EMSFreeHandle(EMSHandle b);
 void EMSCoalesce(void);
 EMSBlock *EMSNewBlock(void);
 void EMSFreeBlock(EMSBlock *b);
 int EMSMapPage(int logical, int physical);
 int EMSRelease(void);
-int IsEMSHandle(EMSBlock *b);
+int IsEMSHandle(EMSHandle b);
 
 #endif

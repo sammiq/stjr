@@ -20,12 +20,9 @@ from project import UNITS, exepack_tool, load_units  # noqa: E402
 PY = shlex.quote(sys.executable)
 OBJDIFF_CLI = "tools/bin/objdiff-cli"
 
-# Microsoft C/C++ 7.00 flags: medium model, 286 code, full optimisation.
-# ST25's seg010/seg011/seg013 sources compile byte for byte to the sequel's
-# code with these. /Zp1 is ST25's packing, not yet confirmed for the sequel.
-# /FPa: floating point through calls to the __aF* helpers (InitTrig). The
-# helpers in the EXE aren't MLIBCE's emulator ones, so this is alternate
-# math (MLIBCA, not in tools/C700); the generated code is the same as /FPc.
+# Microsoft C/C++ 7.00 flags: medium model, 286 code, full optimisation
+# (/Ox = /Ocegilnt /Gs), byte packing, and alternate math (/FPa: floating
+# point through calls to the runtime's __aF* helpers, from MLIBCA.LIB).
 # Per-unit overrides go in UNIT_CFLAGS.
 CFLAGS = ["/AM", "/G2", "/Ox", "/FPa", "/Zp1", "/W3", "/I\\INCLUDE"]
 UNIT_CFLAGS: dict[str, list[str]] = {}

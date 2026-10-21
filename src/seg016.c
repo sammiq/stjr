@@ -204,7 +204,7 @@ void CachePurgeAll(void)
 
 MemHandle LoadBitmap(char *name)
 {
-    return CacheLoad(name, "bmp");
+    return CacheLoadEMS(name, "bmp");
 }
 
 /* seg015 */

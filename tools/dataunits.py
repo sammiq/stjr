@@ -7,8 +7,8 @@ as their code. A unit's _DATA starts:
 
   * where its compiled object says: a public variable of the object's _DATA
     that has its name in config/symbols.txt too, or whose initial bytes occur
-    once in the original, sits at its offset from the start; ST25's whole
-    file (build/st25/<unit>.obj) votes too (the most common start wins)
+    once in the original, sits at its offset from the start (the most
+    common start wins)
   * failing that, after the previous unit's last string literal: the
     literals a unit's code references (and no other unit does) are its own
 
@@ -117,9 +117,6 @@ def main() -> None:
                          if p.seg and m.seg(p.seg).name == "_DATA" and p.name in by_name
                          and lo <= by_name[p.name] < hi)
         starts.update(content_votes(m, image, lo, hi))
-        ref = ROOT / "build/st25" / f"{u.name}.obj"        # all of ST25's variables (tools/st25match.py)
-        if ref.exists():
-            starts.update(content_votes(omf.parse_obj(ref.read_bytes()), image, lo, hi))
         if starts:
             anchored[u.name] = starts.most_common(1)[0][0]
 

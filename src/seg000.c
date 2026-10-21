@@ -1097,7 +1097,8 @@ int CanWalk(int x0, int y0, int x1, int y1)
         sx = ((long)dx << 16) / abs(dy);
         sy = (long)SGN(dy) << 16;
     }
-    if (WalkBlocked(FIXROUND(x = (long)x0 << 16), FIXROUND(y = (long)y0 << 16)))
+    x = (long)x0 << 16;
+    if (WalkBlocked(FIXROUND(x), FIXROUND(y = (long)y0 << 16)))
         return 0;
     while (n--)
         if (WalkBlocked(FIXROUND(x += sx), FIXROUND(y += sy)))

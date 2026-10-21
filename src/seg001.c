@@ -1118,7 +1118,8 @@ void BridgeKey(Event e)
     case 76:
         player_ship.mo.turn_target[0] = player_ship.mo.turn_target[1] = player_ship.mo.turn_target[2] = 0;
         if (kbd_mouse) {
-            SpriteSetPos(&mouse_sprite, mouse_x = (clip_rect.x0 + clip_rect.x1) / 2,
+            mouse_x = (clip_rect.x0 + clip_rect.x1) / 2;
+            SpriteSetPos(&mouse_sprite, mouse_x,
                          mouse_y = (clip_rect.y0 + clip_rect.y1) / 2, 15);
             SetPointer(mouse_x, mouse_y);
         }

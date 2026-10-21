@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 import omf  # noqa: E402
 from omf2elf import ABSOLUTE_SYMBOLS  # noqa: E402
-from project import LOAD_BASE, ROOT, Exe, IdaExport, lin  # noqa: E402
+from project import DGROUP_PARA, LOAD_BASE, ROOT, Exe, IdaExport, lin  # noqa: E402
 
 # Search order matters: a module name is only placed once, from the first library.
 # MLIBCE is C 7.00's combined medium model library with the 8087 emulator; the game
@@ -58,6 +58,29 @@ def _pattern(seg: omf.Segment) -> tuple[re.Pattern[bytes], int]:
     return re.compile(b"".join(parts), re.S), sum(mask)
 
 
+def _data_agrees(exe: Exe, m: omf.Module, seg: omf.Segment, addr: int) -> bool:
+    """The module's initialized DGROUP data is where its code at addr points.
+    Modules that differ only in fixed-up fields (ctran.asm's and ctrig.asm's
+    entry points) are told apart by their data, such as the function names."""
+    dgroup = lin(DGROUP_PARA, 0)
+    for f, at, target, disp in iter_fixups(exe, m, seg, addr, dgroup, lambda a: 0):
+        if f.target_method != omf.T_SEGDEF or not f.seg_relative:
+            continue
+        tseg = m.seg(f.target_index)
+        if tseg.name not in ("_DATA", "CONST") or not tseg.data:
+            continue        # CDATA and the like are overlaid by other modules
+        base = target - disp
+        n = min(tseg.length, len(tseg.data))
+        if not 0 <= base - LOAD_BASE <= len(exe.image) - n:
+            return False
+        fixed = {fx.offset + k for fx in tseg.fixups for k in range(fx.size)}
+        got = exe.bytes(base, base + n)
+        if any(got[i] != tseg.data[i] for i in range(n)
+               if i not in fixed and (i >= len(tseg.initialized) or tseg.initialized[i])):
+            return False
+    return True
+
+
 def _module_key(m: omf.Module) -> tuple:
     return (m.name.lower(), tuple(sorted(p.name for p in m.publics)))
 
@@ -81,7 +104,8 @@ def find_modules(exe: Exe, ida: IdaExport, code_segs: list[tuple[int, int]]) -> 
                         mt = pat.search(blob, p)
                         if not mt:
                             break
-                        hits.append(start + mt.start())
+                        if _data_agrees(exe, m, s, start + mt.start()):
+                            hits.append(start + mt.start())
                         p = mt.start() + 1
                 candidates.append((lib, m, s, hits, fixed))
 

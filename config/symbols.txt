@@ -1028,14 +1028,14 @@
 34DD6  func   000015  __aFsldq  lib near
 34DDA  func   000000  __aFeldq  lib
 34DEB  func   00006F  __aFfldq  lib
-34E5A  func   000009  _pow  lib near
-34E63  func   000009  __aFCIpow  lib
-34E6C  func   000009  _log  lib near
-34E75  func   000009  __aFCIlog  lib
-34E7E  func   000009  _log10  lib near
-34E87  func   000009  __aFCIlog10  lib
-34E90  func   000009  _exp  lib near
-34E99  func   000009  __aFCIexp  lib
+34E5A  func   000009  _sqrt  lib near
+34E63  func   000009  __aFCIsqrt  lib
+34E6C  func   000009  _sin  lib near
+34E75  func   000009  __aFCIsin  lib
+34E7E  func   000009  _cos  lib near
+34E87  func   000009  __aFCIcos  lib
+34E90  func   000009  _tan  lib near
+34E99  func   000009  __aFCItan  lib
 34EA2  func   000009  __aFfld1  lib
 34EAC  func   00001A  __aFCIfloor  lib
 34EC6  func   00001F  __aFCIceil  lib
@@ -2105,10 +2105,10 @@
 3EBE6  data   000002  _word_3EBE6
 3EBE8  data   00001C  __csigtab0  lib
 3EC18  data   00001D  OpTab  lib
-3EC37  data   000006  aSqrt
+3EC37  data   000005  aSqrt
 3EC3D  data   000005  aSin
 3EC42  data   000005  aCos
-3EC47  data   000005  aTan
+3EC47  data   000004  aTan
 3EC60  data   000004  __adbgmsg  lib
 3EC64  data   000004  __aaltstkovr  lib
 3EC68  data   000002  _STKHQQ  lib

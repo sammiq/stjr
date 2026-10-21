@@ -174,7 +174,7 @@ void LoadPalette(char *name)
         UnlockMem(h);
         CacheRelease(h);
         for (i = 0; i < 30; i++)
-            cur_palette[i] = cur_palette[0x2E2 + i] = 0;
+            cur_palette[0x2E2 + i] = cur_palette[i] = 0;
         sub_1BCC2();
     }
     LockScreen();

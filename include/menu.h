@@ -41,8 +41,6 @@ typedef struct MenuSave {
 extern Sprite *menu_sprites;
 extern int *menu_ids;
 extern long menu_disabled;
-extern int menu_sel;
-extern int menu_count;
 
 int MenuHit(Sprite *s, int n, int x, int y);
 void MenuMove(Sprite *s, int n, int cur, int dir);

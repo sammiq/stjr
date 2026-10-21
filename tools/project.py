@@ -11,7 +11,7 @@ segment into `nop; push cs; call near`. load_exe() turns those back into the
 the tools see compares with compiled objects.
 
 The analysis (build/analysis.txt, tools/analyze.py) has the format of the
-IDA export the ST25 project used (tools/ida/export.idc), so the same loader
+IDA export tools/ida/export.idc writes, so the same loader
 reads either.
 
 Addresses everywhere are IDA linear addresses: the load module is based at

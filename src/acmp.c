@@ -15,7 +15,7 @@ typedef struct AcmpState {
     unsigned bits;                      /* 10C bit reader */
     unsigned nbits;                     /* 10E */
     unsigned rbyte;                     /* 110 unary reader */
-    int rbits;                          /* 112 */
+    unsigned rbits;                     /* 112 */
     unsigned rlast;                     /* 114 */
     unsigned char outbuf[256];          /* 116 decoded samples */
     unsigned char *outp;                /* 216 */

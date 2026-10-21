@@ -301,10 +301,10 @@ int ReadPointer(void)
         if (arrow_key || TestAndClear(&arrow_changed)) {
             int dx;
             int dy;
-            int cx;
-            int cy;
-            int hw;
-            int hh;
+            unsigned cx;
+            unsigned cy;
+            unsigned hw;
+            unsigned hh;
 
             switch (arrow_key) {
             case 0x47:

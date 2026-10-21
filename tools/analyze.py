@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Analyse the original EXE into build/analysis.txt (IDA export format).
 
-The ST25 project bootstrapped from an IDA database (tools/ida/export.idc).
+An IDA database export (tools/ida/export.idc) can stand in for it.
 This does the part of IDA's job the other tools need, from the EXE alone:
 
   * segments: the three packed code segments, the far data segments, DGROUP
