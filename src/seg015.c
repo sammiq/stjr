@@ -418,9 +418,12 @@ int PurgeSound(void)
 /* (89%: the target loads seq into cx and copies it to ax for the push.) */
 void PlayMusicSeq(int seq)
 {
-    cur_seq = seq;
-    next_seq = seq;
-    PlaySeq(0, seq);
+    int s;
+
+    s = seq;
+    cur_seq = s;
+    next_seq = s;
+    PlaySeq(0, s);
 }
 
 void StopMusic(void)

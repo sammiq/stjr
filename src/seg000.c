@@ -261,7 +261,7 @@ int StartTalk(int n, char *name, int x, int y, int scale, int force)
         return 0;
     talk_actor = 0;
     if (n == -2)
-        return n;
+        return -2;
     if (!memcmp("NOANIM", name, 7))
         return n;
     if (n == -1) {
@@ -276,12 +276,10 @@ int StartTalk(int n, char *name, int x, int y, int scale, int force)
     talk_actor = p;
     if (n == -1 || n < 0 || n >= MAX_ACTORS)
         return 0;
-    a = talk_actor;
+    a = p;
     if (!(a->flags & 0x80) && !force)
         return n;
-    if (a->state & (ACT_CALLBACK | ACT_WALK))
-        return n;
-    if (a->notify)
+    if ((a->state & (ACT_CALLBACK | ACT_WALK)) || a->notify)
         return n;
     if (x == -1)
         x = a->sprite.x;
