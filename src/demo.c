@@ -100,15 +100,16 @@ typedef struct LpDesc {
     unsigned bytes;             /* 04 */
 } LpDesc;
 
-Block far *mve_heap0;
-Block far *mve_heap1;
-int fade_cur;                           /* percent */
-int fade_target;
-unsigned long fade_time;                /* tick of the last step */
-int fade_speed;                         /* percent per tick, 0: at once */
-unsigned dem_ticks;
-unsigned anim_ticks;
-int anim_timer;
+static Block far *mve_heap0;
+static Block far *mve_heap1;
+static long dword_41716;                /* never used */
+static int fade_cur;                           /* percent */
+static int fade_target;
+static unsigned long fade_time;                /* tick of the last step */
+static int fade_speed;                         /* percent per tick, 0: at once */
+static unsigned dem_ticks;
+static unsigned anim_ticks;
+static int anim_timer;
 int lp_cur;
 int anim_fd;
 LpDesc lp_hdr;

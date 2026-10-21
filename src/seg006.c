@@ -68,7 +68,7 @@ extern char enemy_name[10];        /* seg020 */
 extern int enemy_count;
 extern int target_idx;              /* seg001: the ship being locked onto */
 extern int target_lock;             /* frames locked on, up to 50 */
-extern int word_3DEA6;
+extern unsigned episode;               /* space */
 void HLineClip(int x, int y, int len, int c);   /* new in the sequel */
 void VLineClip(int x, int y, int len, int c);
 void CrewSay(int who, char *text);          /* seg008 */
@@ -124,7 +124,6 @@ int view_y0;
 
 int view_y1;
 
-char far *view_ptr;          /* first row of the view on the screen */
 
 long proj_dist;
 
@@ -138,7 +137,7 @@ Vec32 fr_top;
 
 Vec32 fr_bottom;
 
-int span_fill;
+static int span_fill;
 
 Obj3D *r3_sorted[MAX_R3] = { 0 };
 
@@ -410,7 +409,7 @@ void RenderR3(int statics)
         }
     }
     if (dead) {
-        if (word_3DEA6 == 0)
+        if (episode == 0)
             LoadNamed("fed", 1);
         else {
             CrewSay(-1, "The Enterprise has been destroyed!");

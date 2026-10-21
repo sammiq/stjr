@@ -765,7 +765,8 @@ int MenuWait(unsigned long timeout)
     int result;
     int unused2;
 
-    end = ticks + timeout;
+    end = ticks;
+    end += timeout;
     for (;;) {
         if (GetEvent(&e)) {
             switch (e.type) {

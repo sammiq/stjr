@@ -34,15 +34,15 @@ void Fatal(char *fmt, ...);     /* fatal error */
 void CrewSay(int a, char *msg);   /* seg008 (unidentified): show msg */
 char *InputDescription(void);       /* seg002 */
 
-SaveDir save_dir;
-char save_path[80];
-char save_desc[25];
-FILE *save_fp;
-int save_version;
+static FILE *save_fp;
+static SaveDir save_dir;
+static char save_path[80];
+static char save_desc[25];
+static int save_version;
+static int load_arg;
+static char cd_prompt[64];
 extern int voc_wait;
 extern char save_prefix[];          /* directory the saves go in */
-int load_arg;
-char cd_prompt[64];
 extern int combat_level;            /* seg001 */
 extern char byte_47A91;             /* (room state) */
 

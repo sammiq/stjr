@@ -107,14 +107,23 @@ def main() -> None:
             meta["progress_categories"] = ["lib"]
             bases.append(base)
         else:
-            meta["progress_categories"] = ["data" if u.name.startswith(("data/", "far/")) else "game"]
+            if u.name.startswith("far/") or (u.name.startswith("data/") and set(u.ranges) == {".bss"}):
+                # uninitialized: communals, the files' _BSS, the stack (tools/genbss.py)
+                cat = "bss"
+            elif u.name.startswith("data/"):
+                cat = "data"
+            else:
+                cat = "game"
+            meta["progress_categories"] = [cat]
             src = next((ROOT / "src" / f"{u.name}{ext}" for ext in (".c", ".asm")
                         if (ROOT / "src" / f"{u.name}{ext}").exists()), None)
             if src is not None:
                 flags = UNIT_CFLAGS.get(u.name, CFLAGS) if src.suffix == ".c" else []
                 rel = str(src.relative_to(ROOT))
                 n.build(base, "cc", rel,
-                        implicit=["tools/cc.py", "tools/omf2elf.py", "tools/omf.py", *TOOLS, *headers],
+                        # omf2elf names literals and statics from symbols.txt and units.txt
+                        implicit=["tools/cc.py", "tools/omf2elf.py", "tools/omf.py", *TOOLS, *headers,
+                                  "config/symbols.txt", str(UNITS.relative_to(ROOT))],
                         variables={"cflags": " ".join(flags), "omf": f"build/obj/{u.name}.obj"})
                 unit["base_path"] = base
                 meta["source_path"] = rel
@@ -144,6 +153,7 @@ def main() -> None:
             {"id": "game", "name": "Game code"},
             {"id": "data", "name": "Game data"},
             {"id": "lib", "name": "C runtime"},
+            {"id": "bss", "name": "Uninitialized"},
         ],
         "options": {"x86.formatter": "intel"},
         "units": objdiff_units,

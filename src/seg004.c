@@ -10,11 +10,11 @@ extern unsigned _aseghi;    /* C runtime: highest segment in use */
 
 void Fatal();               /* fatal error */
 
-EMSBlock ems_blocks[EMS_MAX_BLOCKS];
-EMSBlock *ems_head;
-EMSBlock *ems_rover;
-EMSBlock *ems_free_list;
-unsigned long ems_free;
+static EMSBlock ems_blocks[EMS_MAX_BLOCKS];
+static EMSBlock *ems_head;
+static EMSBlock *ems_rover;
+static EMSBlock *ems_free_list;
+static unsigned long ems_free;
 
 int ems_other_page = -1;
 unsigned ems_page_seg = 0;

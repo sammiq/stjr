@@ -10,12 +10,12 @@
 #include "mem.h"
 #include "resource.h"
 
-struct find_t patch_find;
+static Archive data_archive;           /* the game's own data files */
+static Archive mission_archive;        /* the current mission's */
+static struct find_t patch_find;
 
 void Fatal(char *fmt, ...);     /* fatal error */
 
-Archive data_archive;           /* the game's own data files */
-Archive mission_archive;        /* the current mission's */
 
 char *data_dir = "data/";
 char *uncomp_dir = "uncomp/";

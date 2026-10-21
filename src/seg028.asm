@@ -117,12 +117,6 @@
 	PUBLIC	_word_2FA20
 
 	.DATA
-	EXTRN	_byte_3E884:BYTE
-	EXTRN	aAnm_1:BYTE
-	EXTRN	aAnm_2:BYTE
-	EXTRN	aBan:BYTE
-	EXTRN	aGetu:BYTE
-	EXTRN	aIw:BYTE
 
 	.CODE
 L_TEXT	LABEL	BYTE
@@ -175,7 +169,7 @@ _sub_2EB94:
 	push di
 	push cs
 	pop es
-	lea di, [_byte_3E884]
+	lea di, ds:[3014h]
 	mov al, 0
 	mov cx, 80h
 	rep stosb
@@ -1496,7 +1490,7 @@ L2F782:
 	mov si, es:[di+14h]
 	cmp si, 0FFFFh
 	je L2F7DE
-	mov ax, OFFSET DGROUP:aAnm_1
+	mov ax, 67h
 	mov bx, [bp+6]
 	push cs
 	call _sub_2EFB4
@@ -1618,7 +1612,7 @@ _AIL_set_digital_playback_panpo:
 	mov ax, 83h
 	jmp _sub_2EFEC
 _sub_2F8AA:
-	mov ax, OFFSET DGROUP:aAnm_2
+	mov ax, 84h
 	jmp _sub_2EFEC
 _AIL_state_table_size:
 	mov ax, 96h
@@ -1630,7 +1624,7 @@ _AIL_release_sequence_handle:
 	mov ax, 98h
 	jmp _sub_2EFEC
 _AIL_default_timbre_cache_size:
-	mov ax, OFFSET DGROUP:aIw
+	mov ax, 99h
 	jmp _sub_2EFEC
 _AIL_define_timbre_cache:
 	mov ax, 9Ah
@@ -1639,7 +1633,7 @@ _sub_2F8CE:
 	mov ax, 9Bh
 	jmp _sub_2EFEC
 _AIL_install_timbre:
-	mov ax, OFFSET DGROUP:aGetu
+	mov ax, 9Ch
 	jmp _sub_2EFEC
 _sub_2F8DA:
 	mov ax, 9Dh
@@ -1651,7 +1645,7 @@ _sub_2F8E6:
 	mov ax, 9Fh
 	jmp _sub_2EFEC
 _AIL_start_sequence:
-	mov ax, OFFSET DGROUP:aBan
+	mov ax, 0AAh
 	jmp _sub_2EFEC
 _AIL_stop_sequence:
 	mov ax, 0ABh

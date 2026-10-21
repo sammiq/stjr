@@ -4,7 +4,6 @@
 	.MODEL	MEDIUM
 	.286
 
-	EXTRN	SEG_seg004:FAR
 	EXTRN	_AIL_format_sound_buffer:FAR
 	EXTRN	_AIL_register_sound_buffer:FAR
 	EXTRN	_AIL_sound_buffer_status:FAR
@@ -88,14 +87,31 @@
 	PUBLIC	_sub_3310C
 	PUBLIC	_sub_334CA
 	PUBLIC	_sub_334E2
+	PUBLIC	_word_3E9B2
+	PUBLIC	_word_3E9B4
+	PUBLIC	_word_3E9B6
+	PUBLIC	_word_3E9B8
+	PUBLIC	aInterplayMveFil
+	PUBLIC	_word_3E9D0
+	PUBLIC	_dword_3E9D2
+	PUBLIC	_word_3E9D6
+	PUBLIC	_word_3E9D8
+	PUBLIC	_dword_3E9DA
+	PUBLIC	aMovieAbortedWit
+	PUBLIC	aMovieAborted
+	PUBLIC	aMovieCompletedN
+	PUBLIC	aUnknownMovieErr
+	PUBLIC	aFileIOErrorOrUn
+	PUBLIC	aUnableToCreateT
+	PUBLIC	aUnableToAllocat
+	PUBLIC	aUnableToAllocat_0
+	PUBLIC	aInsufficientScr
+	PUBLIC	aUnableToSetupGr
+	PUBLIC	aInvalidMovieFil
+	PUBLIC	aIncorrectScreen
+	PUBLIC	aUnknownMovieErr_0
 
 	.DATA
-	EXTRN	_byte_3B870:BYTE
-	EXTRN	_byte_41AF6:BYTE
-	EXTRN	_byte_41AF7:BYTE
-	EXTRN	_byte_41B44:BYTE
-	EXTRN	_byte_41B45:BYTE
-	EXTRN	_byte_41B46:BYTE
 	EXTRN	_byte_4209C:BYTE
 	EXTRN	_byte_420A5:BYTE
 	EXTRN	_byte_420AE:BYTE
@@ -112,72 +128,95 @@
 	EXTRN	_byte_42511:BYTE
 	EXTRN	_byte_4251A:BYTE
 	EXTRN	_byte_42523:BYTE
-	EXTRN	_dword_3E9D2:BYTE
-	EXTRN	_word_3E9B2:BYTE
-	EXTRN	_word_3E9B4:BYTE
-	EXTRN	_word_3E9B6:BYTE
-	EXTRN	_word_3E9B8:BYTE
-	EXTRN	_word_3E9D0:BYTE
-	EXTRN	_word_3E9D4:BYTE
-	EXTRN	_word_3E9D6:BYTE
-	EXTRN	_word_3E9D8:BYTE
-	EXTRN	_word_3E9DA:BYTE
-	EXTRN	_word_3E9DC:BYTE
-	EXTRN	_word_41AD2:BYTE
-	EXTRN	_word_41AD4:BYTE
-	EXTRN	_word_41AD6:BYTE
-	EXTRN	_word_41AD8:BYTE
-	EXTRN	_word_41ADA:BYTE
-	EXTRN	_word_41ADC:BYTE
-	EXTRN	_word_41ADE:BYTE
-	EXTRN	_word_41AE0:BYTE
-	EXTRN	_word_41AE2:BYTE
-	EXTRN	_word_41AF0:BYTE
-	EXTRN	_word_41AF2:BYTE
-	EXTRN	_word_41AF4:BYTE
-	EXTRN	_word_41B10:BYTE
-	EXTRN	_word_41B12:BYTE
-	EXTRN	_word_41B14:BYTE
-	EXTRN	_word_41B16:BYTE
-	EXTRN	_word_41B18:BYTE
-	EXTRN	_word_41B1A:BYTE
-	EXTRN	_word_41B1C:BYTE
-	EXTRN	_word_41B1E:BYTE
-	EXTRN	_word_41B20:BYTE
-	EXTRN	_word_41B22:BYTE
-	EXTRN	_word_41B3C:BYTE
-	EXTRN	_word_41B3E:BYTE
-	EXTRN	_word_41B40:BYTE
-	EXTRN	_word_41B42:BYTE
-	EXTRN	_word_41B48:BYTE
-	EXTRN	_word_41B4A:BYTE
-	EXTRN	_word_41B4C:BYTE
-	EXTRN	_word_41B4E:BYTE
-	EXTRN	_word_41B50:BYTE
-	EXTRN	_word_41B52:BYTE
-	EXTRN	_word_41B54:BYTE
-	EXTRN	_word_41B56:BYTE
-	EXTRN	_word_41B58:BYTE
-	EXTRN	_word_41B5A:BYTE
-	EXTRN	_word_41B5C:BYTE
-	EXTRN	_word_41B5E:BYTE
-	EXTRN	_word_41B60:BYTE
-	EXTRN	_word_41B62:BYTE
-	EXTRN	_word_41B64:BYTE
-	EXTRN	_word_41B66:BYTE
-	EXTRN	_word_41B68:BYTE
-	EXTRN	_word_41B6A:BYTE
-	EXTRN	_word_41B6C:BYTE
-	EXTRN	_word_41B6E:BYTE
-	EXTRN	_word_41B70:BYTE
-	EXTRN	_word_41B72:BYTE
-	EXTRN	_word_41B74:BYTE
-	EXTRN	_word_41B76:BYTE
-	EXTRN	_word_41B78:BYTE
-	EXTRN	_word_41B7A:BYTE
-	EXTRN	aMrSulu:BYTE
-	EXTRN	aScotengiEngines:BYTE
-	EXTRN	aScotphasPhasers:BYTE
+_word_3E9B2	DW	0FFFFh
+_word_3E9B4	DW	0000h
+_word_3E9B6	DW	0000h
+_word_3E9B8	DW	0000h
+aInterplayMveFil	DB	'Interplay MVE File', 1Ah, 00h, 00h, 00h
+_word_3E9D0	DW	0FFFFh
+_dword_3E9D2	DD	_sub_31B36
+_word_3E9D6	DW	0001h
+_word_3E9D8	DW	0000h
+_dword_3E9DA	DD	_sub_32660
+aMovieAbortedWit	DB	'Movie aborted with special code', 00h
+aMovieAborted	DB	'Movie aborted', 00h
+aMovieCompletedN	DB	'Movie completed normally', 00h
+aUnknownMovieErr	DB	'Unknown movie error code -1', 00h
+aFileIOErrorOrUn	DB	'File I/O error or Unable to allocate I/O buffers', 00h
+aUnableToCreateT	DB	'Unable to create timer', 00h
+aUnableToAllocat	DB	'Unable to allocate sound buffers', 00h
+aUnableToAllocat_0	DB	'Unable to allocate video buffers', 00h
+aInsufficientScr	DB	'Insufficient screen resolution for movie', 00h
+aUnableToSetupGr	DB	'Unable to setup graphics mode used by movie', 00h
+aInvalidMovieFil	DB	'Invalid movie file', 00h
+aIncorrectScreen	DB	'Incorrect screen color mode', 00h
+aUnknownMovieErr_0	DB	'Unknown movie error code', 00h
+
+; (MASM 5.0's .DATA? gives _BSS the class DATA: the original's is BSS)
+_BSS	SEGMENT WORD PUBLIC 'BSS'
+_word_41AD2	DB	2 DUP (?)	; 41AD2
+_word_41AD4	DB	2 DUP (?)	; 41AD4
+_word_41AD6	DB	2 DUP (?)	; 41AD6
+_word_41AD8	DB	2 DUP (?)	; 41AD8
+_word_41ADA	DB	2 DUP (?)	; 41ADA
+_word_41ADC	DB	2 DUP (?)	; 41ADC
+_word_41ADE	DB	2 DUP (?)	; 41ADE
+_word_41AE0	DB	2 DUP (?)	; 41AE0
+_word_41AE2	DB	14 DUP (?)	; 41AE2
+_word_41AF0	DB	2 DUP (?)	; 41AF0
+_word_41AF2	DB	2 DUP (?)	; 41AF2
+_word_41AF4	DB	2 DUP (?)	; 41AF4
+_byte_41AF6	DB	1 DUP (?)	; 41AF6
+_byte_41AF7	DB	25 DUP (?)	; 41AF7
+_word_41B10	DB	2 DUP (?)	; 41B10
+_word_41B12	DB	2 DUP (?)	; 41B12
+_word_41B14	DB	2 DUP (?)	; 41B14
+_word_41B16	DB	2 DUP (?)	; 41B16
+_word_41B18	DB	2 DUP (?)	; 41B18
+_word_41B1A	DB	2 DUP (?)	; 41B1A
+_word_41B1C	DB	2 DUP (?)	; 41B1C
+_word_41B1E	DB	2 DUP (?)	; 41B1E
+_word_41B20	DB	2 DUP (?)	; 41B20
+_word_41B22	DB	26 DUP (?)	; 41B22
+_word_41B3C	DB	2 DUP (?)	; 41B3C
+_word_41B3E	DB	2 DUP (?)	; 41B3E
+_word_41B40	DB	2 DUP (?)	; 41B40
+_word_41B42	DB	2 DUP (?)	; 41B42
+_byte_41B44	DB	1 DUP (?)	; 41B44
+_byte_41B45	DB	1 DUP (?)	; 41B45
+_byte_41B46	DB	2 DUP (?)	; 41B46
+_word_41B48	DB	2 DUP (?)	; 41B48
+_word_41B4A	DB	2 DUP (?)	; 41B4A
+_word_41B4C	DB	2 DUP (?)	; 41B4C
+_word_41B4E	DB	2 DUP (?)	; 41B4E
+_word_41B50	DB	2 DUP (?)	; 41B50
+_word_41B52	DB	2 DUP (?)	; 41B52
+_word_41B54	DB	2 DUP (?)	; 41B54
+_word_41B56	DB	2 DUP (?)	; 41B56
+_word_41B58	DB	2 DUP (?)	; 41B58
+_word_41B5A	DB	2 DUP (?)	; 41B5A
+_word_41B5C	DB	2 DUP (?)	; 41B5C
+_word_41B5E	DB	2 DUP (?)	; 41B5E
+_word_41B60	DB	2 DUP (?)	; 41B60
+_word_41B62	DB	2 DUP (?)	; 41B62
+_word_41B64	DB	2 DUP (?)	; 41B64
+_word_41B66	DB	2 DUP (?)	; 41B66
+_word_41B68	DB	2 DUP (?)	; 41B68
+_word_41B6A	DB	2 DUP (?)	; 41B6A
+_word_41B6C	DB	2 DUP (?)	; 41B6C
+_word_41B6E	DB	2 DUP (?)	; 41B6E
+_word_41B70	DB	2 DUP (?)	; 41B70
+_word_41B72	DB	2 DUP (?)	; 41B72
+_word_41B74	DB	2 DUP (?)	; 41B74
+_word_41B76	DB	2 DUP (?)	; 41B76
+_word_41B78	DB	2 DUP (?)	; 41B78
+_word_41B7A	DB	2 DUP (?)	; 41B7A
+
+_BSS	ENDS
+DGROUP	GROUP	_BSS
+
+	.FARDATA?
+mve_palette	DB	768 DUP (?)	; 3B0E0: its own far segment
 
 	.CODE
 L_TEXT	LABEL	BYTE
@@ -2782,7 +2821,7 @@ _sub_31B1C:
 	mov ax, [bp+6]
 	mov dx, [bp+8]
 	mov word ptr [_dword_3E9D2], ax
-	mov word ptr [_word_3E9D4], dx
+	mov word ptr [_dword_3E9D2+2], dx
 	pop ds
 	leave
 	retf
@@ -4117,8 +4156,8 @@ _sub_32646:
 	mov ds, ax
 	mov ax, [bp+6]
 	mov dx, [bp+8]
-	mov word ptr [_word_3E9DA], ax
-	mov word ptr [_word_3E9DC], dx
+	mov word ptr [_dword_3E9DA], ax
+	mov word ptr [_dword_3E9DA+2], dx
 	pop ds
 	leave
 	retf
@@ -4171,9 +4210,9 @@ _sub_326B2:
 	mov ds, ax
 	push word ptr [bp+8]
 	push word ptr [bp+6]
-	push SEG _word_3E9DA
+	push SEG _dword_3E9DA
 	DB	068h, 000h, 000h
-	call dword ptr [_word_3E9DA]
+	call dword ptr [_dword_3E9DA]
 	add sp, 8
 	pop ds
 	leave
@@ -4186,7 +4225,7 @@ _sub_326D2:
 	push ds
 	mov ax, DGROUP
 	mov ds, ax
-	mov ax, SEG SEG_seg004
+	mov ax, SEG mve_palette
 	mov ds, ax
 	mov cx, [bp+8]
 	mov word ptr [bp-4], 0
@@ -4341,7 +4380,7 @@ _sub_3281C:
 	shl ax, 1
 	add ax, cx
 	add ax, 0
-	push SEG SEG_seg004
+	push SEG mve_palette
 	push ax
 	call FAR PTR _sub_30542
 	add sp, 0Ah
@@ -4358,9 +4397,9 @@ _sub_32850:
 	mov ds, ax
 	push ds
 	mov cx, 20h
-	mov ax, SEG _byte_3B870
+	mov ax, SEG mve_palette
 	mov es, ax
-	lea di, [_byte_3B870]
+	lea di, mve_palette
 	lds si, [bp+6]
 L3286B:
 	lodsb
@@ -4659,7 +4698,7 @@ L32B0C:
 	mov dx, 3C4h
 	mov ax, 100h
 	out dx, ax
-	mov dx, OFFSET DGROUP:aScotphasPhasers
+	mov dx, 3C2h
 	mov al, [bp-1Eh]
 	out dx, al
 	mov dx, 3C4h
@@ -4962,7 +5001,7 @@ L32E4A:
 	cmp word ptr [bp-10Ah], 0
 	je L32E79
 	mov ax, 9
-	mov dx, OFFSET DGROUP:aScotengiEngines
+	mov dx, 3D4h
 	out dx, al
 	mov dx, 3D5h
 	in al, dx
@@ -4970,7 +5009,7 @@ L32E4A:
 	test al, 80h
 	jne L32E79
 	mov ax, 9
-	mov dx, OFFSET DGROUP:aScotengiEngines
+	mov dx, 3D4h
 	out dx, al
 	mov al, [bp-10Ch]
 	or al, 80h
@@ -5076,7 +5115,7 @@ L32F4C:
 	push 1
 	push 0
 	push 1E0h
-	mov ax, OFFSET DGROUP:aMrSulu
+	mov ax, 140h
 	mov word ptr [_word_41B62], ax
 	mov word ptr [_word_41B5E], ax
 	push ax
@@ -5098,7 +5137,7 @@ L32F4C:
 	push 1
 	push 0
 	push 0F0h
-	push OFFSET DGROUP:aMrSulu
+	push 140h
 	push 1E0h
 	push 52h
 	push 0
@@ -5113,7 +5152,7 @@ L32F4C:
 	call FAR PTR _sub_32CCE
 	add sp, 1Eh
 	push 0F0h
-	push OFFSET DGROUP:aMrSulu
+	push 140h
 	push 0E0h
 	push 120h
 	jmp L33080
@@ -5144,7 +5183,7 @@ L32F4C:
 	push 1
 	push 0
 	push 15Eh
-	push OFFSET DGROUP:aMrSulu
+	push 140h
 	push 17Ch
 	push 4Dh
 	push 0
@@ -5159,7 +5198,7 @@ L32F4C:
 	call FAR PTR _sub_32CCE
 	add sp, 1Eh
 	push 15Eh
-	push OFFSET DGROUP:aMrSulu
+	push 140h
 	push 108h
 	push 0F8h
 	jmp SHORT L33080
@@ -5193,9 +5232,9 @@ L33071:
 	DB	090h
 L33074:
 	push 0C8h
-	push OFFSET DGROUP:aMrSulu
+	push 140h
 	push 0C8h
-	push OFFSET DGROUP:aMrSulu
+	push 140h
 L33080:
 	call FAR PTR _sub_3199E
 	add sp, 8

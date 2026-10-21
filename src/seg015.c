@@ -94,6 +94,9 @@ void AIL_format_sound_buffer(int h, SndBuf far *b);
 int AIL_sound_buffer_status(int h, int n);
 void AIL_start_digital_playback(int h);
 void AIL_stop_digital_playback(int h);
+/* seg028 (MASM 5.0) keeps 31 characters of a name */
+#define AIL_set_digital_playback_volume AIL_set_digital_playback_volum
+#define AIL_set_digital_playback_panpot AIL_set_digital_playback_panpo
 void AIL_set_digital_playback_volume(int h, int v);
 void AIL_set_digital_playback_panpot(int h, int p);
 
@@ -124,7 +127,7 @@ void StopAllSound(void);
 extern char voc_path[];                 /* where the voice files are */
 extern long dword_42A9E;
 extern MemHandle mix_tabs[4];
-extern int far mix_buf[];
+static int far mix_buf[4096];         /* the mixer's 16-bit sums */
 
 extern unsigned music_card;             /* sound card for music (the config) */
 extern int digi_card;                   /* and for speech */
@@ -134,20 +137,31 @@ extern int cfg_dma;
 extern int cfg_mio;                     /* music card port override */
 extern int digi_handle;
 extern char far *digi_buf;
-extern unsigned timbre_cache_size;
-extern MemHandle suite_handle;          /* the music's effects */
-extern unsigned long sound_ticks;
+static char sfx_name[64];                      /* the looping effect */
+static char voice_name[10];
+static int sfx_vol;
+static int sfx_pan;
+static int sfx_loop;
+static int voice_on;
+static int midi_handle;
+static char midi_suffix[4];                    /* timbre file extension */
+static void far *seq_state[NUM_SEQ];
+static int seq_handles[NUM_SEQ];
+static unsigned seq_ids[NUM_SEQ];
+static char music_name[9];
+static char music_var;                         /* variant letter of the music file */
+static char music_file[9];
+static SeqNode seq_nodes[NUM_SEQ];
+static List seq_list;
+static int suite_vol;
+static int suite_pan;
+static Raw raws[8];
+static Mix mixes[4];
+static unsigned timbre_cache_size;
+static MemHandle suite_handle;                 /* the music's effects */
+static int word_410C6;                         /* never used */
+static unsigned long sound_ticks;
 
-int midi_handle;
-char midi_suffix[4];                    /* timbre file extension */
-void far *seq_state[NUM_SEQ];
-int seq_handles[NUM_SEQ];
-unsigned seq_ids[NUM_SEQ];
-char music_name[9];
-char music_var;                         /* variant letter of the music file */
-char music_file[9];
-SeqNode seq_nodes[NUM_SEQ];
-List seq_list;
 
 int back_sound = 1;
 int music_on = 1;
@@ -478,12 +492,6 @@ void SetMusicOn(int on)
 Stream far voice_stream;                /* far data 0000 */
 Stream far sfx_stream;                  /* far data 0244 */
 
-char sfx_name[64];                      /* the looping effect */
-char voice_name[10];
-int sfx_vol;
-int sfx_pan;
-int sfx_loop;
-int voice_on;
 extern SndBuf snd_buf;                  /* AIL sound buffer being filled */
 extern int stream_acmp;                 /* the file being opened is ACMP */
 extern Vcc vccs[4];
@@ -1125,8 +1133,6 @@ void MusicTick(void)
 
 /* ---- sound effects: XMIDI sequences or suite voices, in slots 1-7 ---- */
 
-int suite_vol;
-int suite_pan;
 
 void StopAllSfx(void)
 {
@@ -1347,8 +1353,6 @@ void StopAllSound(void)
 
 /* ---- the raw samples of the suite, mixed in software ---- */
 
-Raw raws[8];
-Mix mixes[4];
 
 void LoadRaw(char *name, int i)
 {

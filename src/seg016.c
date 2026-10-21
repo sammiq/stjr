@@ -146,8 +146,8 @@ int CachePurge(int ems)
     for (i = 0; i != CACHE_ENTRIES; ++i, e = (CacheEntry *)e->node.prev) {
         if (e->lock == 0 && e->data != 0) {
             if (e->packed != 0) {
-                if (!ems && IsMemEMS(e->data)) {
-                    if (IsMemEMS(e->packed))
+                if (!ems && IsEMSHandle(e->data)) {
+                    if (IsEMSHandle(e->packed))
                         continue;
                     FreeMem(e->packed);
                     e->packed = 0;
@@ -157,7 +157,7 @@ int CachePurge(int ems)
                 }
                 return 1;
             } else if (e->ext[0] == '$') {
-                if (!ems && IsMemEMS(e->data))
+                if (!ems && IsEMSHandle(e->data))
                     continue;
                 FreeMem(e->data);
                 ListRemove(&cache_list, &e->node);
@@ -172,7 +172,7 @@ int CachePurge(int ems)
     for (i = 0; i != CACHE_ENTRIES; ++i, e = (CacheEntry *)e->node.prev) {
         if (e->lock == 0 && (e->data != 0 || e->packed != 0)) {
             h = e->data ? e->data : e->packed;
-            if (!ems && IsMemEMS(h))
+            if (!ems && IsEMSHandle(h))
                 continue;
             FreeMem(h);
             ListRemove(&cache_list, &e->node);
@@ -185,7 +185,7 @@ int CachePurge(int ems)
     e = (CacheEntry *)cache_list.head.prev;
     for (i = 0; i != CACHE_ENTRIES; ++i, e = (CacheEntry *)e->node.prev) {
         if (e->lock != 0 && e->packed != 0 && e->data != 0) {
-            if (!ems && IsMemEMS(e->packed))
+            if (!ems && IsEMSHandle(e->packed))
                 continue;
             FreeMem(e->packed);
             e->packed = 0;

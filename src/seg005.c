@@ -25,17 +25,17 @@ void JoyUpdate(void);
 
 extern Rect clip_rect;
 extern int sound_closed;
-Event *ev_read;
-Event *ev_write;
-Event ev_queue[EV_MAX];
-unsigned char move_pending;      /* an EV_MOVE is queued */
-unsigned char tick_pending;      /* an EV_TICK is queued */
-unsigned char mouse_present;
-unsigned long last_tick;
-int old_buttons;
-int key_code;
-int key_shift;
-int mouse_hires;                 /* the driver works in 640 wide coordinates */
+static unsigned char mouse_present;
+static Event ev_queue[EV_MAX];
+static Event *ev_read;
+static Event *ev_write;
+static unsigned char tick_pending;      /* an EV_TICK is queued */
+static unsigned char move_pending;      /* an EV_MOVE is queued */
+static int old_buttons;
+static unsigned long last_tick;
+static int key_shift;
+static int key_code;
+static int mouse_hires;                 /* the driver works in 640 wide coordinates */
 int key_b1;                      /* keypad + held: left button */
 int key_b2;                      /* keypad - held: right button */
 extern int kbd_mouse;                   /* keypad arrows jump the pointer */

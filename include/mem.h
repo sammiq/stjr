@@ -11,7 +11,7 @@ typedef union MemSlot {
 
 typedef MemSlot *MemHandle;
 
-#define MEM_MAX_HANDLES 512
+#define MEM_MAX_HANDLES 256
 
 /* Every pool block starts on a paragraph boundary with this header; the
  * data follows in the next paragraph. */
@@ -44,7 +44,7 @@ MemHandle AllocMemHandle(void far *p);
 void FreeMemHandle(MemHandle h);
 MemHandle AllocMem(unsigned size, int ems);
 MemHandle AllocMemAbort(unsigned size, int ems);
-int IsMemEMS(MemHandle h);
+int IsEMSHandle(MemHandle h);
 void far *LockMem(MemHandle h);
 void UnlockMem(MemHandle h);
 void FreeMem(MemHandle h);

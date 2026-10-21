@@ -463,7 +463,9 @@ class Splitter:
                     self._add(w, sec, start, r, R_386_SEG16, sym, 0, covered)
                     continue
             off_at = r - 2
-            if off_at >= start and off_at not in covered:
+            # an override on the offset word: an assembler's separate
+            # offset and segment words (DW x, DW SEG x), not one far pointer
+            if off_at >= start and off_at not in covered and off_at not in self.overrides:
                 target = lin(segv, exe.word(off_at))
                 if segv != self.dgroup_para or self.dgroup <= target < self.dgroup_end:
                     sym, add = self.symbol_for(unit, target)
@@ -558,8 +560,8 @@ class Splitter:
                 else:
                     seg = self.ida.seg_at(base + 0x10) or self.ida.seg_at(base)
                     own = self.owner(seg.start) if seg else None
-                    if own and own[1].startswith(".data."):
-                        sym = own[1][len(".data."):]   # a far segment: named like the compiler's SEGDEF
+                    if own and own[1].startswith((".data.", ".bss.")):
+                        sym = own[1].split(".", 2)[2]  # a far segment: named like the compiler's SEGDEF
                     else:
                         sym = f"SEG_{seg.name}" if seg else f"SEG_{segv:04X}"
             self._add(w, sec, start, at, R_386_SEG16, sym, 0, set())

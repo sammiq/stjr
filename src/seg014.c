@@ -11,8 +11,9 @@
 #include "menu.h"
 
 /* Globals this file owns (declared in the headers). */
-int menu_sel;
-int menu_count;
+static int menu_count;
+static int menu_sel;
+static int menu_saved_accel;
 
 void UpdateActors(void);               /* seg000 */
 void DrawBans(void);
@@ -34,13 +35,10 @@ unsigned mouse_x;
 
 unsigned mouse_y;
 
-MemHandle menu_handle;
-
-int menu_saved_accel;
 
 
 
-int stream_done;
+
 
 /* The button of s[0..n-1] at (x, y), or -1. */
 int MenuHit(Sprite *s, int n, int x, int y)

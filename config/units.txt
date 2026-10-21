@@ -4,41 +4,56 @@
 
 seg000                     .text    10000  1223E  data-pinned
 seg000                     .data    3B8B2  3B91E  data-pinned
+seg000                     .bss     3F502  3F984  data-pinned
 seg001                     .text    1223E  15396  data-pinned
 seg001                     .data    3B91E  3BEF0  data-pinned
 seg001                     .rodata  3F2B8  3F2D0  data-pinned
+seg001                     .bss     3F984  3F9CC  data-pinned
 seg002                     .text    15396  1578C  complete data-pinned
 seg002                     .data    3BEF0  3BF78  complete data-pinned
+seg002                     .bss     3F9CC  3F9E6  complete data-pinned
 seg003                     .text    1578C  167EA
 seg003                     .data    3BF78  3C056
+seg003                     .bss     3F9E6  3FA44
 seg004                     .text    167EA  16C90  complete
 seg004                     .data    3C056  3C136  complete
+seg004                     .bss     3FA44  4044E  complete
 seg005                     .text    16C90  17624  data-pinned
 seg005                     .data    3C136  3C1EC  data-pinned
+seg005                     .bss     4044E  407E2  data-pinned
 seg006                     .text    17624  1AA34  complete data-pinned
 seg006                     .data    3C1EC  3C418  complete data-pinned
 seg006                     .rodata  3F2D0  3F30C  complete data-pinned
+seg006                     .bss     407E2  407E4  complete data-pinned
 seg019                     .text    1AA34  1B4A2  data-pinned
 seg019                     .data    3C418  3CA20  data-pinned
+seg019                     .bss     407E4  408AA  data-pinned
 seg007                     .text    1B4A2  1BD62
 seg007                     .data    3CA20  3CA46
-seg008                     .text    1BD62  20AD4  data-pinned
-seg008                     .data    3CA46  3CF3A  data-pinned
+seg007                     .bss     408AA  409AA
+seg008                     .text    1BD62  20D42  data-pinned
+seg008                     .data    3CA46  3CF48  data-pinned
 seg008                     .rodata  3F30C  3F314  data-pinned
-seg009                     .text    20AD4  21134
-seg009                     .data    3CF3A  3CF58
+seg008                     .bss     409AA  40B20  data-pinned
+seg009                     .text    20D42  21134
+seg009                     .data    3CF48  3CF58
+seg009                     .bss     40B20  40B7A
 seg010                     .text    21134  21DB6
 seg010                     .rodata  3F314  3F344
 seg011                     .text    21DB6  21E54  complete
 seg012                     .text    21E54  22A12
-seg012                     .data    3CF5A  3D12E
+seg012                     .data    3CF58  3D12E
 seg013                     .text    22A12  2315C  complete
 seg013                     .data    3D12E  3D266  complete
+seg013                     .bss     40B7A  40F7C  complete
 seg014                     .text    2315C  244FC
 seg014                     .data    3D266  3D2BA
+seg014                     .bss     40F7C  40F82
 seg015                     .text    244FC  26AC8  data-pinned
 seg015                     .data    3D2BA  3D50A  data-pinned
 seg015                     .rodata  3F344  3F348  data-pinned
+seg015                     .bss     40F82  410CC  data-pinned
+seg015                     .bss.SEG0155_DATA 390E0  3B0E0  data-pinned
 seg016                     .text    26AC8  27196  complete
 seg016                     .data    3D50A  3D5C8  complete
 seg020                     .text    27196  28D2A  complete
@@ -51,15 +66,19 @@ seg023                     .text    29D78  2A0B0
 seg023                     .data    3DC4E  3DC5A
 seg024                     .text    2A0B0  2A546  complete
 seg024                     .data    3DC5A  3DC6E  complete
+seg024                     .bss     410CC  4170E  complete
 seg025                     .text    2A546  2A644  complete
 seg025                     .data    3DC6E  3DC76  complete
 seg027                     .text    2A644  2ACA6  complete
 seg027                     .data    3DC76  3DD92  complete
 demo                       .text    2ACA6  2B97F
 demo                       .data    3DD92  3DEA0
+demo                       .bss     4170E  4172A
 space                      .text    2B980  2D528
 space                      .data    3DEA0  3E904
-seg017                     .text    2D528  2D688  complete
+space                      .bss     4172A  418B2
+seg017                     .text    2D528  2D688  complete data-pinned
+seg017                     .data    3D5C8  3D838  complete data-pinned
 asm/t2D688                 .text    2D688  2D71A
 iff                        .text    2D71A  2DD68
 iff                        .data    3E904  3E928
@@ -67,12 +86,17 @@ cfg                        .text    2DD68  2E0EE
 cfg                        .data    3E928  3E9AE
 acmp                       .text    2E0EE  2E992
 acmp                       .data    3E9AE  3E9B2
+acmp                       .bss     418B2  41AD2
 seg028                     .text    2E992  304FE  complete
 mvelib                     .text    304FE  33596  complete
+mvelib                     .data    3E9B2  3EB68  complete
+mvelib                     .bss     41AD2  41B7C  complete
+mvelib                     .bss.FAR_BSS 3B0E0  3B3E0  complete
 lib/crt0                   .text    335A6  336AA  lib=MLIBCE.LIB:crt0.asm
 lib/crt0                   .data    3EB68  3EB88  lib=MLIBCE.LIB:crt0.asm
 lib/crt0dat                .text    336AA  33826  lib=MLIBCE.LIB:crt0dat.asm
 lib/crt0dat                .data    3EB88  3EBDC  lib=MLIBCE.LIB:crt0dat.asm
+lib/crt0dat                .text.EMULATOR_TEXT 390D0  390D2  lib=MLIBCE.LIB:crt0dat.asm
 lib/fclose                 .text    33826  338E6  lib=MLIBCE.LIB:fclose.c
 lib/fclose                 .data    3EBDC  3EBE0  lib=MLIBCE.LIB:fclose.c
 lib/fopen                  .text    338E6  33928  lib=MLIBCE.LIB:fopen.c
@@ -96,6 +120,7 @@ lib/strtok                 .data    3EBE0  3EBE2  lib=MLIBCE.LIB:strtok.asm
 lib/_ctype                 .text    33E0E  33E4F  lib=MLIBCE.LIB:_ctype.asm
 lib/onexit                 .text    33E50  33E82  lib=MLIBCE.LIB:onexit.asm
 lib/onexit                 .data    3EBE2  3EBE4  lib=MLIBCE.LIB:onexit.asm
+lib/onexit                 .bss.XO  41B96  41C16  lib=MLIBCE.LIB:onexit.asm
 lib/qsort                  .text    33E82  33FD7  lib=MLIBCE.LIB:qsort.asm
 lib/rand                   .text    33FD8  34012  lib=MLIBCE.LIB:rand.c
 lib/rand                   .data    3EBE4  3EBE8  lib=MLIBCE.LIB:rand.c
@@ -125,20 +150,29 @@ lib/strstr                 .text    3478A  347F5  lib=MLIBCE.LIB:strstr.asm
 lib/fltusedc               .text    347F6  3480A  lib=MLIBCE.LIB:fltusedc.asm
 lib/fltusedc               .data    3EC04  3EC18  lib=MLIBCE.LIB:fltusedc.asm
 lib/ccall                  .text    3480A  34DD6  lib=MLIBCA.LIB:ccall.asm
+lib/ccall                  .data    3EC18  3EC35  lib=MLIBCA.LIB:ccall.asm
 lib/ccallq                 .text    34DD6  34E59  lib=MLIBCA.LIB:ccallq.asm
 lib/ctran                  .text    34E5A  34EA2  lib=MLIBCA.LIB:ctran.asm
+lib/ctran                  .data    3EC36  3EC4C  lib=MLIBCA.LIB:ctran.asm
 lib/xfld1                  .text    34EA2  34EAB  lib=MLIBCA.LIB:xfld1.asm
+lib/xfld1                  .data    3EC4C  3EC50  lib=MLIBCA.LIB:xfld1.asm
 lib/flrceil                .text    34EAC  34F2F  lib=MLIBCA.LIB:flrceil.asm
+lib/flrceil                .data    3EC50  3EC60  lib=MLIBCA.LIB:flrceil.asm
 lib/crt0msg                .text    34F30  34F52  lib=MLIBCE.LIB:crt0msg.asm
 lib/crt0msg                .data    3EC60  3EC64  lib=MLIBCE.LIB:crt0msg.asm
+lib/crt0msg                .data.MSG 3F358  3F3DA  lib=MLIBCE.LIB:crt0msg.asm
 lib/crt0fp                 .text    34F52  34F58  lib=MLIBCE.LIB:crt0fp.asm
-lib/chkstk                 .text    34F58  34F7C  lib=MLIBCE.LIB:chkstk.asm
-lib/chkstk                 .data    3EC64  3EC6A  lib=MLIBCE.LIB:chkstk.asm
+lib/crt0fp                 .data    3F3DA  3F409  lib=MLIBCE.LIB:crt0fp.asm
+lib/chkstk                 .text    34F58  34F7C  lib=MLIBCE.LIB:chkstk.asm@2
+lib/chkstk                 .data    3EC64  3EC6A  lib=MLIBCE.LIB:chkstk.asm@2
 lib/chksum                 .text    34F7C  34FA0  lib=MLIBCE.LIB:chksum.asm
+lib/chksum                 .data.NULL 3B870  3B8B2  lib=MLIBCE.LIB:chksum.asm
+lib/chksum                 .data.MSG 3F409  3F42E  lib=MLIBCE.LIB:chksum.asm
 lib/stdargv                .text    34FA0  3512E  lib=MLIBCE.LIB:stdargv.asm
 lib/stdargv                .data    3EC6A  3EC6E  lib=MLIBCE.LIB:stdargv.asm
 lib/stdenvp                .text    3512E  351AB  lib=MLIBCE.LIB:stdenvp.asm
 lib/nmsghdr                .text    351AC  3520D  lib=MLIBCE.LIB:nmsghdr.asm
+lib/nmsghdr                .data    3F350  3F358  lib=MLIBCE.LIB:nmsghdr.asm
 lib/dosret                 .text    3520E  35263  lib=MLIBCE.LIB:dosret.asm
 lib/dosret                 .data    3EC6E  3EC82  lib=MLIBCE.LIB:dosret.asm
 lib/farstub                .text    35264  35265  lib=MLIBCE.LIB:farstub.asm
@@ -160,6 +194,7 @@ lib/write                  .text    36614  36754  lib=MLIBCE.LIB:write.asm
 lib/stackava               .text    36754  36768  lib=MLIBCE.LIB:stackava.asm
 lib/nmalloc                .text    36768  367C4  lib=MLIBCE.LIB:nmalloc.asm
 lib/nmalloc                .data    3EE34  3EE38  lib=MLIBCE.LIB:nmalloc.asm
+lib/cmiscdat               .data    3EE38  3EE5A  lib=MLIBCA.LIB:cmiscdat.asm
 lib/strcat                 .text    367C4  36803  lib=MLIBCE.LIB:strcat.asm
 lib/strcpy                 .text    36804  36836  lib=MLIBCE.LIB:strcpy.asm
 lib/strlen                 .text    36836  36851  lib=MLIBCE.LIB:strlen.asm
@@ -167,15 +202,27 @@ lib/atox                   .text    36852  368A6  lib=MLIBCE.LIB:atox.asm
 lib/itoa                   .text    368A6  368C1  lib=MLIBCE.LIB:itoa.asm
 lib/memcpy                 .text    368C2  368EE  lib=MLIBCE.LIB:memcpy.asm
 lib/fcall                  .text    368EE  369A3  lib=MLIBCA.LIB:fcall.asm
+lib/fcall                  .data    3EF5C  3F0E0  lib=MLIBCA.LIB:fcall.asm
 lib/ixconv                 .text    369A3  36D76  lib=MLIBCA.LIB:ixconv.asm
+lib/ixconv                 .data    3F0E0  3F0E8  lib=MLIBCA.LIB:ixconv.asm
 lib/ixcomp                 .text    36D76  36E2E  lib=MLIBCA.LIB:ixcomp.asm
 lib/b4math                 .text    36E2E  37128  lib=MLIBCA.LIB:b4math.asm
+lib/b4math                 .data    3F0E8  3F0F3  lib=MLIBCA.LIB:b4math.asm
 lib/b8math                 .text    37128  376E8  lib=MLIBCA.LIB:b8math.asm
+lib/b8math                 .data    3F0F4  3F113  lib=MLIBCA.LIB:b8math.asm
 lib/bxsqr                  .text    376E8  377BC  lib=MLIBCA.LIB:bxsqr.asm
 lib/xxtrig                 .text    377BC  3789B  lib=MLIBCA.LIB:xxtrig.asm
+lib/xxtrig                 .data    3F114  3F16F  lib=MLIBCA.LIB:xxtrig.asm
 lib/ccalle                 .text    3789C  37908  lib=MLIBCA.LIB:ccalle.asm
+lib/ccalle                 .data    3F170  3F17A  lib=MLIBCA.LIB:ccalle.asm
+lib/ccalle                 .data.MSG 3F42E  3F4A6  lib=MLIBCA.LIB:ccalle.asm
 lib/cdisp                  .text    37908  37A5A  lib=MLIBCA.LIB:cdisp.asm
+lib/cdisp                  .data    3F17A  3F1A6  lib=MLIBCA.LIB:cdisp.asm
+lib/cdisp                  .data.MSG 3F4A6  3F4D9  lib=MLIBCA.LIB:cdisp.asm
 lib/cvt                    .text    37A5A  37F4A  lib=MLIBCA.LIB:cvt.c
+lib/cvt                    .data    3F1A6  3F1B1  lib=MLIBCA.LIB:cvt.c
+lib/cvt                    .rodata  3F348  3F350  lib=MLIBCA.LIB:cvt.c
+lib/cvt                    .bss     41B8C  41B8E  lib=MLIBCA.LIB:cvt.c
 lib/stdalloc               .text    37F4A  37F6F  lib=MLIBCE.LIB:stdalloc.asm
 lib/_cflush                .text    37F70  37F86  lib=MLIBCE.LIB:_cflush.asm
 lib/_getbuf                .text    37F86  37FC9  lib=MLIBCE.LIB:_getbuf.asm
@@ -196,7 +243,9 @@ lib/wrt2err                .text    385CE  385E9  lib=MLIBCE.LIB:wrt2err.asm
 lib/almul                  .text    385EA  3860A  lib=MLIBCE.LIB:almul.asm
 lib/alshl                  .text    3860A  38627  lib=MLIBCE.LIB:alshl.asm
 lib/xxhelp                 .text    38627  3874F  lib=MLIBCA.LIB:xxhelp.asm
+lib/xxhelp                 .data    3F1B8  3F1E0  lib=MLIBCA.LIB:xxhelp.asm
 lib/xxcomm                 .text    3874F  387BB  lib=MLIBCA.LIB:xxcomm.asm
+lib/xxcomm                 .data    3F1E0  3F1F8  lib=MLIBCA.LIB:xxcomm.asm
 lib/cfout                  .text    387BC  38802  lib=MLIBCE.LIB:cfout.asm
 lib/cfout                  .data    3F1F8  3F21B  lib=MLIBCE.LIB:cfout.asm
 lib/matherr                .text    38802  38811  lib=MLIBCE.LIB:matherr.asm
@@ -204,9 +253,13 @@ lib/closeall               .text    38812  38838  lib=MLIBCE.LIB:closeall.c
 lib/d_commit               .text    38838  38845  lib=MLIBCE.LIB:d_commit.asm
 lib/lshl                   .text    38846  38851  lib=MLIBCE.LIB:lshl.asm
 lib/i8fout                 .text    38851  389D6  lib=MLIBCA.LIB:i8fout.asm
+lib/i8fout                 .data    3F22A  3F247  lib=MLIBCA.LIB:i8fout.asm
 lib/cfin                   .text    389D6  38A40  lib=MLIBCA.LIB:cfin.asm
+lib/cfin                   .data    3F248  3F25A  lib=MLIBCA.LIB:cfin.asm
 lib/i8fin                  .text    38A40  38D82  lib=MLIBCA.LIB:i8fin.asm
+lib/i8fin                  .data    3F25A  3F27D  lib=MLIBCA.LIB:i8fin.asm
 lib/i8tmul                 .text    38D82  38F0C  lib=MLIBCA.LIB:i8tmul.asm
+lib/i8tmul                 .data    3F27E  3F28E  lib=MLIBCA.LIB:i8tmul.asm
 lib/getch                  .text    38F0C  38F38  lib=MLIBCE.LIB:getch.asm
 lib/getch                  .data    3F28E  3F290  lib=MLIBCE.LIB:getch.asm
 lib/tell                   .text    38F38  38F50  lib=MLIBCE.LIB:tell.c
@@ -216,21 +269,12 @@ lib/stricmp                .text    3901E  39060  lib=MLIBCE.LIB:stricmp.asm
 lib/strdup                 .text    39060  39088  lib=MLIBCE.LIB:strdup.asm
 lib/mlibce_strupr          .text    39088  390A6  lib=MLIBCE.LIB:strupr.asm
 lib/access                 .text    390A6  390C5  lib=MLIBCE.LIB:access.asm
-asm/t390D0                 .text    390D0  390DF
-far/seg003                 .data    390E0  3B0E0
-far/seg004                 .data    3B0E0  3B3E0
 far/seg005                 .data    3B3E0  3B870
-data/d3B870                .data    3B870  3B8B2
-data/d3CF58                .data    3CF58  3CF5A
-data/d3D5C8                .data    3D5C8  3D838
-data/d3E9B2                .data    3E9B2  3EB68
-data/d3EC18                .data    3EC18  3EC60
-data/d3EC82                .data    3EC82  3EDC4
-data/d3EE38                .data    3EE38  3F1B6
-data/d3F1B8                .data    3F1B8  3F1F8
-data/d3F21B                .data    3F21B  3F28E
+data/d3F225                .data    3F225  3F22A
 data/d3F290                .rodata  3F290  3F2B8
-data/d3F348                .rodata  3F348  3F502
-data/d3F502                .bss     3F502  41B7C
-data/d41B96                .bss     41B96  48360
+data/d3F4D9                .rodata  3F4D9  3F502
+data/d41C20                .bss     41C20  48360
 data/stack                 .bss     48360  49650
+lib/_file                  .data    3EC82  3EDC4  lib=MLIBCA.LIB:_file.c
+lib/ctype                  .data    3EE5A  3EF5B  lib=MLIBCA.LIB:ctype.asm
+lib/huge                   .data    3F21C  3F225  lib=MLIBCA.LIB:huge.asm

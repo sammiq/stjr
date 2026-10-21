@@ -91,6 +91,11 @@ def convert(mod: omf.Module, unit: str | None = None) -> ElfWriter:
             continue
         secname[seg.index] = name
         bss = name.startswith(".bss") or not any(seg.initialized)
+        if bss and name == ".data":
+            # an uninitialised _DATA (runtime scratch variables) still sits in
+            # the EXE's _DATA, as zeros
+            bss = False
+            seg.data = bytearray(seg.data) + bytes(max(0, seg.length - len(seg.data)))
         if bss and not name.startswith(".bss"):
             name = f".bss.{seg.name}"
         if not name.startswith(".text"):
@@ -113,6 +118,10 @@ def convert(mod: omf.Module, unit: str | None = None) -> ElfWriter:
         kind = "func" if sec.startswith(".text") else "object"
         for i, p in enumerate(pubs):
             end = pubs[i + 1].offset if i + 1 < len(pubs) else seg.length
+            if kind == "object":
+                # names sharing an address (__osversion, __dosvermajor) all
+                # get the variable's size
+                end = next((q.offset for q in pubs[i + 1:] if q.offset > p.offset), seg.length)
             if kind == "func" and end - p.offset > 1 and seg.data[end - 1] == 0x90:
                 end -= 1        # the nop that word-aligns the next function (tools/split.py too)
             w.add_symbol(p.name, sec, p.offset, end - p.offset, kind, local=p.local)
@@ -126,9 +135,31 @@ def convert(mod: omf.Module, unit: str | None = None) -> ElfWriter:
         for f in seg.fixups:
             _apply_fixup(w, mod, seg, sec, own_group, f, secname, public_loc)
     lits = literal_offsets(unit) if unit else None
+    if unit and any(n.startswith(".bss") for n in w.sections):
+        _name_statics(w, unit)
     unit = module_basename(mod.name).rsplit(".", 1)[0]
     _name_data_targets(w, unit, lits)
     return w
+
+
+def _name_statics(w: ElfWriter, unit: str) -> None:
+    """Name the file's statics (its _BSS, and far statics in its own far
+    segment) as config/symbols.txt names the unit's .bss ranges, so they pair
+    with the target's variables. The object itself has no names for them."""
+    from project import UNITS, SymbolTable, load_units
+    u = next((x for x in load_units(UNITS) if x.name == unit), None)
+    if u is None:
+        return
+    table = SymbolTable.load()
+    for sec, (lo, hi) in u.ranges.items():
+        if not sec.startswith(".bss") or sec not in w.sections:
+            continue
+        size = w.sections[sec].size
+        syms = sorted((s.addr - lo, s.name) for s in table.in_range(lo, hi)
+                      if s.kind == "data" and s.addr - lo < size)
+        for i, (off, name) in enumerate(syms):
+            end = syms[i + 1][0] if i + 1 < len(syms) else size
+            w.add_symbol(name, sec, off, end - off, "object", local=False)
 
 
 def _long_literal(data, off: int) -> bool:
@@ -269,15 +300,17 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument("input", help="OMF .OBJ or .LIB")
     ap.add_argument("output", help="output ELF .o")
-    ap.add_argument("--module", help="module name to extract from a LIB")
+    ap.add_argument("--module", help="module name to extract from a LIB (name@N: the Nth of that name)")
     args = ap.parse_args()
     mods = omf.load(args.input)
+    nth = 1
     if args.module:
-        want = args.module.lower()
+        want, _, n = args.module.lower().partition("@")
+        nth = int(n) if n else 1
         mods = [m for m in mods if want in (m.name.lower(), module_basename(m.name))]
-        if not mods:
+        if len(mods) < nth:
             sys.exit(f"omf2elf: module {args.module} not found in {args.input}")
-    convert(mods[0]).write(args.output)
+    convert(mods[nth - 1]).write(args.output)
 
 
 if __name__ == "__main__":

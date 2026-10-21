@@ -11,6 +11,9 @@ void Fatal(char *fmt, ...);
 /* Scale a bitmap by scale/256, returning a new bitmap. When both bitmaps
  * are in EMS they can't be mapped at once, so the new one is built in
  * backbuf and copied over afterwards. */
+static char scale_code[0x502];          /* the row scaler BuildScaler writes */
+static char scale_row[320];             /* one scaled row */
+
 MemHandle ScaleBitmap(MemHandle handle, int scale)
 {
     char far *srcrow;

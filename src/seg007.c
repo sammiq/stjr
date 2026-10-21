@@ -12,7 +12,7 @@
 #include "gfx.h"
 
 unsigned char cur_palette[768];
-unsigned char remap_table[256];
+static unsigned char remap_table[256];
 int fade_level;
 
 void Fatal(char *fmt, ...);     /* fatal error */
@@ -485,7 +485,7 @@ void FadeDown(void)
 
 void sub_1BCC2(void)
 {
-    cur_palette[15] = cur_palette[16] = cur_palette[17] = 0x3F;
+    cur_palette[0x17] = cur_palette[0x16] = cur_palette[0x15] = 0x3F;
 }
 
 /* Show pal at level percent of the way from fade_rgb. */

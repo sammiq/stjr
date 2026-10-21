@@ -38,7 +38,6 @@
 	PUBLIC	_sqrt_table
 	PUBLIC	_sub_2A8E1
 	PUBLIC	_sub_2A8FE
-	PUBLIC	_mve_frame
 
 	.DATA
 	EXTRN	_clip_rect:BYTE
@@ -97,8 +96,6 @@ _joy_frac_y	LABEL	BYTE
 	DB	000h, 000h
 _joy_frame	LABEL	BYTE
 	DB	000h, 000h, 000h
-_mve_frame	LABEL	BYTE
-	DB	000h, 000h
 
 	.CODE
 L_TEXT	LABEL	BYTE

@@ -446,3 +446,68 @@
 13558  _player_ship+0xd8   # FireWeapons
 1355F  _player_ship+0x1a4   # FireWeapons
 2DFE8  aEmpty_1920   # CfgOpen
+# Near pointers in the runtime's _DATA
+3F0DE  __fctmp+0xe   # fcall: $i8_result
+3EB6A  __exit        # crt0: __aexit_rtn
+# ccall: OpTab, the arithmetic helpers by operation
+3EC18  $i4_add
+3EC1A  $i8_add
+3EC1C  $i4_sub
+3EC1E  $i8_sub
+3EC20  $i4_subrev
+3EC22  $i8_subrev
+3EC24  $i4_mul
+3EC26  $i8_mul
+3EC28  $i4_div
+3EC2A  $i8_div
+3EC2C  $i4_divrev
+3EC2E  $i8_divrev
+3EC30  $i4_cmp
+3EC32  $i8_cmp
+3EBCE  __pgmptr+0x4   # crt0dat: __pgmptr (offset; the segment word is DGROUP)
+3EC68  __end+0x100   # chkstk: _STKHQQ, the stack limit
+# _file: stdprn's buffer pointers, and __lastiob
+3EC9A  __iob2+0x19
+3EC9E  __iob2+0x19
+3EDC2  __iob+0x98
+# WaitAction returns its Event in a static buffer
+206B8  $WaitAction_ret
+206C4  $WaitAction_ret
+206DB  $WaitAction_ret
+# constants asmgen took for DGROUP offsets (aMrSulu is 320, the screen width)
+2EB98  none   # seg028
+2F7A0  none   # seg028
+2F8AA  none   # seg028
+2F8C2  none   # seg028
+2F8D4  none   # seg028
+2F8EC  none   # seg028
+32B19  none   # mvelib
+32E54  none   # mvelib
+32E67  none   # mvelib
+32F53  none   # mvelib
+32F89  none   # mvelib
+32FB1  none   # mvelib
+33001  none   # mvelib
+33029  none   # mvelib
+33077  none   # mvelib
+3307D  none   # mvelib
+32864  mve_palette   # mvelib: lea di, mve_palette (offset 0 of its far segment)
+# seg024: the scaler buffers (its statics)
+2A22B  _scale_code
+2A281  _scale_code
+2A289  _scale_row
+2A298  _scale_row
+2A300  _scale_code
+2A30A  _scale_row
+2A31D  _scale_row
+# seg001: &space_bmp
+12713  _space_bmp
+1278A  _space_bmp
+# seg013: InitMemHandles
+22D0A  _mem__handle_tbl
+# seg001: BridgeScreen, the bridge bitmaps' headers
+12835  _bhdr1
+1284A  _bhdr2
+1285F  _bhdr3
+128CE  _bhdr4
+128E3  _bhdr5

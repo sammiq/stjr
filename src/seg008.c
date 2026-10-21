@@ -19,7 +19,6 @@
 #include "actor.h"
 #include "room.h"
 
-RoomState room;
 
 int MenuWait();
 int ItemGive();
@@ -134,8 +133,6 @@ Msg msg_queue[16];
 extern int msg_head;
 int msg_tail;
 MemHandle map_handle;
-Sprite item_sprite;
-Sprite inv_sprite;
 extern int word_51156;
 extern MemHandle talk_handle;           /* the room's conversations */
 extern char far *talk_data;             /* locked */
@@ -212,32 +209,19 @@ extern int mission_max;
 extern int mission_score;
 extern unsigned char sfx_vol_next;
 extern unsigned char sfx_pan_next;
-extern char bg_name[10];
-extern char pri_name[10];
-extern char map_name[10];
 extern Rect screen_rect;
 extern unsigned char far *screen_base;
 extern unsigned char cur_palette[];
 extern int fade_level;
 int VoiceMode(void);                    /* the speech/text setting */
-int show_text;                          /* show the box's text */
-int voice_only;                         /* only the voice is playing */
 extern int word_3CE3A;
 extern char cd_path[];
 int PlayDigiSfx(char *name, int vol, int pan, int loop);   /* seg015 */
 extern char byte_47A87;                 /* busy: the wait pointer */
 extern char byte_47A86;                 /* the crew can't walk */
-extern unsigned char room_action;       /* 1 walk, 2 use, 3 get, 4 look, 5 talk */
-extern unsigned char room_target;       /* object acted on */
-extern unsigned char room_target2;      /* used on this */
-int hit_valid;                          /* the object hit has a walk-to point */
-int cur_exit;
-Timer timers[31];                       /* deferred actions */
 void WalkActorTo(int n, int a, int b, int x, int y, unsigned msg);  /* seg000 */
 extern int room_timers[8];
 int AnyActorBusy(void);
-int hit_x;
-int hit_y;
 
 int HasScript(unsigned char a, unsigned char b, unsigned char c);
 int FindScript(unsigned char test, unsigned char wild, unsigned char a, unsigned char b,
@@ -251,9 +235,25 @@ typedef struct Gate {
     unsigned table;             /* 02 */
     int unk04;                  /* 04 */
 } Gate;
+static char bg_name[10];
+static char pri_name[10];
+static char map_name[10];
+static Sprite item_sprite;
+static Sprite inv_sprite;
+static int hit_valid;                          /* the object hit has a walk-to point */
+static int hit_x;
+static int hit_y;
+static Timer timers[31];                       /* deferred actions */
+static int show_text;                          /* show the box's text */
+static int voice_only;                         /* only the voice is playing */
+static unsigned char room_action;              /* 1 walk, 2 use, 3 get, 4 look, 5 talk */
+static unsigned char room_target;              /* object acted on */
+static unsigned char room_target2;             /* used on this */
+static Gate gates[7];
+static int ngates;
+static int cur_exit;
+static char item_name[10];
 
-extern Gate gates[7];
-extern int ngates;
 extern int cur_source;
 extern MemHandle global_handle;
 extern MemHandle mission_handle;
@@ -3462,3 +3462,99 @@ void HideInvIcon(void)
     }
 }
 
+/* Let the player point at the room's objects with the push button
+ * pointer until a click or Enter. off is the offset in the talk data of
+ * n pairs of an object and the offset of the name of the bitmap to show
+ * while the pointer is on it. Returns the object pointed at last. */
+/* (98.92%: the target loads bmp into si for the cleanup after done.) */
+unsigned sub_20AD4(int off, int n)
+{
+    Sprite label;
+    char name[16];
+    Event ev;
+    MemHandle blank;
+    MemHandle bmp;
+    char far *data;
+    int far *tab;
+    int obj;
+    int i;
+    int last;
+    MemHandle x;
+
+    bmp = 0;
+    ReleaseBitmap(mouse_sprite.handle);
+    SpriteSetBitmap(&mouse_sprite, LoadBitmap("pushbtn"));
+    n *= 2;
+    blank = LoadBitmap("blank");
+    SpriteInit(&label);
+    AddSprite(&label);
+    last = 0;
+    SpriteSetPos(&label, 0, 0, 14);
+    SpriteSetBitmap(&label, blank);
+    for (;;) {
+        if (!GetEvent(&ev))
+            continue;
+        switch (ev.type) {
+        case EV_TICK:
+            UpdateActors();
+            DrawBans();
+            UpdateSprites();
+            UpdateBans();
+            MusicTick();
+            break;
+        case EV_MOVE:
+            SpriteSetPos(&mouse_sprite, ev.x, ev.y, 15);
+            obj = FindObject(ev.x, ev.y);
+            if (obj == last)
+                break;
+            if (bmp) {
+                ReleaseBitmap(bmp);
+                bmp = 0;
+                SpriteSetBitmap(&label, blank);
+            }
+            data = LockMem(talk_handle);
+            tab = (int far *)(data + off);
+            for (i = 0; i != n; i += 2) {
+                if (tab[i] == obj) {
+                    if (tab[i + 1]) {
+                        _fstrcpy(name, data + tab[i + 1]);
+                        UnlockMem(talk_handle);
+                        data = 0;
+                        bmp = LoadBitmap(name);
+                        SpriteSetBitmap(&label, bmp);
+                    }
+                    break;
+                }
+            }
+            last = obj;
+            if (data)
+                UnlockMem(talk_handle);
+            break;
+        case EV_DOWN1:
+            goto done;
+        case EV_KEY:
+            if (((unsigned)ev.key >> 8) == 0x1C)
+                goto done;
+            break;
+        }
+    }
+done:
+    x = bmp;
+    SpriteErase(&label);
+    UpdateSprites();
+    DelSprite(&label);
+    if (bmp)
+        ReleaseBitmap(bmp);
+    ReleaseBitmap(blank);
+    return last;
+}
+
+/* The 9 character name at off in the talk data. */
+char *ItemName(int off)
+{
+    talk_data = LockMem(talk_handle);
+    MemCpy(item_name, talk_data + off, 10);
+    item_name[9] = 0;
+    UnlockMem(talk_handle);
+    return item_name;
+}

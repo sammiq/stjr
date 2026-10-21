@@ -54,7 +54,7 @@ typedef struct WalkGraph {
     unsigned char next[32][32];     /* next node from a towards b */
 } WalkGraph;
 
-WalkGraph walk;
+static WalkGraph walk;
 
 void SaveActors(void);
 void LoadActors(void);

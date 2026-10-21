@@ -163,13 +163,14 @@ Episode episodes[8] = {
 };
 int grade_sum = 0;
 
-int space_ip;                           /* where the script called SpaceCmd */
-unsigned space_sp;                      /* the stack when a script was called */
-int space_w2;
-RoomState saved_room;                   /* the episode's, during a random encounter */
-int saved_ip;
-jmp_buf space_jmp;
-Sprite crew_sprite;                     /* a crew member shown over the bridge */
+static int space_ip;                           /* where the script called SpaceCmd */
+static unsigned space_sp;                      /* the stack when a script was called */
+static int space_w2;
+static RoomState saved_room;                   /* the episode's, during a random encounter */
+static int saved_ip;
+static jmp_buf space_jmp;
+static Sprite crew_sprite;                     /* a crew member shown over the bridge */
+static int grades[8];                         /* each episode's rating (0 to 4) */
 int grades[8];                         /* each episode's rating (0 to 4) */
 
 void SpaceSave(void)

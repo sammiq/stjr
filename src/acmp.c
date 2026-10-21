@@ -25,7 +25,7 @@ typedef struct AcmpState {
     unsigned long remain;               /* 21C samples left */
 } AcmpState;
 
-AcmpState acmp_cur;
+static AcmpState acmp_cur;
 AcmpState far *acmp_owner = 0;          /* whose state acmp_cur holds */
 
 #define cur acmp_cur
@@ -333,16 +333,15 @@ void AcmpOpen(AcmpState far *s, void far *ctx, unsigned (far *read)(void far *, 
     int a;
     int b;
     int c;
-    int d;
 
     AcmpSelect(s);
     AcmpSetReader(ctx, read);
     cur.outlen = 0;
     cur.prev = 0x80;
     cur.remain = a = GETBYTE();
-    cur.remain |= (long)(b = GETBYTE()) << 8;
-    cur.remain |= (long)(c = GETBYTE()) << 16;
-    cur.remain |= (long)(d = GETBYTE()) << 24;
+    cur.remain |= (long)(a = GETBYTE()) << 8;
+    cur.remain |= (long)(b = GETBYTE()) << 16;
+    cur.remain |= (long)(c = GETBYTE()) << 24;
 }
 
 /* Decode up to n samples of s into buf: how many. */

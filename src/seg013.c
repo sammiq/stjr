@@ -7,12 +7,12 @@
 #include "mem.h"
 
 /* Globals this file owns (declared in the headers). */
-MemSlot mem__handle_tbl[MEM_MAX_HANDLES];
 PoolHdr far *lpPoolStart;
 unsigned pool_free_mem;
 PoolHdr far *lpPoolCurrent;
 PoolHdr far *lpPoolEnd;
-MemSlot *mem_handle_free_list;
+static MemSlot mem__handle_tbl[MEM_MAX_HANDLES];
+static MemSlot *mem_handle_free_list;
 
 extern unsigned _aseghi;    /* C runtime: highest segment in use */
 

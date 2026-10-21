@@ -144,7 +144,9 @@ void DrawGauges(void);
 void CrewMenu(char *name, int x, int y);
 void BridgeMsg(void);
 void SetViewDir(void);
-extern Matrix cam_rel;
+static Sprite radar_sprite;
+static int word_537AE;                         /* the blip's position */
+static Matrix cam_rel;
 void CrewOrder(int cmd);
 void TrackTarget(void);
 int StarMapGo(void);
@@ -209,8 +211,6 @@ extern float star_near;
 extern int fade_level;
 int msg_head;
 extern int msg_tail;
-int word_537AE;
-Sprite radar_sprite;
 Sprite bspr1;
 Sprite bspr2;
 Sprite bspr3;
@@ -269,13 +269,11 @@ unsigned long bridge_ticks;
 
 Obj3D *last_target;
 
-char *word_531D8;
 
 Sprite cut_sprite;
 
-int encounter_kind;             /* encounter: 1 Klingon, 2 Romulan, 3 Elasi */
 int bridge_tick;                /* a cutscene is running (ST25: the bridge tick function) */
-int cut_skip;                   /* skip the cutscene */
+extern int cut_skip;            /* skip the cutscene */
 
 char *crew_names[8] = {
     "Captain Kirk", "Mr. Spock", "Dr. McCoy", "Security Officer",
@@ -1855,7 +1853,7 @@ void CutSceneTick(void)
     }
 }
 
-char *text_buf = 0;
+int cut_skip = 0;
 Point weapon_pos[4] = { { 0xC4, 0x10 }, { 0xC2, 0x14 }, { 0x5A, 0x10 }, { 0x5C, 0x14 } };
 Point engine_pos[2] = { { 0x8C, 0x0D }, { 0x8C, 0x10 } };
 int word_3BEC0[4] = { 0 };

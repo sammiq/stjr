@@ -23,7 +23,7 @@ typedef struct DBList {
     char names[32][8];
 } DBList;
 
-char input_buf[26];
+static char input_buf[26];
 
 /* List box callback: put the title of topic idx in out ("R: title") and
  * return its text, from <name>.db, after playing its voice tag. */

@@ -16,7 +16,6 @@ extern Bitmap far *screen;          /* the background without sprites */
 void LockScreen(void);               /* seg012 */
 void UnlockScreen(void);
 extern unsigned char far *mask_buf; /* EGA priority mask, 2 pixels a byte */
-unsigned char palette[256][3];
 
 int sprite_count0 = 0;
 Sprite **sprite_list = sprite_array;

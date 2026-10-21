@@ -132,6 +132,8 @@ int CfgOpen(char *name);                /* cfg */
 char *CfgGet(char *key, char *out);
 void CfgClose(void);
 
+MemHandle space_bmp_handle = 0;          /* the space view's bitmap (seg001) */
+
 /* Ctrl-C: ignored (and re-armed). New in the sequel. */
 void BreakHandler(int sig)
 {

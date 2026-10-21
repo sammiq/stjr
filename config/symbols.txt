@@ -1287,6 +1287,8 @@
 39088  func   00001E  __strupr  lib
 390A6  func   00001F  __access  lib
 390D0  func   00000F  _sub_390D0  near
+390E0  data   002000  _mix_buf
+3B0E0  data   000300  mve_palette
 3B3E0  data   000244  _voice_stream
 3B624  data   000244  _sfx_stream
 3B870  data   000002  _byte_3B870
@@ -1418,7 +1420,9 @@
 3BE94  data   000007  aTeled
 3BE9B  data   000006  aBlank
 3BEA1  data   000005  aBmp_1
-3BEA6  data   000022  _cut_skip
+3BEA6  data   000002  _cut_skip
+3BEA8  data   000010  _weapon_pos
+3BEB8  data   000008  _engine_pos
 3BEC8  data   000004  aBmp_2
 3BECC  data   000008  aPhasind
 3BED4  data   000006  aBlank_0
@@ -1710,7 +1714,7 @@
 3CF42  data   000006  aBlank_1
 3CF48  data   00000C  _start_items
 3CF54  data   000004  aBmp_6
-3CF58  data   000002  _word_3CF58
+3CF58  data   000002  _space_bmp_handle
 3CF5A  data   000006  aBlank_2
 3CF60  data   000007  aBridge_3
 3CF67  data   000007  aTeled_1
@@ -1854,7 +1858,8 @@
 3D585  data   000033  aGetanyfileExces_0
 3D5B8  data   000007  aS02x
 3D5BF  data   000004  aR3s
-3D5C3  data   0003BF  aBmp_10
+3D5C3  data   000005  aBmp_10
+3D5C8  data   000270  _view_tab
 3D838  data   00000C  _ai_moves
 3D844  data   00003C  _dmg_t0
 3D880  data   000018  _dmg_t1
@@ -2044,14 +2049,26 @@
 3E9B2  data   000002  _word_3E9B2
 3E9B4  data   000002  _word_3E9B4
 3E9B6  data   000002  _word_3E9B6
-3E9B8  data   000018  _word_3E9B8
+3E9B8  data   000002  _word_3E9B8
+3E9BA  data   000016  aInterplayMveFil
 3E9D0  data   000002  _word_3E9D0
-3E9D2  data   000002  _dword_3E9D2
-3E9D4  data   000002  _word_3E9D4
+3E9D2  data   000004  _dword_3E9D2
 3E9D6  data   000002  _word_3E9D6
 3E9D8  data   000002  _word_3E9D8
-3E9DA  data   000002  _word_3E9DA
-3E9DC  data   00018C  _word_3E9DC
+3E9DA  data   000004  _dword_3E9DA
+3E9DE  data   000020  aMovieAbortedWit
+3E9FE  data   00000E  aMovieAborted
+3EA0C  data   000019  aMovieCompletedN
+3EA25  data   00001C  aUnknownMovieErr
+3EA41  data   000031  aFileIOErrorOrUn
+3EA72  data   000017  aUnableToCreateT
+3EA89  data   000021  aUnableToAllocat
+3EAAA  data   000021  aUnableToAllocat_0
+3EACB  data   000029  aInsufficientScr
+3EAF4  data   00002C  aUnableToSetupGr
+3EB20  data   000013  aInvalidMovieFil
+3EB33  data   00001C  aIncorrectScreen
+3EB4F  data   000019  aUnknownMovieErr_0
 3EB68  data   000002  __atopsp  lib
 3EB6A  data   000002  __aexit_rtn  lib
 3EB6C  data   000002  __asizds  lib
@@ -2060,10 +2077,8 @@
 3EB84  data   000002  __aseglo  lib
 3EB86  data   000002  __fDosExt  lib
 3EB88  data   00000E  __acfinfo  lib
-3EB96  data   000002  __aintdiv  lib
-3EB98  data   000002  _word_3EB98
-3EB9A  data   000007  __fac  lib
-3EBA1  data   000003  _byte_3EBA1
+3EB96  data   000004  __aintdiv  lib
+3EB9A  data   00000A  __fac  lib
 3EBA4  data   000002  _errno  lib
 3EBA6  data   000002  __umaskval  lib
 3EBA8  data   000002  __pspadr  lib
@@ -2078,8 +2093,7 @@
 3EBC8  data   000002  ___argc  lib
 3EBCA  data   000002  ___argv  lib
 3EBCC  data   000002  __environ  lib
-3EBCE  data   000002  __pgmptr  lib
-3EBD0  data   000003  _word_3EBD0
+3EBCE  data   000005  __pgmptr  lib
 3EBD3  data   000002  __child  lib
 3EBD5  data   000001  __ovlflag  lib
 3EBD6  data   000001  __intno  lib
@@ -2089,18 +2103,13 @@
 3EBE2  data   000002  _word_3EBE2
 3EBE4  data   000002  _word_3EBE4
 3EBE6  data   000002  _word_3EBE6
-3EBE8  data   000002  __csigtab0  lib
-3EBEA  data   000016  _word_3EBEA
-3EC00  data   000002  _word_3EC00
-3EC02  data   000016  _word_3EC02
-3EC18  data   00001C  OpTab  lib
-3EC34  data   000003  _byte_3EC34
+3EBE8  data   00001C  __csigtab0  lib
+3EC18  data   00001D  OpTab  lib
 3EC37  data   000006  aSqrt
 3EC3D  data   000005  aSin
 3EC42  data   000005  aCos
-3EC47  data   000019  aTan
-3EC60  data   000002  __adbgmsg  lib
-3EC62  data   000002  _word_3EC62
+3EC47  data   000005  aTan
+3EC60  data   000004  __adbgmsg  lib
 3EC64  data   000004  __aaltstkovr  lib
 3EC68  data   000002  _STKHQQ  lib
 3EC6A  data   000002  _word_3EC6A
@@ -2109,49 +2118,26 @@
 3ED22  data   0000A0  __iob2  lib
 3EDC2  data   000008  __lastiob  lib
 3EE31  data   000003  _word_3EE31
-3EE34  data   000002  __pnhNearHeap  lib
-3EE36  data   000002  _word_3EE36
-3EE38  data   000004  __cfltcvt_tab  lib
-3EE3C  data   000004  _dword_3EE3C
-3EE40  data   000004  _dword_3EE40
-3EE44  data   000008  _dword_3EE44
-3EE4C  data   000004  _dword_3EE4C
-3EE50  data   000004  _dword_3EE50
+3EE34  data   000004  __pnhNearHeap  lib
+3EE38  data   00001C  __cfltcvt_tab  lib
 3EE54  data   000002  __sigintseg  lib
-3EE56  data   000106  __sigintoff  lib
-3EF5C  data   000002  __fpsigadr  lib
-3EF5E  data   000002  _word_3EF5E
+3EE56  data   000002  __sigintoff  lib
+3EE58  data   000001  __asizeC  lib
+3EE59  data   000001  __asizeD  lib
+3EF5C  data   000004  __fpsigadr  lib
 3EF60  data   00016A  __fctmp  lib
 3F0CA  data   000014  __fctopst  lib
-3F0DE  data   00000A  $i8_result  lib
+3F0DE  data   000002  $i8_result  lib
 3F0E8  data   000001  $i4_round_flag  lib
 3F0E9  data   000001  $i4_round_exp  lib
-3F0EA  data   000001  _byte_3F0EA
 3F0EB  data   000002  $i4_ac_hi  lib
-3F0ED  data   000002  _word_3F0ED
-3F0EF  data   000005  $i4_ac_lo  lib
-3F0F4  data   000002  _word_3F0F4
-3F0F6  data   000002  _word_3F0F6
-3F0F8  data   000002  _word_3F0F8
-3F0FA  data   000002  _word_3F0FA
-3F0FC  data   000002  _word_3F0FC
-3F0FE  data   000002  _word_3F0FE
+3F0EF  data   000004  $i4_ac_lo  lib
 3F100  data   000001  $i8_round_flag  lib
 3F101  data   000002  $i8_round_exp  lib
 3F103  data   000008  $i8_ac_hi  lib
-3F10B  data   000009  $i8_ac_lo  lib
-3F114  data   000060  _byte_3F114
-3F174  data   000002  _word_3F174
-3F176  data   000002  _word_3F176
+3F10B  data   000008  $i8_ac_lo  lib
 3F178  data   000002  __fcsp  lib
-3F17A  data   000002  _word_3F17A
-3F17C  data   000019  _word_3F17C
-3F195  data   000010  _byte_3F195
-3F1A5  data   000001  _byte_3F1A5
-3F1A6  data   000002  _byte_3F1A6
-3F1A8  data   000002  _word_3F1A8
-3F1AA  data   000001  _byte_3F1AA
-3F1AB  data   000007  aE000
+3F1AB  data   000006  aE000
 3F1B2  data   000002  __cflush  lib
 3F1B4  data   000002  __commode  lib
 3F1B6  data   000002  __amblksiz  lib
@@ -2162,24 +2148,13 @@
 3F1D8  data   000008  $i8_temp  lib
 3F1E0  data   000008  $i8_z  lib
 3F1E8  data   000008  $i8_zz  lib
-3F1F0  data   00002C  $i8_pzz  lib
+3F1F0  data   000008  $i8_pzz  lib
 3F21C  data   000008  __HUGE  lib
 3F224  data   000003  __matherr_flag  lib
 3F227  data   000001  _byte_3F227
-3F228  data   000032  __lseekchk  lib
+3F228  data   000002  __lseekchk  lib
 3F25A  data   000001  $i8_input_ws  lib
-3F25B  data   000003  $i8_implicit_exp  lib
-3F25E  data   000002  _word_3F25E
-3F260  data   000002  _word_3F260
-3F262  data   000002  _word_3F262
-3F264  data   000002  _word_3F264
-3F266  data   000002  _word_3F266
-3F268  data   000002  _word_3F268
-3F26A  data   000002  _word_3F26A
-3F26C  data   000002  _word_3F26C
-3F26E  data   000002  _word_3F26E
-3F270  data   00000C  _word_3F270
-3F27C  data   000012  _byte_3F27C
+3F25B  data   000022  $i8_implicit_exp  lib
 3F28E  data   000002  __chbuf  lib
 3F290  data   000002  ___qczrinit  lib
 3F292  data   000002  ___aDBswpflg  lib
@@ -2194,11 +2169,12 @@
 3F2AA  data   000026  _word_3F2AA
 3F502  data   000482  _walk
 3F984  data   000034  _radar_sprite
-3F9B8  data   000014  _word_3F9B8
+3F9B8  data   000002  _word_537AE
 3F9BA  data   000012  _cam_rel
-3F9CC  data   00002C  _input_buf
+3F9CC  data   00001A  _input_buf
 3F9E6  data   00000A  _data_archive
 3F9F0  data   00000A  _mission_archive
+3F9FA  data   00002C  _patch_find
 3FA26  data   00000A  $bss_seg003_0000
 3FA30  data   00000A  $bss_seg003_000A
 3FA3A  data   00000A  $bss_seg003_0014
@@ -2207,7 +2183,7 @@
 40446  data   000002  _ems_rover
 40448  data   000002  _ems_free_list
 4044A  data   000004  _ems_free
-4044E  data   000001  _mouse_present
+4044E  data   000002  _mouse_present
 40450  data   000380  _ev_queue
 407D0  data   000002  _ev_read
 407D2  data   000002  _ev_write
@@ -2222,7 +2198,7 @@
 407E4  data   000002  _save_fp
 407E6  data   000016  _save_dir
 407FC  data   000050  _save_path
-4084C  data   000019  _save_desc
+4084C  data   00001A  _save_desc
 40866  data   000002  _save_version
 40868  data   000002  _load_arg
 4086A  data   000040  _cd_prompt
@@ -2235,7 +2211,7 @@
 40A30  data   000002  _hit_valid
 40A32  data   000002  _hit_x
 40A34  data   000002  _hit_y
-40A36  data   00009B  _timers
+40A36  data   00009C  _timers
 40AD2  data   000002  _show_text
 40AD4  data   000002  _voice_only
 40AD6  data   000001  _room_action
@@ -2245,16 +2221,19 @@
 40B04  data   000002  _ngates
 40B06  data   000002  _cur_exit
 40B08  data   00000A  _item_name
-40B12  data   000468  _byte_40B12
+40B12  data   00000E  $WaitAction_ret
+40B20  data   00005A  _bss_40B20
+40B7A  data   000400  _mem__handle_tbl
 40F7A  data   000002  _mem_handle_free_list
 40F7C  data   000002  _menu_count
 40F7E  data   000002  _menu_sel
-40F80  data   00004C  _menu_saved_accel
+40F80  data   000002  _menu_saved_accel
 40F82  data   000040  _sfx_name
+40FC2  data   00000A  _voice_name
 40FCC  data   000002  _sfx_vol
 40FCE  data   000002  _sfx_pan
 40FD0  data   000002  _sfx_loop
-40FD2  data   000002  _word_40FD2
+40FD2  data   000002  _voice_on
 40FD4  data   000002  _midi_handle
 40FD6  data   000004  _midi_suffix
 40FDA  data   000020  _seq_state
@@ -2262,17 +2241,22 @@
 4100A  data   000010  _seq_ids
 4101A  data   000009  _music_name
 41023  data   000001  _music_var
-41024  data   000009  _music_file
+41024  data   00000A  _music_file
 4102E  data   000050  _seq_nodes
 4107E  data   000008  _seq_list
 41086  data   000002  _suite_vol
 41088  data   000002  _suite_pan
+4108A  data   000020  _raws
 410AA  data   000018  _mixes
 410C2  data   000002  _timbre_cache_size
 410C4  data   000002  _suite_handle
+410C6  data   000002  _word_410C6
 410C8  data   000004  _sound_ticks
+410CC  data   000502  _scale_code
+415CE  data   000140  _scale_row
 4170E  data   000004  _mve_heap0
 41712  data   000004  _mve_heap1
+41716  data   000004  _dword_41716
 4171A  data   000002  _fade_cur
 4171C  data   000002  _fade_target
 4171E  data   000004  _fade_time
@@ -2286,8 +2270,8 @@
 41730  data   00012A  _saved_room
 4185A  data   000002  _saved_ip
 4185C  data   000012  _space_jmp
-4186E  data   000034  _crew_sprite
-41874  data   000004  _word_41874
+4186E  data   000006  _crew_sprite
+41874  data   00002E  _word_41874
 418A2  data   000010  _grades
 418B2  data   000220  _acmp_cur
 41AD2  data   000002  _word_41AD2
@@ -2354,7 +2338,6 @@
 41B86  data   000002  _word_41B86
 41B88  data   000002  _word_41B88
 41B8A  data   000002  _byte_41B8A
-41B8C  data   000296  _word_41B8C
 41C20  data   000202  _sin_table
 41E22  data   000002  _lp_cur
 41E24  data   000278  _inv_ents
@@ -2398,7 +2381,9 @@
 42A9E  data   000004  _dword_42A9E
 42AA2  data   000004  _draw_buf
 42AA6  data   00018C  _panels
+42C32  data   000008  _bhdr2
 42C3A  data   000002  _anim_fd
+42C40  data   000008  _space_bmp
 42C48  data   001140  _actors
 43D88  data   000002  _shift_key
 43D8A  data   000004  _blink_count
@@ -2440,12 +2425,14 @@
 46C8C  data   000002  _view_y1
 46C8E  data   000002  _key_b2
 46C90  data   000002  _dem_buf
+46C92  data   000008  _bhdr1
 46C9A  data   000004  _anim_buf
 46C9E  data   000004  _digi_buf
 46CA2  data   000002  _stream_acmp
 46CA4  data   000010  _room_mission
 46CB4  data   000002  _pool_free_mem
 46CB6  data   000738  _ships
+473EE  data   000008  _bhdr3
 473F6  data   000034  _bspr1
 4742A  data   0000A8  _shot_obj
 474D2  data   000004  _bridge_ticks
@@ -2498,6 +2485,7 @@
 47A9A  data   000002  _goal_planet
 47A9C  data   000100  _room_vars
 47B9C  data   000002  _cfg_dma
+47B9E  data   000008  _bhdr5
 47BA6  data   000004  _backbuf
 47BAA  data   0001CE  _player_ship
 47D78  data   000008  _clip_rect
@@ -2513,6 +2501,7 @@
 47E1C  data   000002  _view_cy
 47E1E  data   000004  _screen_base
 47E22  data   000008  _dirty_rects
+48022  data   000008  _bhdr4
 4802A  data   000040  _msg_queue
 4806A  data   000002  _mouse_y
 4806C  data   00000C  _cam_tab2
@@ -2520,7 +2509,7 @@
 4809E  data   00000C  _fr_bottom
 480AA  data   000010  _mission_name
 480BA  data   00000A  _enemy_name
-480C4  data   000212  _byte_480C4
+480C4  data   000212  _cos_table
 482C6  data   000034  _bspr5
 482FA  data   00000C  _fr_right
 48306  data   000012  _game_jmp
