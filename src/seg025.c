@@ -21,7 +21,7 @@ extern Rect clip_rect;
 void StopShip(Obj3D *o);
 
 /* The Enterprise goes to warp at full speed. */
-void sub_2A546(void)
+void PlayWarp(void)
 {
     char name[16];
     long speed;

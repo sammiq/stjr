@@ -1091,7 +1091,7 @@ int BoostStart(void)
 
 
 /* Engine boost over: back to normal power. */
-void sub_28CB0(void)
+void ResetShip(void)
 {
     boost_active = 0;
     RepairAll(&player_ship);
@@ -1112,6 +1112,6 @@ void SetPower(int shields, int weapons)
     }
 }
 
-void sub_28D28(void)
+void SpaceNop(void)
 {
 }

@@ -19,7 +19,7 @@ typedef struct Point {
 void CycleBridge(void);                 /* seg001 */
 void LockScreen(void);                  /* seg012 */
 void UnlockScreen(void);
-void sub_2A546(void);                   /* (c2A526) */
+void PlayWarp(void);                   /* (c2A526) */
 void PlayMusic(int seq, int next);      /* seg015 */
 
 extern Bitmap far *backbuf;
@@ -120,7 +120,7 @@ done:
     UnlockScreen();
     if (ok) {
         PlayMusic(0xFE, 0xFE);
-        sub_2A546();
+        PlayWarp();
     }
     MemSet((void far *)0xA0000000, 64000, 0);
     if (!ok)

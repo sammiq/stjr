@@ -28,7 +28,7 @@ The fuzzy match over all code is 99.68%. Every function is decompiled, and every
 The flags were confirmed by testing alternatives on files that already match:
 - `/Ox` is right. Turning off any of its `/O` letters breaks functions that match today, or changes nothing.
 - C 6.00 matches far fewer functions.
-- The older C 7.00 in `tools/C700_orig` has identical compiler passes.
+- The older C 7.00 (prior to any post-release patches) has identical compiler passes.
 - `/FPa` makes floating point call the runtime's `__aF*` helpers, as the original does. Its code is the same as `/FPc`'s; what tells them apart is the library.
 
 What the tooling has to deal with:
@@ -167,7 +167,7 @@ These 14 functions don't change any address. They differ only inside themselves:
 | seg001 | `Intercept` | 99.91% | stack-slot order |
 | seg000 | `StartTalk` | 99.91% | stack-slot order |
 | seg023 | `DrawStars` | 99.85% | a far pointer copied through a second local |
-| seg008 | `sub_20AD4` | 99.01% | call and argument order |
+| seg008 | `PickObject` | 99.01% | call and argument order |
 | acmp | `AcmpRead` | 98.87% | comparison operand order (`cmp ax,[x]; jbe` vs `cmp [x],ax; jae`) |
 | seg014 | `MenuWait` | 97.12% | a 32-bit sum evaluated in a different order (`ticks` loaded first); operand order, casts, `volatile` and split assignments don't change it |
 | space | `EncounterTick` | 95.11% | shared vs duplicated return epilogues |

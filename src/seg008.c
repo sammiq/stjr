@@ -189,12 +189,12 @@ int ItemGive(int a);
 void ItemTake(int a);
 void LoadWalkGraph(char *name);
 int Turbolift(int a, int b);
-void sub_1C266(int src, int a, int b);
-void sub_1C20A(int src, int a);
-void sub_1C2FA(void);
+void GateAdd(int src, int a, int b);
+void GateRemove(int src, int a);
+void CloseRoomMenu(void);
 void BeamUp(void);
 void EndOrStand(int a);
-unsigned sub_20AD4(int a, int b);
+unsigned PickObject(int a, int b);
 char *ItemName(int a);
 void PlayDemScene(char *name);
 void LoadNamed(char *name, int a);
@@ -233,7 +233,7 @@ extern char byte_47A8E;
 typedef struct Gate {
     int source;                 /* 00 0 the room, 1 global, 2 the mission */
     unsigned table;             /* 02 */
-    int unk04;                  /* 04 */
+    int order;                  /* 04 kept in ascending order */
 } Gate;
 static char bg_name[10];
 static char pri_name[10];
@@ -335,8 +335,8 @@ typedef struct Name10 {
 } Name10;
 extern Name10 crew_name;               /* seg001 */
 
-int word_3CA46 = 0;
-int word_3CA48 = -1;
+int away_room = 0;
+int away_entry = -1;
 Item items[64] = {                      /* 0x40-0x7F */
     { 1, "iphasers" }, { 1, "iphaserk" }, { 1, "istricor" },
     { 1, "imtricor" }, { 1, "icomm" }, { 1, "imedkit" }
@@ -475,7 +475,7 @@ void LoadGameState(void)
 }
 
 /* Drop src's gate blocks (all of them for table -1). */
-void sub_1C20A(int src, int table)
+void GateRemove(int src, int table)
 {
     int n;
     int i;
@@ -488,26 +488,26 @@ void sub_1C20A(int src, int table)
     ngates = n;
 }
 
-/* Add a gate block, keeping them in order of unk04. */
-void sub_1C266(int src, int table, int unk)
+/* Add a gate block, keeping them in ascending order. */
+void GateAdd(int src, int table, int order)
 {
     int i;
 
-    sub_1C20A(src, table);
+    GateRemove(src, table);
     if (ngates == 7)
         Fatal("Too many gate blocks");
     for (i = ngates; i >= 1; i--) {
-        if (unk > gates[i - 1].unk04)
+        if (order > gates[i - 1].order)
             break;
         gates[i] = gates[i - 1];
     }
     gates[i].source = src;
     gates[i].table = table;
-    gates[i].unk04 = unk;
+    gates[i].order = order;
     ngates++;
 }
 
-void sub_1C2FA(void)
+void CloseRoomMenu(void)
 {
     if (menu_open)
         MenuClose();
@@ -515,16 +515,16 @@ void sub_1C2FA(void)
 }
 
 /* Start the away mission. */
-void sub_1C30E(void)
+void StartAway(void)
 {
     LockScreen();
     MemSet(screen, 64000, 0xDF);
     UnlockScreen();
     LoadMusic(mission_name, 0x67);
-    LoadRoom(mission_name, word_3CA46, 1);
-    EnterRoom(word_3CA48);
-    word_3CA48 = -1;
-    ActorPos(0, 20, 20, word_3CA46 = 0);
+    LoadRoom(mission_name, away_room, 1);
+    EnterRoom(away_entry);
+    away_entry = -1;
+    ActorPos(0, 20, 20, away_room = 0);
     ActorPos(1, 20, 20, 0);
     ActorPos(6, 20, 20, 0);
     ActorPos(5, 20, 20, 0);
@@ -561,7 +561,7 @@ void BeamUp(void)
     Actor *a;
 
     byte_47A87 = 1;
-    sub_1C2FA();
+    CloseRoomMenu();
     for (i = 0, a = actors; i != MAX_ACTORS; i++, a++) {
         if ((a->flags & 1) == 1) {
             ((ActorBits *)a)->b3 = 0;
@@ -586,7 +586,7 @@ void BeamUp(void)
 }
 
 /* The offset of b from a. */
-int sub_1C4C8(char far *a, char far *b)
+int FarPtrDiff(char far *a, char far *b)
 {
     return b - a;
 }
@@ -659,7 +659,7 @@ void LoadRoom(char *mission, int n, int first)
     if (first) {
         gates[0].source = 2;
         gates[0].table = g->y0;
-        gates[0].unk04 = 0x7FFF;
+        gates[0].order = 0x7FFF;
         ngates = 1;
         i = 6;
         for (p = (char far *)g + g->y1, end = (char far *)g + g->z0; p != end;
@@ -690,7 +690,7 @@ void LoadRoom(char *mission, int n, int first)
     g->service = ScriptService;
     g->state = room_timers;
     if (first) {
-        sub_1C266(1, g->y0, 1000);
+        GateAdd(1, g->y0, 1000);
         i = id - 0x40;
         for (q = (char far *)g + g->y1, qend = (char far *)g + g->z0; q != qend;
              q += _fstrlen(q) + 1) {
@@ -722,8 +722,8 @@ void LoadRoom(char *mission, int n, int first)
     }
     h->service = ScriptService;
     h->state = room_timers;
-    sub_1C20A(0, -1);
-    sub_1C266(0, h->table, 0);
+    GateRemove(0, -1);
+    GateAdd(0, h->table, 0);
     UnlockMem(rdf_handle);
     room_action = 1;
     ActionCursor(1, 0);
@@ -798,7 +798,7 @@ void EnterRoom(int entry)
             }
             p += 4;
         }
-        next = sub_1C4C8((char far *)h, (char far *)p);
+        next = FarPtrDiff((char far *)h, (char far *)p);
         if (n >= 0 && n < MAX_ACTORS && (actors[n].flags & 4) == 4) {
             UnlockMem(rdf_handle);
             if (entry == -1) {
@@ -829,7 +829,7 @@ int AnyActorBusy(void)
     return 0;
 }
 
-void sub_1CC76(void)
+void HideInvSprite(void)
 {
     if (inv_sprite.type == 2)
         SpriteErase(&inv_sprite);
@@ -849,7 +849,7 @@ void RoomTick(void)
     Actor *a;
     int k;
 
-    sub_1C2FA();
+    CloseRoomMenu();
     if (!GetEvent(&ev))
         return;
     switch (ev.type) {
@@ -912,7 +912,7 @@ void RoomTick(void)
             goto action;
         case 0x17:
             if (room_action == 2) {
-                sub_1CC76();
+                HideInvSprite();
                 obj = PickItem(50, 50, 1);
                 goto use_item;
             } else {
@@ -956,7 +956,7 @@ void RoomTick(void)
             }
             obj = FindObject(mouse_x, mouse_y);
             if (obj == -10) {
-                sub_1CC76();
+                HideInvSprite();
                 obj = PickItem(50, 50, 0);
             use_item:
                 if (obj == -1)
@@ -1029,7 +1029,7 @@ void RoomTick(void)
 
 void FreeRoom(void)
 {
-    sub_1C2FA();
+    CloseRoomMenu();
     FadeOut();
     HideInvIcon();
     FreeActors();
@@ -1772,7 +1772,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         PlayMusic(0xFE, 0xFE);
         mission_max = a1;
         mission_score = a2;
-        sub_1C2FA();
+        CloseRoomMenu();
         byte_47A87 = 0;
         longjmp(game_jmp, 1);
         break;
@@ -1871,10 +1871,10 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         break;
     }
     case 25:
-        sub_1C266(cur_source, a1, a2);
+        GateAdd(cur_source, a1, a2);
         break;
     case 26:
-        sub_1C20A(cur_source, a1);
+        GateRemove(cur_source, a1);
         break;
     case 27: {
         char name[10];
@@ -1882,7 +1882,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         talk_data = LockMem(talk_handle);
         MemCpy(name, talk_data + a1, 10);
         UnlockMem(talk_handle);
-        sub_1C2FA();
+        CloseRoomMenu();
         LoadMenu(name, a2, a3);
         ReleaseBitmap(mouse_sprite.handle);
         SpriteSetBitmap(&mouse_sprite, LoadBitmap("pushbtn"));
@@ -1891,7 +1891,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         break;
     }
     case 28:
-        sub_1C2FA();
+        CloseRoomMenu();
         break;
     case 29:
         if (menu_open)
@@ -1989,7 +1989,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         RoomWait(a1);
         break;
     case 47:
-        result = sub_20AD4(a1, a2);
+        result = PickObject(a1, a2);
         break;
     case 48:
         PlayDemScene(ItemName(a1));
@@ -2026,7 +2026,7 @@ long ScriptService(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
             CacheRelease(h);
         } else
             LoadPalette(n);
-        sub_1BCC2();
+        SetColour7White();
         SetFade(cur_palette, 100);
         break;
     }
@@ -3469,7 +3469,7 @@ void HideInvIcon(void)
  * n pairs of an object and the offset of the name of the bitmap to show
  * while the pointer is on it. Returns the object pointed at last. */
 /* (98.92%: the target loads bmp into si for the cleanup after done.) */
-unsigned sub_20AD4(int off, int n)
+unsigned PickObject(int off, int n)
 {
     Sprite label;
     char name[16];

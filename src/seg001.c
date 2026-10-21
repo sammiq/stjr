@@ -1572,12 +1572,12 @@ int StarMapGo(void)
     return r;
 }
 
-/* New in the sequel: another full-screen view (unidentified). */
-void sub_14492(void)
+/* Warp from the bridge: the full-screen warp scene, then back to the bridge view. */
+void BridgeWarp(void)
 {
     FadeOut();
     ViewFull();
-    sub_2A546();
+    PlayWarp();
     ViewBridge();
 }
 

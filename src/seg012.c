@@ -55,7 +55,6 @@ void BridgeLeave(void);
 void CyclePalette(void);
 void Transport(char *name);
 void ResetMsgs(void);
-void StartAway(void);               /* seg008 */
 void AwayLoop(void);
 void EndAway(void);
 void LoadRoom(char *mission, int n, int first);
@@ -124,7 +123,7 @@ void InitActors(void);                   /* seg000 */
 void SoundClose(void);                  /* seg015 */
 void NextEpisode(void);                 /* space */
 void StartMenu(void);                   /* seg019 */
-void sub_1C30E(void);                   /* seg008 */
+void StartAway(void);                   /* seg008 */
 void FadeOut(void);                     /* seg007 */
 void FadeIn(void);
 void LoadPalette(char *name);
@@ -201,7 +200,7 @@ void main(int argc, char **argv)
                 BridgeEnter(1);
                 break;
             case 2:
-                sub_1C30E();
+                StartAway();
                 break;
             case 3:
                 LoadMusic(mission_name, 'g');

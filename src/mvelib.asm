@@ -9,16 +9,16 @@
 	EXTRN	_AIL_sound_buffer_status:FAR
 	EXTRN	_AIL_start_digital_playback:FAR
 	EXTRN	_AIL_stop_digital_playback:FAR
-	EXTRN	_sub_2F377:FAR
-	EXTRN	_sub_2F442:FAR
-	EXTRN	_sub_2F4A9:FAR
-	EXTRN	_sub_2F535:FAR
-	EXTRN	_sub_2F88C:FAR
-	EXTRN	_sub_2F892:FAR
+	EXTRN	_AIL_register_timer:FAR
+	EXTRN	_AIL_release_timer_handle:FAR
+	EXTRN	_AIL_start_timer:FAR
+	EXTRN	_AIL_set_timer_period:FAR
+	EXTRN	_AIL_pause_digital_playback:FAR
+	EXTRN	_AIL_resume_digital_playback:FAR
 	PUBLIC	_sub_304FE
 	PUBLIC	_sub_30542
 	PUBLIC	_sub_30564
-	PUBLIC	_sub_30586
+	PUBLIC	_MVE_memCallbacks
 	PUBLIC	_sub_305AC
 	PUBLIC	_sub_305E2
 	PUBLIC	_sub_30646
@@ -28,14 +28,14 @@
 	PUBLIC	_sub_30744
 	PUBLIC	_sub_3076E
 	PUBLIC	_sub_3079A
-	PUBLIC	_sub_307B0
+	PUBLIC	_MVE_ioCallbacks
 	PUBLIC	_sub_307CA
 	PUBLIC	_sub_30840
 	PUBLIC	_sub_30860
 	PUBLIC	_sub_308AA
 	PUBLIC	_sub_308F4
-	PUBLIC	_sub_30908
-	PUBLIC	_sub_3091A
+	PUBLIC	_MVE_sndInit
+	PUBLIC	_MVE_memVID
 	PUBLIC	_sub_30950
 	PUBLIC	_sub_30C06
 	PUBLIC	_sub_30C22
@@ -82,10 +82,10 @@
 	PUBLIC	_sub_32D22
 	PUBLIC	_sub_32EF0
 	PUBLIC	_sub_3308E
-	PUBLIC	_sub_330B6
+	PUBLIC	_MVE_rmCallbacks
 	PUBLIC	_sub_330D0
-	PUBLIC	_sub_3310C
-	PUBLIC	_sub_334CA
+	PUBLIC	_MVE_RunMovie
+	PUBLIC	_MVE_ReleaseMem
 	PUBLIC	_sub_334E2
 	PUBLIC	_word_3E9B2
 	PUBLIC	_word_3E9B4
@@ -305,7 +305,7 @@ L30581:
 	pop di
 	leave
 	retf
-_sub_30586:
+_MVE_memCallbacks:
 	push bp
 	mov bp, sp
 	push ds
@@ -461,7 +461,7 @@ _sub_306CC:
 	cmp word ptr [_word_3E9B2], 0FFFFh
 	je L306F1
 	push word ptr [_word_3E9B2]
-	call FAR PTR _sub_2F442
+	call FAR PTR _AIL_release_timer_handle
 	add sp, 2
 	mov word ptr [_word_3E9B2], 0FFFFh
 	mov word ptr [_word_3E9B4], 0
@@ -476,7 +476,7 @@ _sub_306F4:
 	call FAR PTR _sub_306CC
 	push SEG _sub_306C0
 	push OFFSET _sub_306C0
-	call FAR PTR _sub_2F377
+	call FAR PTR _AIL_register_timer
 	add sp, 4
 	mov word ptr [_word_3E9B2], ax
 	cmp ax, 0FFFFh
@@ -489,10 +489,10 @@ L3071A:
 	push word ptr [_word_41ADE]
 	push word ptr [_word_41ADC]
 	push ax
-	call FAR PTR _sub_2F535
+	call FAR PTR _AIL_set_timer_period
 	add sp, 6
 	push word ptr [_word_3E9B2]
-	call FAR PTR _sub_2F4A9
+	call FAR PTR _AIL_start_timer
 	add sp, 2
 	mov ax, word ptr [_word_41ADA]
 	neg ax
@@ -551,7 +551,7 @@ L307A7:
 L307AE:
 	pop ds
 	retf
-_sub_307B0:
+_MVE_ioCallbacks:
 	push bp
 	mov bp, sp
 	push ds
@@ -715,7 +715,7 @@ _sub_308F4:
 	pop ds
 	retf
 	DB	090h
-_sub_30908:
+_MVE_sndInit:
 	push bp
 	mov bp, sp
 	push ds
@@ -726,7 +726,7 @@ _sub_30908:
 	pop ds
 	leave
 	retf
-_sub_3091A:
+_MVE_memVID:
 	push bp
 	mov bp, sp
 	push si
@@ -1287,7 +1287,7 @@ _sub_30E4E:
 	cmp word ptr [_word_3E9D0], 0FFFFh
 	je L30E67
 	push word ptr [_word_3E9D0]
-	call FAR PTR _sub_2F88C
+	call FAR PTR _AIL_pause_digital_playback
 	add sp, 2
 L30E67:
 	pop ds
@@ -1300,7 +1300,7 @@ _sub_30E6A:
 	cmp word ptr [_word_3E9D0], 0FFFFh
 	je L30E83
 	push word ptr [_word_3E9D0]
-	call FAR PTR _sub_2F892
+	call FAR PTR _AIL_resume_digital_playback
 	add sp, 2
 L30E83:
 	pop ds
@@ -5267,7 +5267,7 @@ _sub_3308E:
 	leave
 	retf
 	DB	090h
-_sub_330B6:
+_MVE_rmCallbacks:
 	push bp
 	mov bp, sp
 	push ds
@@ -5307,7 +5307,7 @@ L33107:
 	pop ds
 	pop si
 	retf
-_sub_3310C:
+_MVE_RunMovie:
 	enter 1Ch, 0
 	push di
 	push si
@@ -5355,25 +5355,25 @@ L3315F:
 	ja L3313F
 	shl ax, 1
 	xchg bx, ax
-	jmp word ptr cs:[bx+_sub_3310C+122]
+	jmp word ptr cs:[bx+_MVE_RunMovie+122]
 	DB	090h
-	DW	OFFSET _sub_3310C+922
-	DW	OFFSET _sub_3310C+51
-	DW	OFFSET _sub_3310C+156
-	DW	OFFSET _sub_3310C+192
-	DW	OFFSET _sub_3310C+232
-	DW	OFFSET _sub_3310C+240
-	DW	OFFSET _sub_3310C+386
-	DW	OFFSET _sub_3310C+442
-	DW	OFFSET _sub_3310C+570
-	DW	OFFSET _sub_3310C+570
-	DW	OFFSET _sub_3310C+642
-	DW	OFFSET _sub_3310C+732
-	DW	OFFSET _sub_3310C+774
-	DW	OFFSET _sub_3310C+800
-	DW	OFFSET _sub_3310C+814
-	DW	OFFSET _sub_3310C+828
-	DW	OFFSET _sub_3310C+842
+	DW	OFFSET _MVE_RunMovie+922
+	DW	OFFSET _MVE_RunMovie+51
+	DW	OFFSET _MVE_RunMovie+156
+	DW	OFFSET _MVE_RunMovie+192
+	DW	OFFSET _MVE_RunMovie+232
+	DW	OFFSET _MVE_RunMovie+240
+	DW	OFFSET _MVE_RunMovie+386
+	DW	OFFSET _MVE_RunMovie+442
+	DW	OFFSET _MVE_RunMovie+570
+	DW	OFFSET _MVE_RunMovie+570
+	DW	OFFSET _MVE_RunMovie+642
+	DW	OFFSET _MVE_RunMovie+732
+	DW	OFFSET _MVE_RunMovie+774
+	DW	OFFSET _MVE_RunMovie+800
+	DW	OFFSET _MVE_RunMovie+814
+	DW	OFFSET _MVE_RunMovie+828
+	DW	OFFSET _MVE_RunMovie+842
 	mov bx, [bp-0Ch]
 	push word ptr es:[bx+4]
 	push word ptr es:[bx+2]
@@ -5687,7 +5687,7 @@ L334B9:
 	pop di
 	leave
 	retf
-_sub_334CA:
+_MVE_ReleaseMem:
 	push ds
 	mov ax, DGROUP
 	mov ds, ax

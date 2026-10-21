@@ -48,53 +48,53 @@
 	PUBLIC	_sub_2F2BD
 	PUBLIC	_sub_2F308
 	PUBLIC	_sub_2F36C
-	PUBLIC	_sub_2F377
+	PUBLIC	_AIL_register_timer
 	PUBLIC	_sub_2F437
-	PUBLIC	_sub_2F442
+	PUBLIC	_AIL_release_timer_handle
 	PUBLIC	_sub_2F480
-	PUBLIC	_sub_2F48B
+	PUBLIC	_AIL_release_all_timers
 	PUBLIC	_sub_2F49F
-	PUBLIC	_sub_2F4A9
+	PUBLIC	_AIL_start_timer
 	PUBLIC	_sub_2F4C6
-	PUBLIC	_sub_2F4D1
+	PUBLIC	_AIL_start_all_timers
 	PUBLIC	_sub_2F4E5
-	PUBLIC	_sub_2F4EF
+	PUBLIC	_AIL_stop_timer
 	PUBLIC	_sub_2F50C
-	PUBLIC	_sub_2F517
+	PUBLIC	_AIL_stop_all_timers
 	PUBLIC	_sub_2F52B
-	PUBLIC	_sub_2F535
+	PUBLIC	_AIL_set_timer_period
 	PUBLIC	_sub_2F57F
-	PUBLIC	_sub_2F58A
+	PUBLIC	_AIL_set_timer_frequency
 	PUBLIC	_sub_2F5C0
-	PUBLIC	_sub_2F5CB
+	PUBLIC	_AIL_set_timer_divisor
 	PUBLIC	_sub_2F5FC
-	PUBLIC	_sub_2F607
+	PUBLIC	_AIL_interrupt_divisor
 	PUBLIC	_sub_2F611
 	PUBLIC	_sub_2F6B2
-	PUBLIC	_sub_2F6FE
+	PUBLIC	_AIL_release_driver_handle
 	PUBLIC	_sub_2F73A
 	PUBLIC	_sub_2F818
-	PUBLIC	_sub_2F823
-	PUBLIC	_sub_2F856
-	PUBLIC	_sub_2F86E
-	PUBLIC	_sub_2F874
-	PUBLIC	_sub_2F87A
-	PUBLIC	_sub_2F88C
-	PUBLIC	_sub_2F892
-	PUBLIC	_sub_2F89E
-	PUBLIC	_sub_2F8AA
-	PUBLIC	_sub_2F8CE
-	PUBLIC	_sub_2F8DA
-	PUBLIC	_sub_2F8E0
-	PUBLIC	_sub_2F8E6
-	PUBLIC	_sub_2F8F8
-	PUBLIC	_sub_2F904
-	PUBLIC	_sub_2F90A
-	PUBLIC	_sub_2F910
-	PUBLIC	_sub_2F916
-	PUBLIC	_sub_2F91C
-	PUBLIC	_sub_2F922
-	PUBLIC	_sub_2F928
+	PUBLIC	_AIL_shutdown_driver
+	PUBLIC	_AIL_index_VOC_block
+	PUBLIC	_AIL_play_VOC_file
+	PUBLIC	_AIL_format_VOC_file
+	PUBLIC	_AIL_VOC_playback_status
+	PUBLIC	_AIL_pause_digital_playback
+	PUBLIC	_AIL_resume_digital_playback
+	PUBLIC	_AIL_digital_playback_volume
+	PUBLIC	_AIL_digital_playback_panpot
+	PUBLIC	_AIL_timbre_request
+	PUBLIC	_AIL_protect_timbre
+	PUBLIC	_AIL_unprotect_timbre
+	PUBLIC	_AIL_timbre_status
+	PUBLIC	_AIL_resume_sequence
+	PUBLIC	_AIL_relative_volume
+	PUBLIC	_AIL_relative_tempo
+	PUBLIC	_AIL_set_relative_volume
+	PUBLIC	_AIL_set_relative_tempo
+	PUBLIC	_AIL_controller_value
+	PUBLIC	_AIL_set_controller_value
+	PUBLIC	_AIL_channel_notes
 	PUBLIC	_word_2E992
 	PUBLIC	_word_2EBFA
 	PUBLIC	_word_2EBFC
@@ -959,21 +959,21 @@ L2F321:
 	je L2F348
 	push dx
 	push cs
-	call _sub_2F442
+	call _AIL_release_timer_handle
 	add sp, 2
 L2F348:
 	push word ptr [bp+8]
 	push word ptr [bp+6]
 	push word ptr cs:[_word_2EDA2]
 	push cs
-	call _sub_2F823
+	call _AIL_shutdown_driver
 	add sp, 6
 L2F35A:
 	inc word ptr cs:[_word_2EDA2]
 	cmp word ptr cs:[_word_2EDA2], 10h
 	jne L2F321
 	push cs
-	call _sub_2F48B
+	call _AIL_release_all_timers
 	or bh, 0
 _sub_2F36C	EQU	$-2
 	push cs
@@ -983,7 +983,7 @@ _sub_2F36C	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F377:
+_AIL_register_timer:
 	push bp
 	mov bp, sp
 	push ds
@@ -1037,7 +1037,7 @@ L2F39A:
 	mov word ptr [bp+2], 10h
 	pop bp
 	push cs
-	call _sub_2F535
+	call _AIL_set_timer_period
 	add sp, 6
 	push ax
 	push bp
@@ -1045,7 +1045,7 @@ L2F39A:
 	mov word ptr [bp+2], 10h
 	pop bp
 	push cs
-	call _sub_2F4A9
+	call _AIL_start_timer
 	add sp, 2
 	pop ax
 	mov bx, ax
@@ -1064,7 +1064,7 @@ _sub_2F437	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F442:
+_AIL_release_timer_handle:
 	push bp
 	mov bp, sp
 	push ds
@@ -1101,7 +1101,7 @@ _sub_2F480	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F48B:
+_AIL_release_all_timers:
 	push ds
 	push si
 	push di
@@ -1111,7 +1111,7 @@ _sub_2F48B:
 L2F493:
 	push si
 	push cs
-	call _sub_2F442
+	call _AIL_release_timer_handle
 	add sp, 2
 	dec si
 	jge L2F493
@@ -1123,7 +1123,7 @@ _sub_2F49F	EQU	$-2
 	pop si
 	pop ds
 	retf
-_sub_2F4A9:
+_AIL_start_timer:
 	push bp
 	mov bp, sp
 	push ds
@@ -1146,7 +1146,7 @@ _sub_2F4C6	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F4D1:
+_AIL_start_all_timers:
 	push ds
 	push si
 	push di
@@ -1156,7 +1156,7 @@ _sub_2F4D1:
 L2F4D9:
 	push si
 	push cs
-	call _sub_2F4A9
+	call _AIL_start_timer
 	add sp, 2
 	dec si
 	jge L2F4D9
@@ -1168,7 +1168,7 @@ _sub_2F4E5	EQU	$-2
 	pop si
 	pop ds
 	retf
-_sub_2F4EF:
+_AIL_stop_timer:
 	push bp
 	mov bp, sp
 	push ds
@@ -1191,7 +1191,7 @@ _sub_2F50C	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F517:
+_AIL_stop_all_timers:
 	push ds
 	push si
 	push di
@@ -1201,7 +1201,7 @@ _sub_2F517:
 L2F51F:
 	push si
 	push cs
-	call _sub_2F4EF
+	call _AIL_stop_timer
 	add sp, 2
 	dec si
 	jge L2F51F
@@ -1213,7 +1213,7 @@ _sub_2F52B	EQU	$-2
 	pop si
 	pop ds
 	retf
-_sub_2F535:
+_AIL_set_timer_period:
 	push bp
 	mov bp, sp
 	push ds
@@ -1248,7 +1248,7 @@ _sub_2F57F	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F58A:
+_AIL_set_timer_frequency:
 	push bp
 	mov bp, sp
 	push ds
@@ -1275,7 +1275,7 @@ _sub_2F58A:
 	push ax
 	push word ptr [bp+6]
 	push cs
-	call _sub_2F535
+	call _AIL_set_timer_period
 	add sp, 6
 	or bh, 0
 _sub_2F5C0	EQU	$-2
@@ -1286,7 +1286,7 @@ _sub_2F5C0	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F5CB:
+_AIL_set_timer_divisor:
 	push bp
 	mov bp, sp
 	push ds
@@ -1310,7 +1310,7 @@ L2F5EF:
 	push ax
 	push word ptr [bp+6]
 	push cs
-	call _sub_2F535
+	call _AIL_set_timer_period
 	add sp, 6
 	or bh, 0
 _sub_2F5FC	EQU	$-2
@@ -1321,7 +1321,7 @@ _sub_2F5FC	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F607:
+_AIL_interrupt_divisor:
 	push ds
 	push si
 	push di
@@ -1414,7 +1414,7 @@ L2F6BD:
 	mov word ptr cs:[si+_word_2ED1C+4], cs
 	mov word ptr cs:[_word_2FA1C], 0
 	jmp SHORT L2F6AD
-_sub_2F6FE:
+_AIL_release_driver_handle:
 	push bp
 	mov bp, sp
 	push ds
@@ -1502,7 +1502,7 @@ L2F782:
 	push es
 	push bx
 	push cs
-	call _sub_2F377
+	call _AIL_register_timer
 	add sp, 4
 	mov bx, [bp+6]
 	shl bx, 1
@@ -1516,7 +1516,7 @@ L2F782:
 	push si
 	push ax
 	push cs
-	call _sub_2F58A
+	call _AIL_set_timer_frequency
 	add sp, 6
 L2F7DE:
 	push word ptr [bp+0Eh]
@@ -1535,7 +1535,7 @@ L2F7DE:
 	je L2F817
 	push word ptr cs:[_word_2EDA8]
 	push cs
-	call _sub_2F4A9
+	call _AIL_start_timer
 	add sp, 2
 L2F817:
 	or bh, 0
@@ -1547,7 +1547,7 @@ _sub_2F818	EQU	$-2
 	pop ds
 	pop bp
 	retf
-_sub_2F823:
+_AIL_shutdown_driver:
 	mov bx, sp
 	mov bx, ss:[bx+4]
 	cmp bx, 10h
@@ -1562,14 +1562,14 @@ _sub_2F823:
 	je L2F84F
 	push dx
 	push cs
-	call _sub_2F442
+	call _AIL_release_timer_handle
 	add sp, 2
 L2F84F:
 	mov ax, 68h
 	jmp _sub_2EFEC
 L2F855:
 	retf
-_sub_2F856:
+_AIL_index_VOC_block:
 	mov ax, 78h
 	jmp _sub_2EFEC
 _AIL_register_sound_buffer:
@@ -1581,13 +1581,13 @@ _AIL_format_sound_buffer:
 _AIL_sound_buffer_status:
 	mov ax, 7Ah
 	jmp _sub_2EFEC
-_sub_2F86E:
+_AIL_play_VOC_file:
 	mov ax, 7Bh
 	jmp _sub_2EFEC
-_sub_2F874:
+_AIL_format_VOC_file:
 	mov ax, 85h
 	jmp _sub_2EFEC
-_sub_2F87A:
+_AIL_VOC_playback_status:
 	mov ax, 7Ch
 	jmp _sub_2EFEC
 _AIL_start_digital_playback:
@@ -1596,22 +1596,22 @@ _AIL_start_digital_playback:
 _AIL_stop_digital_playback:
 	mov ax, 7Eh
 	jmp _sub_2EFEC
-_sub_2F88C:
+_AIL_pause_digital_playback:
 	mov ax, 7Fh
 	jmp _sub_2EFEC
-_sub_2F892:
+_AIL_resume_digital_playback:
 	mov ax, 80h
 	jmp _sub_2EFEC
 _AIL_set_digital_playback_volum:
 	mov ax, 81h
 	jmp _sub_2EFEC
-_sub_2F89E:
+_AIL_digital_playback_volume:
 	mov ax, 82h
 	jmp _sub_2EFEC
 _AIL_set_digital_playback_panpo:
 	mov ax, 83h
 	jmp _sub_2EFEC
-_sub_2F8AA:
+_AIL_digital_playback_panpot:
 	mov ax, 84h
 	jmp _sub_2EFEC
 _AIL_state_table_size:
@@ -1629,19 +1629,19 @@ _AIL_default_timbre_cache_size:
 _AIL_define_timbre_cache:
 	mov ax, 9Ah
 	jmp _sub_2EFEC
-_sub_2F8CE:
+_AIL_timbre_request:
 	mov ax, 9Bh
 	jmp _sub_2EFEC
 _AIL_install_timbre:
 	mov ax, 9Ch
 	jmp _sub_2EFEC
-_sub_2F8DA:
+_AIL_protect_timbre:
 	mov ax, 9Dh
 	jmp _sub_2EFEC
-_sub_2F8E0:
+_AIL_unprotect_timbre:
 	mov ax, 9Eh
 	jmp _sub_2EFEC
-_sub_2F8E6:
+_AIL_timbre_status:
 	mov ax, 9Fh
 	jmp _sub_2EFEC
 _AIL_start_sequence:
@@ -1650,31 +1650,31 @@ _AIL_start_sequence:
 _AIL_stop_sequence:
 	mov ax, 0ABh
 	jmp _sub_2EFEC
-_sub_2F8F8:
+_AIL_resume_sequence:
 	mov ax, 0ADh
 	jmp _sub_2EFEC
 _AIL_sequence_status:
 	mov ax, 0AEh
 	jmp _sub_2EFEC
-_sub_2F904:
+_AIL_relative_volume:
 	mov ax, 0AFh
 	jmp _sub_2EFEC
-_sub_2F90A:
+_AIL_relative_tempo:
 	mov ax, 0B0h
 	jmp _sub_2EFEC
-_sub_2F910:
+_AIL_set_relative_volume:
 	mov ax, 0B1h
 	jmp _sub_2EFEC
-_sub_2F916:
+_AIL_set_relative_tempo:
 	mov ax, 0B2h
 	jmp _sub_2EFEC
-_sub_2F91C:
+_AIL_controller_value:
 	mov ax, 0B3h
 	jmp _sub_2EFEC
-_sub_2F922:
+_AIL_set_controller_value:
 	mov ax, 0B4h
 	jmp _sub_2EFEC
-_sub_2F928:
+_AIL_channel_notes:
 	mov ax, 0B5h
 	jmp _sub_2EFEC
 	DB	0B8h, 0B6h, 000h, 0E9h, 0B8h, 0F6h, 0B8h, 0B7h, 000h, 0E9h, 0B2h, 0F6h

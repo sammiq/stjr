@@ -53,7 +53,7 @@ void VideoNop(void);
 void FadeIn(void);
 void FadeOut(void);
 void SetFade(unsigned char far *pal, int level);
-void sub_1BCC2(void);
+void SetColour7White(void);
 void FadeUp(void);
 void FadeDown(void);
 

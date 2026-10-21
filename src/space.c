@@ -71,7 +71,7 @@ void SetEnemies(char *name, int count);
 void ClearShots(void);
 void ClearShips(void);
 void RestoreShip(Obj3D *o);
-void sub_28CB0(void);
+void ResetShip(void);
 void StopShip(Obj3D *o);                /* seg025 */
 void SetPlanet(int n);                  /* seg022 */
 void StarsReset(void);                  /* seg023 */
@@ -79,7 +79,7 @@ void RenderR3(int statics);             /* seg006 */
 void CutScene(char *name);              /* seg001 */
 void ShuttleEnd(void);
 void ViewBridge(void);
-void sub_14492(void);
+void BridgeWarp(void);
 void SetSteering(int on);
 void Computer(void);                    /* seg005 */
 char *InputCode(void);                  /* seg002 */
@@ -95,7 +95,7 @@ char *ItemName(int off);                /* seg009 */
 void SaveNamed(char *name);             /* seg019 */
 void LoadNamed(char *name, int arg);
 int GetLoadArg(void);
-void sub_1B61E(char *name);             /* seg007 */
+void MergePalette(char *name);             /* seg007 */
 void LoadPalette(char *name);
 void ClearView(void);                   /* seg006 */
 void SetCursor(void);                   /* seg001 */
@@ -140,8 +140,8 @@ extern Obj3D player_ship;
 extern Obj3D ships[4];
 extern int in_orbit;
 extern int full_view;
-extern int word_3CA46;
-extern int word_3CA48;
+extern int away_room;
+extern int away_entry;
 extern unsigned char sfx_vol_next;
 extern unsigned char sfx_pan_next;
 extern signed char fade_rgb[3];
@@ -515,7 +515,7 @@ long SpaceCmd(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
     case 11:
         ClearShots();
         SetPower(0, 0);
-        sub_28CB0();
+        ResetShip();
         break;
     case 12:
         goal_planet = a1;
@@ -534,7 +534,7 @@ long SpaceCmd(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         in_orbit = 0;
         break;
     case 15:
-        sub_14492();
+        BridgeWarp();
         SetPlanet(a1);
         StarsReset();
         RenderR3(0);
@@ -615,8 +615,8 @@ long SpaceCmd(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
             Fatal("Space OffShipAdventure command with data on stack");
         SpaceMenuClose();
         FadeOut();
-        word_3CA46 = a2;
-        word_3CA48 = a3;
+        away_room = a2;
+        away_entry = a3;
         space_w2 = 1;
         longjmp(game_jmp, a1 ? 2 : 3);
     case 26:
@@ -736,8 +736,8 @@ long SpaceCmd(unsigned cmd, int a1, int a2, int a3, int a4, int a5, int a6)
         char *n;
 
         n = ItemName(a1);
-        sub_1B61E(n);
-        sub_1BCC2();
+        MergePalette(n);
+        SetColour7White();
         SetFade(cur_palette, fade_level);
         break;
     }
@@ -820,7 +820,7 @@ void EncounterTick(void)
         UnlockMem(talk_handle);
         SetPlanet(cur_planet);
         goal_planet = -1;
-        sub_28CB0();
+        ResetShip();
         StarsReset();
         RenderR3(0);
         UpdateSprites();
@@ -1003,7 +1003,7 @@ void ShowCrew(char *name, int music)
     strncpy(crew_name, name, 8);
     crew_name[8] = 0;
     SetCursor();
-    sub_1B61E(name);
+    MergePalette(name);
 }
 
 /* Start the crew member's animation again. */

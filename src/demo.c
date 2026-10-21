@@ -21,13 +21,13 @@ int PlayDigiSfx(char *name, int vol, int pan, int loop);   /* seg015 */
 void BridgeSfx(int n);                  /* seg001 */
 
 /* The MVE player (c2D688) */
-void sub_30586(void far *(far *alloc)(unsigned), void (far *free)(void far *));
-void sub_307B0(int (far *read)(int, void far *, unsigned));
-void sub_330B6(int (far *poll)(void));
-void sub_30908(int handle);
-void sub_3091A(void far *buf, int a, int b, unsigned size);
-void sub_3310C(int fd, int a, int b, int c);
-void sub_334CA(void);
+void MVE_memCallbacks(void far *(far *alloc)(unsigned), void (far *free)(void far *));
+void MVE_ioCallbacks(int (far *read)(int, void far *, unsigned));
+void MVE_rmCallbacks(int (far *poll)(void));
+void MVE_sndInit(int handle);
+void MVE_memVID(void far *buf, int a, int b, unsigned size);
+void MVE_RunMovie(int fd, int a, int b, int c);
+void MVE_ReleaseMem(void);
 
 /* The IFF reader (c2B980) */
 int IffType(int fd);
@@ -38,10 +38,10 @@ int IffRows(int type, void *bmhd, char *row, int a, int fd);
 void PlayDelta(char far *delta, char far *dst);
 
 /* AIL timers (c2D688) */
-int sub_2F377(void (far *fn)(void));
-void sub_2F58A(int timer, long freq);
-void sub_2F4A9(int timer);
-void sub_2F442(int timer);
+int AIL_register_timer(void (far *fn)(void));
+void AIL_set_timer_frequency(int timer, long freq);
+void AIL_start_timer(int timer);
+void AIL_release_timer_handle(int timer);
 
 extern int digi_handle;
 extern int menu_busy;
@@ -149,22 +149,22 @@ void PlayMovie(char *name, Block far *heap0, Block far *heap1)
     mve_heap1->free = mve_heap0->free;
     if (_dos_open(name, 0x8000, &fd))
         Fatal("%s : not found.", name);
-    sub_30586(MveAlloc, MveFree);
-    sub_307B0(MveRead);
-    sub_330B6(MvePoll);
+    MVE_memCallbacks(MveAlloc, MveFree);
+    MVE_ioCallbacks(MveRead);
+    MVE_rmCallbacks(MvePoll);
     mve_frame = 0;
     menu_busy = 1;
     if (in_title) {
-        sub_30908(digi_handle);
-        sub_3091A(LockMem(h = AllocMemAbort(0x817E, 0)), 0, 0, 0x817E);
-        sub_3310C(fd, -1, -1, 0);
-        sub_334CA();
+        MVE_sndInit(digi_handle);
+        MVE_memVID(LockMem(h = AllocMemAbort(0x817E, 0)), 0, 0, 0x817E);
+        MVE_RunMovie(fd, -1, -1, 0);
+        MVE_ReleaseMem();
         UnlockMem(h);
         FreeMem(h);
     } else {
-        sub_30908(-1);
-        sub_3310C(fd, -1, -1, 0);
-        sub_334CA();
+        MVE_sndInit(-1);
+        MVE_RunMovie(fd, -1, -1, 0);
+        MVE_ReleaseMem();
     }
     menu_busy = 0;
     _dos_close(fd);
@@ -367,11 +367,11 @@ void ShowLbm(char *name, unsigned ticks)
     while (fade_cur != 100)
         DemTick(1);
     dem_ticks = 0;
-    sub_2F58A(t = sub_2F377(DemTimer), 1L);
-    sub_2F4A9(t);
+    AIL_set_timer_frequency(t = AIL_register_timer(DemTimer), 1L);
+    AIL_start_timer(t);
     while (dem_ticks < ticks)
         DemTick(0);
-    sub_2F442(t);
+    AIL_release_timer_handle(t);
     FadeOutStart();
     while (fade_cur != 0)
         DemTick(1);
@@ -618,9 +618,9 @@ void PlayDpAnim(char *name)
         n--;
     ReadLp(FindLp(0), anim_buf);
     anim_ticks = 0;
-    anim_timer = sub_2F377(AnimTimer);
-    sub_2F58A(anim_timer, (long)dp_header.fps);
-    sub_2F4A9(anim_timer);
+    anim_timer = AIL_register_timer(AnimTimer);
+    AIL_set_timer_frequency(anim_timer, (long)dp_header.fps);
+    AIL_start_timer(anim_timer);
     FadeInStart();
     for (;;) {
         DrawRec(i, anim_buf);
@@ -637,7 +637,7 @@ done:
     FadeOutStart();
     while (Fading())
         DemTick(i);
-    sub_2F442(anim_timer);
+    AIL_release_timer_handle(anim_timer);
     _close(anim_fd);
     FreeMemPtr(lp_table);
 }

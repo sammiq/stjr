@@ -146,7 +146,7 @@ void BuildRemap(unsigned char far *table, int level)
 }
 
 /* Take colours 48-127, 216-219 and 224-245 from name.pal. */
-void sub_1B61E(char *name)
+void MergePalette(char *name)
 {
     MemHandle h;
     unsigned char far *pal;
@@ -175,7 +175,7 @@ void LoadPalette(char *name)
         CacheRelease(h);
         for (i = 0; i < 30; i++)
             cur_palette[0x2E2 + i] = cur_palette[i] = 0;
-        sub_1BCC2();
+        SetColour7White();
     }
     LockScreen();
     for (i = 30; i < 0x180; i++)
@@ -483,7 +483,7 @@ void FadeDown(void)
         SetFade(cur_palette, fade_level -= 10);
 }
 
-void sub_1BCC2(void)
+void SetColour7White(void)
 {
     cur_palette[0x17] = cur_palette[0x16] = cur_palette[0x15] = 0x3F;
 }
